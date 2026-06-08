@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-cormorant: 'Cormorant Garamond', serif;
+  --font-jost: 'Jost', sans-serif;
+  
+  /* Brand colours */
+  --charcoal: #3d3d3f;
+  --champagne: #c9b882;
+  --champagne-light: #ddd0a8;
+  --champagne-pale: #f0e8d0;
+  --ivory: #faf7f2;
+  --ivory-warm: #f5f0e8;
+  --ivory-deep: #ede5d8;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--ivory);
+    color: var(--charcoal);
+    font-family: var(--font-jost), system-ui, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-cormorant), serif;
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  ::selection {
+    background-color: var(--champagne);
+    color: var(--charcoal);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-block px-10 py-4 border border-champagne text-champagne tracking-widest text-xs uppercase font-sans font-light transition-all duration-400 hover:bg-champagne hover:text-charcoal;
+  }
+
+  .btn-dark {
+    @apply inline-block px-10 py-4 border border-charcoal text-charcoal tracking-widest text-xs uppercase font-sans font-light transition-all duration-400 hover:bg-charcoal hover:text-ivory;
+  }
+
+  .btn-filled {
+    @apply inline-block px-10 py-4 bg-champagne text-charcoal-dark tracking-widest text-xs uppercase font-sans font-light transition-all duration-400 hover:bg-champagne-dark;
+  }
+
+  .section-label {
+    @apply text-xs tracking-widest-xl uppercase font-sans font-light text-champagne;
+  }
+
+  .section-title {
+    @apply font-serif text-5xl md:text-6xl lg:text-7xl text-charcoal leading-none;
+  }
+
+  .nav-link {
+    @apply text-xs tracking-widest uppercase font-sans font-light transition-colors duration-300;
+  }
+
+  .card-hover {
+    @apply transition-transform duration-600 hover:-translate-y-1;
+  }
+
+  /* Decorative line */
+  .deco-line {
+    @apply block w-16 h-px bg-champagne mx-auto my-6;
+  }
+
+  /* Image overlay on hover */
+  .img-overlay {
+    @apply relative overflow-hidden;
+  }
+
+  .img-overlay::after {
+    content: '';
+    @apply absolute inset-0 bg-charcoal-deep opacity-0 transition-opacity duration-600;
+  }
+
+  .img-overlay:hover::after {
+    @apply opacity-20;
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    @apply flex flex-col items-center gap-2 text-xs tracking-widest uppercase font-light text-champagne;
+  }
+
+  /* Gold shimmer text */
+  .shimmer-text {
+    background: linear-gradient(90deg, #c9b882 0%, #f0e8d0 40%, #c9b882 60%, #a89660 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* Elegant focus styles */
+:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 3px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ivory);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--champagne);
+}
