@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { realBrides } from '@/lib/data';
 import { siteConfig } from '@/lib/config';
@@ -113,10 +114,12 @@ function FeaturedBrideCard({
     <div className={`grid grid-cols-1 lg:grid-cols-2 min-h-[70vh] ${reverse ? 'direction-rtl' : ''}`}>
       {/* Image */}
       <div className={`relative min-h-[50vh] lg:min-h-full overflow-hidden bg-ivory-deep ${reverse ? 'lg:order-2' : ''}`}>
-        <img
+        <Image
           src={bride.image}
           alt={`${bride.brideName}${bride.partnerName ? ` & ${bride.partnerName}` : ''} — REI Bridal`}
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 50vw"
         />
       </div>
       {/* Content */}

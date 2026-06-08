@@ -27,7 +27,7 @@ export default function CookieBanner() {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <p className="text-xs font-light text-ivory/60 leading-relaxed max-w-2xl">
           We use cookies to enhance your browsing experience and analyse site traffic. By clicking
-          "Accept", you consent to our use of cookies.{' '}
+          &ldquo;Accept&rdquo;, you consent to our use of cookies.{' '}
           <Link href="/cookie-policy" className="underline text-champagne hover:text-champagne-light">
             Learn more
           </Link>

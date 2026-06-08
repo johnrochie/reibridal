@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import type { RealBride } from '@/lib/data';
 
 const filters = [
@@ -47,10 +48,12 @@ export default function RealBridesGrid({ brides }: { brides: RealBride[] }) {
           {filtered.map((bride) => (
             <div key={bride.id} className="group">
               <div className="relative aspect-portrait overflow-hidden bg-ivory-deep mb-5">
-                <img
+                <Image
                   src={bride.image}
                   alt={`${bride.brideName}${bride.partnerName ? ` & ${bride.partnerName}` : ''} — REI Bridal`}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 {bride.featured && (
                   <span className="absolute top-4 left-4 bg-champagne text-charcoal-dark text-[10px] tracking-widest uppercase px-3 py-1.5 font-sans font-light">
