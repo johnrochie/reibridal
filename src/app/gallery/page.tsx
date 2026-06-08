@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { galleryImages } from '@/lib/data';
+import { getAllGalleryImages } from '@/sanity/queries';
 import { siteConfig } from '@/lib/config';
 import GalleryGrid from '@/components/gallery/GalleryGrid';
 
@@ -10,7 +10,9 @@ export const metadata: Metadata = {
     'Browse our gallery of real REI Bridal weddings and editorial imagery. Discover wedding inspiration from our Kerry, Ireland bridal boutique.',
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const images = await getAllGalleryImages();
+
   return (
     <>
       {/* Hero */}
@@ -27,7 +29,7 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <GalleryGrid images={galleryImages} />
+      <GalleryGrid images={images} />
 
       {/* Submit your photo CTA */}
       <section className="py-20 px-6 bg-charcoal text-center">

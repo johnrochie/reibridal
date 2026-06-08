@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import type { RealBride } from '@/lib/data';
+import { urlFor } from '@/sanity/image';
+import type { SanityRealBride } from '@/sanity/types';
 
 const filters = [
   { id: 'all', label: 'All' },
@@ -10,7 +11,7 @@ const filters = [
   { id: 'ireland', label: 'Ireland' },
 ];
 
-export default function RealBridesGrid({ brides }: { brides: RealBride[] }) {
+export default function RealBridesGrid({ brides }: { brides: SanityRealBride[] }) {
   const [active, setActive] = useState('all');
 
   const filtered = brides.filter((b) => {
@@ -22,7 +23,6 @@ export default function RealBridesGrid({ brides }: { brides: RealBride[] }) {
 
   return (
     <>
-      {/* Filter */}
       <div className="flex gap-6 mb-12 border-b border-ivory-deep pb-6 overflow-x-auto scrollbar-hide">
         {filters.map((f) => (
           <button
@@ -46,10 +46,10 @@ export default function RealBridesGrid({ brides }: { brides: RealBride[] }) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map((bride) => (
-            <div key={bride.id} className="group">
+            <div key={bride._id} className="group">
               <div className="relative aspect-portrait overflow-hidden bg-ivory-deep mb-5">
                 <Image
-                  src={bride.image}
+                  src={urlFor(bride.image).width(600).height(800).url()}
                   alt={`${bride.brideName}${bride.partnerName ? ` & ${bride.partnerName}` : ''} — REI Bridal`}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -61,29 +61,22 @@ export default function RealBridesGrid({ brides }: { brides: RealBride[] }) {
                   </span>
                 )}
               </div>
-              <div>
-                <h3 className="font-serif text-2xl text-charcoal mb-1">
-                  {bride.brideName}
-                  {bride.partnerName && ` & ${bride.partnerName}`}
-                </h3>
-                <p className="text-xs tracking-widest uppercase font-light text-charcoal/50 mb-3">
-                  {bride.weddingDate} · {bride.location}
+              <h3 className="font-serif text-2xl text-charcoal mb-1">
+                {bride.brideName}{bride.partnerName && ` & ${bride.partnerName}`}
+              </h3>
+              <p className="text-xs tracking-widest uppercase font-light text-charcoal/50 mb-3">
+                {bride.weddingDate} · {bride.location}
+              </p>
+              {bride.gown && (
+                <p className="text-sm font-light text-charcoal/50">
+                  Wearing <span className="text-charcoal/70">{bride.gown.name}</span>
                 </p>
-                {bride.gownName && (
-                  <p className="text-sm font-light text-charcoal/50">
-                    Wearing{' '}
-                    <span className="text-charcoal/70">{bride.gownName}</span>
-                    {bride.designerName && (
-                      <span> by {bride.designerName}</span>
-                    )}
-                  </p>
-                )}
-                {bride.quote && (
-                  <p className="text-sm font-light text-charcoal/50 italic mt-3 line-clamp-2">
-                    &ldquo;{bride.quote}&rdquo;
-                  </p>
-                )}
-              </div>
+              )}
+              {bride.quote && (
+                <p className="text-sm font-light text-charcoal/50 italic mt-3 line-clamp-2">
+                  &ldquo;{bride.quote}&rdquo;
+                </p>
+              )}
             </div>
           ))}
         </div>

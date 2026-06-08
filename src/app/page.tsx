@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { gowns, designers, testimonials, galleryImages } from '@/lib/data';
+import { getFeaturedGowns, getFeaturedDesigners, getFeaturedTestimonials, getAllGalleryImages } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
 import { siteConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
@@ -10,9 +11,14 @@ export const metadata: Metadata = {
     'REI Bridal — a luxury bridal boutique in Kerry, Ireland. Discover our curated collection of designer wedding gowns. Book your private appointment today.',
 };
 
-export default function HomePage() {
-  const featuredGowns = gowns.filter((g) => g.isFeatured).slice(0, 3);
-  const featuredDesigners = designers.filter((d) => d.featured);
+export default async function HomePage() {
+  const [featuredGowns, featuredDesigners, testimonials, galleryImages] = await Promise.all([
+    getFeaturedGowns(),
+    getFeaturedDesigners(),
+    getFeaturedTestimonials(),
+    getAllGalleryImages(),
+  ]);
+
   const heroGallery = galleryImages.slice(0, 4);
 
   return (
@@ -89,65 +95,66 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           FEATURED GOWNS
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory">
-        <div className="max-w-8xl mx-auto">
-          <div className="flex items-end justify-between mb-16">
-            <div>
-              <span className="section-label mb-3 block">Current Collection</span>
-              <h2 className="section-title">Featured Gowns</h2>
-            </div>
-            <Link href="/gowns" className="hidden md:block nav-link text-charcoal/60 hover:text-champagne">
-              View All →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {featuredGowns.map((gown, i) => (
-              <Link
-                key={gown.id}
-                href={`/gowns/${gown.id}`}
-                className="group block"
-              >
-                <div className="relative aspect-bridal overflow-hidden bg-ivory-deep mb-5">
-                  <Image
-                    src={gown.image}
-                    alt={`${gown.name} by ${gown.designer} — REI Bridal`}
-                    fill
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  {gown.isNew && (
-                    <span className="absolute top-4 left-4 bg-champagne text-charcoal-dark text-[10px] tracking-widest uppercase px-3 py-1.5 font-sans font-light">
-                      New
-                    </span>
-                  )}
-                  <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/20 transition-colors duration-500" />
-                  {/* Hover overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-400 bg-gradient-to-t from-charcoal-deep/90 to-transparent">
-                    <span className="text-xs tracking-widest text-champagne uppercase font-light">
-                      View Gown →
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-serif text-2xl text-charcoal mb-1 group-hover:text-champagne-dark transition-colors">
-                    {gown.name}
-                  </h3>
-                  <p className="text-xs tracking-widest uppercase font-light text-charcoal/50">
-                    {gown.designer}
-                  </p>
-                </div>
+      {featuredGowns.length > 0 && (
+        <section className="py-24 px-6 lg:px-12 bg-ivory">
+          <div className="max-w-8xl mx-auto">
+            <div className="flex items-end justify-between mb-16">
+              <div>
+                <span className="section-label mb-3 block">Current Collection</span>
+                <h2 className="section-title">Featured Gowns</h2>
+              </div>
+              <Link href="/gowns" className="hidden md:block nav-link text-charcoal/60 hover:text-champagne">
+                View All →
               </Link>
-            ))}
-          </div>
+            </div>
 
-          <div className="text-center mt-12 md:hidden">
-            <Link href="/gowns" className="btn-dark">
-              View All Gowns
-            </Link>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+              {featuredGowns.map((gown) => (
+                <Link
+                  key={gown._id}
+                  href={`/gowns/${gown.slug}`}
+                  className="group block"
+                >
+                  <div className="relative aspect-bridal overflow-hidden bg-ivory-deep mb-5">
+                    <Image
+                      src={urlFor(gown.image).width(600).height(800).url()}
+                      alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
+                      fill
+                      className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                    {gown.isNew && (
+                      <span className="absolute top-4 left-4 bg-champagne text-charcoal-dark text-[10px] tracking-widest uppercase px-3 py-1.5 font-sans font-light">
+                        New
+                      </span>
+                    )}
+                    <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/20 transition-colors duration-500" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-400 bg-gradient-to-t from-charcoal-deep/90 to-transparent">
+                      <span className="text-xs tracking-widest text-champagne uppercase font-light">
+                        View Gown →
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-2xl text-charcoal mb-1 group-hover:text-champagne-dark transition-colors">
+                      {gown.name}
+                    </h3>
+                    <p className="text-xs tracking-widest uppercase font-light text-charcoal/50">
+                      {gown.designer.name}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="text-center mt-12 md:hidden">
+              <Link href="/gowns" className="btn-dark">
+                View All Gowns
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ══════════════════════════════════════════
           EXPERIENCE SPLIT SECTION
@@ -203,127 +210,133 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           DESIGNERS STRIP
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
-        <div className="max-w-8xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="section-label mb-3 block">Our Curation</span>
-            <h2 className="section-title">The Designers</h2>
-            <span className="deco-line" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredDesigners.map((designer) => (
-              <Link
-                key={designer.id}
-                href={`/designers/${designer.id}`}
-                className="group relative overflow-hidden bg-charcoal aspect-square"
-              >
-                <Image
-                  src={designer.image}
-                  alt={`${designer.name} — Designer at REI Bridal`}
-                  fill
-                  className="object-cover opacity-60 group-hover:opacity-40 transition-all duration-600 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 flex flex-col justify-end p-8">
-                  <h3 className="font-serif text-3xl text-ivory mb-2">{designer.name}</h3>
-                  <p className="text-xs tracking-widest uppercase font-light text-champagne mb-4">
-                    {designer.country}
-                  </p>
-                  <span className="text-xs tracking-widest uppercase font-light text-ivory/40 group-hover:text-champagne transition-colors">
-                    Discover →
-                  </span>
-                </div>
+      {featuredDesigners.length > 0 && (
+        <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+          <div className="max-w-8xl mx-auto">
+            <div className="text-center mb-16">
+              <span className="section-label mb-3 block">Our Curation</span>
+              <h2 className="section-title">The Designers</h2>
+              <span className="deco-line" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {featuredDesigners.map((designer) => (
+                <Link
+                  key={designer._id}
+                  href={`/designers/${designer.slug}`}
+                  className="group relative overflow-hidden bg-charcoal aspect-square"
+                >
+                  <Image
+                    src={urlFor(designer.image).width(600).height(600).url()}
+                    alt={`${designer.name} — Designer at REI Bridal`}
+                    fill
+                    className="object-cover opacity-60 group-hover:opacity-40 transition-all duration-600 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 flex flex-col justify-end p-8">
+                    <h3 className="font-serif text-3xl text-ivory mb-2">{designer.name}</h3>
+                    <p className="text-xs tracking-widest uppercase font-light text-champagne mb-4">
+                      {designer.country}
+                    </p>
+                    <span className="text-xs tracking-widest uppercase font-light text-ivory/40 group-hover:text-champagne transition-colors">
+                      Discover →
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-10">
+              <Link href="/designers" className="btn-dark">
+                All Designers
               </Link>
-            ))}
+            </div>
           </div>
-          <div className="text-center mt-10">
-            <Link href="/designers" className="btn-dark">
-              All Designers
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ══════════════════════════════════════════
           TESTIMONIALS
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-12 bg-charcoal">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="section-label mb-3 block">Real Brides</span>
-            <h2 className="font-serif text-5xl md:text-6xl text-ivory">Love Stories</h2>
-            <span className="deco-line" />
+      {testimonials.length > 0 && (
+        <section className="py-24 px-6 lg:px-12 bg-charcoal">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <span className="section-label mb-3 block">Real Brides</span>
+              <h2 className="font-serif text-5xl md:text-6xl text-ivory">Love Stories</h2>
+              <span className="deco-line" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {testimonials.map((t) => (
+                <blockquote
+                  key={t._id}
+                  className="border border-champagne/20 p-8 hover:border-champagne/40 transition-colors duration-400"
+                >
+                  <div className="text-champagne text-4xl font-serif leading-none mb-4">&ldquo;</div>
+                  <p className="font-sans font-light text-ivory/60 text-sm leading-relaxed mb-6 italic">
+                    {t.text}
+                  </p>
+                  <footer>
+                    <cite className="not-italic">
+                      <span className="block font-serif text-xl text-ivory">{t.name}</span>
+                      <span className="text-xs tracking-widest uppercase font-light text-champagne/50">
+                        {t.date}{t.location && ` · ${t.location}`}
+                      </span>
+                    </cite>
+                  </footer>
+                </blockquote>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
-              <blockquote
-                key={t.id}
-                className="border border-champagne/20 p-8 hover:border-champagne/40 transition-colors duration-400"
-              >
-                <div className="text-champagne text-4xl font-serif leading-none mb-4">&ldquo;</div>
-                <p className="font-sans font-light text-ivory/60 text-sm leading-relaxed mb-6 italic">
-                  {t.text}
-                </p>
-                <footer>
-                  <cite className="not-italic">
-                    <span className="block font-serif text-xl text-ivory">{t.name}</span>
-                    <span className="text-xs tracking-widest uppercase font-light text-champagne/50">
-                      {t.date} · {t.location}
-                    </span>
-                  </cite>
-                </footer>
-              </blockquote>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ══════════════════════════════════════════
           GALLERY PREVIEW
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory">
-        <div className="max-w-8xl mx-auto">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <span className="section-label mb-3 block">Our Gallery</span>
-              <h2 className="section-title">Real Brides, Real Moments</h2>
-            </div>
-            <Link href="/gallery" className="hidden md:block nav-link text-charcoal/60 hover:text-champagne">
-              View Gallery →
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-            {heroGallery.map((img, i) => (
-              <Link
-                key={img.id}
-                href="/gallery"
-                className={`relative overflow-hidden group bg-ivory-deep ${
-                  i === 0 ? 'row-span-2' : 'aspect-square'
-                }`}
-                style={{ aspectRatio: i === 0 ? '3/4' : '1/1' }}
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-                <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/30 transition-colors duration-500 flex items-center justify-center">
-                  <span className="text-xs tracking-widest uppercase text-ivory opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    View
-                  </span>
-                </div>
+      {heroGallery.length > 0 && (
+        <section className="py-24 px-6 lg:px-12 bg-ivory">
+          <div className="max-w-8xl mx-auto">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <span className="section-label mb-3 block">Our Gallery</span>
+                <h2 className="section-title">Real Brides, Real Moments</h2>
+              </div>
+              <Link href="/gallery" className="hidden md:block nav-link text-charcoal/60 hover:text-champagne">
+                View Gallery →
               </Link>
-            ))}
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+              {heroGallery.map((img, i) => (
+                <Link
+                  key={img._id}
+                  href="/gallery"
+                  className={`relative overflow-hidden group bg-ivory-deep ${
+                    i === 0 ? 'row-span-2' : 'aspect-square'
+                  }`}
+                  style={{ aspectRatio: i === 0 ? '3/4' : '1/1' }}
+                >
+                  <Image
+                    src={urlFor(img.image).width(400).height(i === 0 ? 600 : 400).url()}
+                    alt={img.alt}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/30 transition-colors duration-500 flex items-center justify-center">
+                    <span className="text-xs tracking-widest uppercase text-ivory opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      View
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-10 md:hidden">
+              <Link href="/gallery" className="btn-dark">
+                View Full Gallery
+              </Link>
+            </div>
           </div>
-          <div className="text-center mt-10 md:hidden">
-            <Link href="/gallery" className="btn-dark">
-              View Full Gallery
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ══════════════════════════════════════════
           INSTAGRAM STRIP

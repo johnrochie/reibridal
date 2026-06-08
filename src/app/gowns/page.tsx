@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { gowns } from '@/lib/data';
+import { getAllGowns } from '@/sanity/queries';
 import { siteConfig } from '@/lib/config';
 import GownGrid from '@/components/gowns/GownGrid';
 
@@ -10,7 +10,9 @@ export const metadata: Metadata = {
     'Browse our curated collection of luxury wedding gowns, bridesmaid dresses and occasion wear at REI Bridal, Kerry, Ireland. Private appointments available.',
 };
 
-export default function GownsPage() {
+export default async function GownsPage() {
+  const gowns = await getAllGowns();
+
   return (
     <>
       {/* Page Hero */}
@@ -31,7 +33,7 @@ export default function GownsPage() {
       {/* Filter + Grid */}
       <section className="py-20 px-6 lg:px-12 bg-ivory min-h-screen">
         <div className="max-w-8xl mx-auto">
-          <GownGrid gowns={gowns.filter((g) => g.available)} />
+          <GownGrid gowns={gowns} />
         </div>
       </section>
 

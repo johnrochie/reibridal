@@ -1,9 +1,8 @@
 import { MetadataRoute } from 'next';
-import { gowns, designers, realBrides } from '@/lib/data';
-import { blogPosts } from '@/lib/blog';
+import { getAllGownSlugs, getAllDesignerSlugs, getAllBlogSlugs } from '@/sanity/queries';
 import { siteConfig } from '@/lib/config';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
 
   const staticRoutes = [
@@ -19,33 +18,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 },
   ];
 
-  const gownRoutes = gowns.map((g) => ({
-    url: `${baseUrl}/gowns/${g.id}`,
+  const [gownSlugs, designerSlugs, blogSlugs] = await Promise.all([
+    getAllGownSlugs(),
+    getAllDesignerSlugs(),
+    getAllBlogSlugs(),
+  ]);
+
+  const gownRoutes = gownSlugs.map((slug) => ({
+    url: `${baseUrl}/gowns/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  const designerRoutes = designers.map((d) => ({
-    url: `${baseUrl}/designers/${d.id}`,
+  const designerRoutes = designerSlugs.map((slug) => ({
+    url: `${baseUrl}/designers/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));
 
-  const realBrideRoutes = realBrides.map((b) => ({
-    url: `${baseUrl}/real-brides/${b.id}`,
+  const blogRoutes = blogSlugs.map((slug) => ({
+    url: `${baseUrl}/blog/${slug}`,
     lastModified: new Date(),
-    changeFrequency: 'yearly' as const,
-    priority: 0.5,
-  }));
-
-  const blogRoutes = blogPosts.map((p) => ({
-    url: `${baseUrl}/blog/${p.slug}`,
-    lastModified: new Date(p.publishedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...gownRoutes, ...designerRoutes, ...realBrideRoutes, ...blogRoutes];
+  return [...staticRoutes, ...gownRoutes, ...designerRoutes, ...blogRoutes];
 }

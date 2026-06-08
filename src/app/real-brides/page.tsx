@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { realBrides } from '@/lib/data';
+import { getAllRealBrides, getFeaturedRealBrides } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
 import { siteConfig } from '@/lib/config';
 import RealBridesGrid from '@/components/real-brides/RealBridesGrid';
+import type { SanityRealBride } from '@/sanity/types';
 
 export const metadata: Metadata = {
   title: 'Real Brides | REI Bridal',
@@ -15,8 +17,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RealBridesPage() {
-  const featured = realBrides.filter((b) => b.featured);
+export default async function RealBridesPage() {
+  const [featured, allBrides] = await Promise.all([
+    getFeaturedRealBrides(),
+    getAllRealBrides(),
+  ]);
 
   return (
     <>
@@ -48,7 +53,7 @@ export default function RealBridesPage() {
             </div>
             <div className="space-y-0">
               {featured.map((bride, i) => (
-                <FeaturedBrideCard key={bride.id} bride={bride} reverse={i % 2 === 1} />
+                <FeaturedBrideCard key={bride._id} bride={bride} reverse={i % 2 === 1} />
               ))}
             </div>
           </div>
@@ -62,7 +67,7 @@ export default function RealBridesPage() {
             <span className="section-label mb-3 block">The Full Gallery</span>
             <h2 className="section-title">All Our Brides</h2>
           </div>
-          <RealBridesGrid brides={realBrides} />
+          <RealBridesGrid brides={allBrides} />
         </div>
       </section>
 
@@ -103,19 +108,13 @@ export default function RealBridesPage() {
   );
 }
 
-function FeaturedBrideCard({
-  bride,
-  reverse,
-}: {
-  bride: (typeof realBrides)[number];
-  reverse: boolean;
-}) {
+function FeaturedBrideCard({ bride, reverse }: { bride: SanityRealBride; reverse: boolean }) {
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-2 min-h-[70vh] ${reverse ? 'direction-rtl' : ''}`}>
       {/* Image */}
       <div className={`relative min-h-[50vh] lg:min-h-full overflow-hidden bg-ivory-deep ${reverse ? 'lg:order-2' : ''}`}>
         <Image
-          src={bride.image}
+          src={urlFor(bride.image).width(900).height(1100).url()}
           alt={`${bride.brideName}${bride.partnerName ? ` & ${bride.partnerName}` : ''} — REI Bridal`}
           fill
           className="object-cover"
@@ -143,15 +142,15 @@ function FeaturedBrideCard({
               </blockquote>
             </>
           )}
-          {(bride.gownName || bride.designerName) && (
+          {bride.gown && (
             <div className="border-t border-ivory-deep pt-6">
               <p className="text-xs tracking-widest uppercase font-light text-charcoal/40 mb-1">
                 Wearing
               </p>
               <p className="font-serif text-xl text-charcoal">
-                {bride.gownName && <span>{bride.gownName}</span>}
-                {bride.gownName && bride.designerName && <span className="text-charcoal/40"> by </span>}
-                {bride.designerName && <span>{bride.designerName}</span>}
+                <Link href={`/gowns/${bride.gown.slug}`} className="hover:text-champagne transition-colors">
+                  {bride.gown.name}
+                </Link>
               </p>
             </div>
           )}

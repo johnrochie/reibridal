@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getTeamMembers, getFeaturedTestimonials } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
 import { siteConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
@@ -9,7 +11,12 @@ export const metadata: Metadata = {
     'Learn the story behind REI Bridal, Kerry Ireland\'s most intimate luxury bridal boutique. Our passion for extraordinary gowns and unforgettable experiences.',
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const [team, testimonials] = await Promise.all([
+    getTeamMembers(),
+    getFeaturedTestimonials(),
+  ]);
+
   const values = [
     {
       title: 'Intimacy',
@@ -30,21 +37,6 @@ export default function AboutPage() {
       title: 'Legacy',
       description:
         'We want to be part of your story forever. The gown is just the beginning of that conversation.',
-    },
-  ];
-
-  const team = [
-    {
-      name: 'Aoibhín',
-      role: 'Founder & Lead Stylist',
-      bio: 'With a background in luxury fashion and a lifelong passion for bridal, Aoibhín founded REI Bridal with a vision to create something truly different in Kerry.',
-      image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80',
-    },
-    {
-      name: 'Sorcha',
-      role: 'Senior Bridal Stylist',
-      bio: 'Sorcha brings warmth, an exceptional eye for fit, and an intuitive ability to understand what a bride truly wants — sometimes before she knows herself.',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=600&q=80',
     },
   ];
 
@@ -142,32 +134,68 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
-        <div className="max-w-8xl mx-auto">
-          <div className="mb-16">
-            <span className="section-label mb-3 block">Behind REI Bridal</span>
-            <h2 className="section-title">Meet the Team</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {team.map((member) => (
-              <div key={member.name} className="group">
-                <div className="relative aspect-portrait overflow-hidden bg-ivory-deep mb-6">
-                  <Image
-                    src={member.image}
-                    alt={`${member.name} — ${member.role} at REI Bridal`}
-                    fill
-                    className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+      {team.length > 0 && (
+        <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+          <div className="max-w-8xl mx-auto">
+            <div className="mb-16">
+              <span className="section-label mb-3 block">Behind REI Bridal</span>
+              <h2 className="section-title">Meet the Team</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {team.map((member) => (
+                <div key={member._id} className="group">
+                  <div className="relative aspect-portrait overflow-hidden bg-ivory-deep mb-6">
+                    <Image
+                      src={urlFor(member.image).width(600).height(800).url()}
+                      alt={`${member.name} — ${member.role} at REI Bridal`}
+                      fill
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                  <h3 className="font-serif text-3xl text-charcoal mb-1">{member.name}</h3>
+                  <p className="section-label mb-4">{member.role}</p>
+                  <p className="font-sans font-light text-charcoal/60 leading-relaxed">{member.bio}</p>
                 </div>
-                <h3 className="font-serif text-3xl text-charcoal mb-1">{member.name}</h3>
-                <p className="section-label mb-4">{member.role}</p>
-                <p className="font-sans font-light text-charcoal/60 leading-relaxed">{member.bio}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* Testimonials */}
+      {testimonials.length > 0 && (
+        <section className="py-24 px-6 lg:px-12 bg-ivory border-t border-ivory-deep">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <span className="section-label mb-3 block">Real Brides</span>
+              <h2 className="font-serif text-5xl text-charcoal">Love Stories</h2>
+              <span className="deco-line" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {testimonials.map((t) => (
+                <blockquote
+                  key={t._id}
+                  className="border border-champagne/20 p-8 hover:border-champagne/40 transition-colors duration-400"
+                >
+                  <div className="text-champagne text-4xl font-serif leading-none mb-4">&ldquo;</div>
+                  <p className="font-sans font-light text-charcoal/60 text-sm leading-relaxed mb-6 italic">
+                    {t.text}
+                  </p>
+                  <footer>
+                    <cite className="not-italic">
+                      <span className="block font-serif text-xl text-charcoal">{t.name}</span>
+                      <span className="text-xs tracking-widest uppercase font-light text-champagne/50">
+                        {t.date}{t.location && ` · ${t.location}`}
+                      </span>
+                    </cite>
+                  </footer>
+                </blockquote>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Opening hours */}
       <section className="py-24 px-6 lg:px-12 bg-ivory border-t border-ivory-deep">

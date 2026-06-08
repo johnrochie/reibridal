@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { designers, gowns } from '@/lib/data';
+import { getDesignerBySlug, getAllDesignerSlugs, getAllDesigners, getGownsByDesigner } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
 import { siteConfig } from '@/lib/config';
 
 interface Props {
@@ -10,25 +11,35 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return designers.map((d) => ({ id: d.id }));
+  const slugs = await getAllDesignerSlugs();
+  return slugs.map((slug) => ({ id: slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const designer = designers.find((d) => d.id === params.id);
+  const designer = await getDesignerBySlug(params.id);
   if (!designer) return {};
 
   return {
     title: `${designer.name} | REI Bridal`,
     description: `${designer.description} Exclusively stocked at REI Bridal, Kerry, Ireland.`,
     openGraph: {
-      images: [{ url: designer.coverImage, alt: `${designer.name} — REI Bridal` }],
+      images: [{ url: urlFor(designer.coverImage).width(1200).height(630).url(), alt: `${designer.name} — REI Bridal` }],
     },
   };
 }
 
-export default function DesignerDetailPage({ params }: Props) {
-  const designer = designers.find((d) => d.id === params.id);
+export default async function DesignerDetailPage({ params }: Props) {
+  const designer = await getDesignerBySlug(params.id);
   if (!designer) notFound();
+
+  const [designerGowns, allDesigners] = await Promise.all([
+    getGownsByDesigner(designer.name),
+    getAllDesigners(),
+  ]);
+
+  const otherDesigners = allDesigners
+    .filter((d) => d.slug !== designer.slug && d.featured)
+    .slice(0, 3);
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -36,17 +47,9 @@ export default function DesignerDetailPage({ params }: Props) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: siteConfig.url },
       { '@type': 'ListItem', position: 2, name: 'Designers', item: `${siteConfig.url}/designers` },
-      { '@type': 'ListItem', position: 3, name: designer.name, item: `${siteConfig.url}/designers/${designer.id}` },
+      { '@type': 'ListItem', position: 3, name: designer.name, item: `${siteConfig.url}/designers/${designer.slug}` },
     ],
   };
-
-  const designerGowns = gowns.filter(
-    (g) => g.designer === designer.name && g.available
-  );
-
-  const otherDesigners = designers
-    .filter((d) => d.id !== designer.id && d.featured)
-    .slice(0, 3);
 
   return (
     <>
@@ -56,7 +59,7 @@ export default function DesignerDetailPage({ params }: Props) {
       <section className="relative min-h-[70vh] flex items-end bg-charcoal overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src={designer.coverImage}
+            src={urlFor(designer.coverImage).width(1600).height(900).url()}
             alt={`${designer.name} — stocked at REI Bridal`}
             fill
             priority
@@ -109,7 +112,7 @@ export default function DesignerDetailPage({ params }: Props) {
           </div>
           <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden bg-ivory-deep">
             <Image
-              src={designer.image}
+              src={urlFor(designer.image).width(800).height(1000).url()}
               alt={`${designer.name} — bridal collection`}
               fill
               className="object-cover"
@@ -139,11 +142,11 @@ export default function DesignerDetailPage({ params }: Props) {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
               {designerGowns.map((gown) => (
-                <Link key={gown.id} href={`/gowns/${gown.id}`} className="group block">
+                <Link key={gown._id} href={`/gowns/${gown.slug}`} className="group block">
                   <div className="relative aspect-bridal overflow-hidden bg-ivory-deep mb-5">
                     <Image
-                      src={gown.image}
-                      alt={`${gown.name} by ${gown.designer} — REI Bridal`}
+                      src={urlFor(gown.image).width(600).height(800).url()}
+                      alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
                       fill
                       className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -166,7 +169,7 @@ export default function DesignerDetailPage({ params }: Props) {
                       {gown.name}
                     </h3>
                     <p className="text-xs tracking-widest uppercase font-light text-charcoal/50">
-                      {gown.priceRange || gown.price || 'POA'}
+                      {gown.priceRange || 'POA'}
                     </p>
                   </div>
                 </Link>
@@ -204,12 +207,12 @@ export default function DesignerDetailPage({ params }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {otherDesigners.map((d) => (
                 <Link
-                  key={d.id}
-                  href={`/designers/${d.id}`}
+                  key={d._id}
+                  href={`/designers/${d.slug}`}
                   className="group relative overflow-hidden bg-charcoal aspect-square block"
                 >
                   <Image
-                    src={d.image}
+                    src={urlFor(d.image).width(600).height(600).url()}
                     alt={`${d.name} — REI Bridal`}
                     fill
                     className="object-cover opacity-60 group-hover:opacity-40 transition-all duration-600 group-hover:scale-105"

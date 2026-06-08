@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { blogPosts, getBlogPost, type BlogBlock } from '@/lib/blog';
+import { PortableText } from '@portabletext/react';
+import { getBlogPostBySlug, getAllBlogSlugs, getAllBlogPosts } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
 import { siteConfig } from '@/lib/config';
 
 interface Props {
@@ -10,11 +12,12 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  const slugs = await getAllBlogSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = getBlogPost(params.slug);
+  const post = await getBlogPostBySlug(params.slug);
   if (!post) return {};
 
   return {
@@ -27,37 +30,86 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'article',
       publishedTime: post.publishedAt,
       authors: [post.author],
-      images: [{ url: post.image, alt: post.title }],
+      images: [{ url: urlFor(post.coverImage).width(1200).height(630).url(), alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
-      images: [post.image],
+      images: [urlFor(post.coverImage).width(1200).height(630).url()],
     },
   };
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getBlogPost(params.slug);
+const portableTextComponents = {
+  block: {
+    normal: ({ children }: { children?: React.ReactNode }) => (
+      <p className="font-sans font-light text-charcoal/70 leading-relaxed text-base">{children}</p>
+    ),
+    h2: ({ children }: { children?: React.ReactNode }) => (
+      <h2 className="font-serif text-3xl text-charcoal mt-12 mb-4 leading-tight">{children}</h2>
+    ),
+    h3: ({ children }: { children?: React.ReactNode }) => (
+      <h3 className="font-serif text-2xl text-charcoal mt-8 mb-3 leading-tight">{children}</h3>
+    ),
+    blockquote: ({ children }: { children?: React.ReactNode }) => (
+      <blockquote className="border-l-2 border-champagne pl-6 my-8">
+        <p className="font-serif text-2xl text-charcoal/70 italic leading-relaxed">{children}</p>
+      </blockquote>
+    ),
+  },
+  list: {
+    bullet: ({ children }: { children?: React.ReactNode }) => (
+      <ul className="space-y-3 my-6">{children}</ul>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }: { children?: React.ReactNode }) => (
+      <li className="flex items-start gap-3 text-sm font-light text-charcoal/60">
+        <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
+        {children}
+      </li>
+    ),
+  },
+  types: {
+    image: ({ value }: { value: { asset: { _ref: string }; alt?: string; caption?: string } }) => (
+      <figure className="my-10">
+        <div className="relative aspect-video overflow-hidden bg-ivory-deep">
+          <Image
+            src={urlFor(value).width(900).height(500).url()}
+            alt={value.alt || ''}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 700px"
+          />
+        </div>
+        {value.caption && (
+          <figcaption className="text-xs text-center font-light text-charcoal/40 mt-3">
+            {value.caption}
+          </figcaption>
+        )}
+      </figure>
+    ),
+  },
+};
+
+export default async function BlogPostPage({ params }: Props) {
+  const [post, allPosts] = await Promise.all([
+    getBlogPostBySlug(params.slug),
+    getAllBlogPosts(),
+  ]);
   if (!post) notFound();
 
-  const relatedPosts = blogPosts
-    .filter((p) => p.slug !== post.slug && p.category === post.category)
+  const related = allPosts
+    .filter((p) => p.slug !== post.slug)
     .slice(0, 3);
-
-  const fallback = blogPosts
-    .filter((p) => p.slug !== post.slug && !relatedPosts.includes(p))
-    .slice(0, 3 - relatedPosts.length);
-
-  const related = [...relatedPosts, ...fallback];
 
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: post.image,
+    image: urlFor(post.coverImage).width(1200).height(630).url(),
     datePublished: post.publishedAt,
     author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
     publisher: {
@@ -67,7 +119,7 @@ export default function BlogPostPage({ params }: Props) {
       logo: { '@type': 'ImageObject', url: `${siteConfig.url}/og-image.jpg` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteConfig.url}/blog/${post.slug}` },
-    keywords: post.tags.join(', '),
+    keywords: post.tags?.join(', ') ?? '',
   };
 
   const breadcrumbSchema = {
@@ -78,6 +130,13 @@ export default function BlogPostPage({ params }: Props) {
       { '@type': 'ListItem', position: 2, name: 'Journal', item: `${siteConfig.url}/blog` },
       { '@type': 'ListItem', position: 3, name: post.title, item: `${siteConfig.url}/blog/${post.slug}` },
     ],
+  };
+
+  const categoryLabels: Record<string, string> = {
+    advice: 'Bridal Advice',
+    designers: 'Our Designers',
+    inspiration: 'Inspiration',
+    appointments: 'Appointments',
   };
 
   return (
@@ -99,9 +158,7 @@ export default function BlogPostPage({ params }: Props) {
             </ol>
           </nav>
 
-          <span className="section-label mb-4 block">{
-            { advice: 'Bridal Advice', designers: 'Our Designers', inspiration: 'Inspiration', appointments: 'Appointments' }[post.category]
-          }</span>
+          <span className="section-label mb-4 block">{categoryLabels[post.category]}</span>
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-ivory leading-none max-w-4xl mb-8">
             {post.title}
           </h1>
@@ -123,7 +180,7 @@ export default function BlogPostPage({ params }: Props) {
         {/* Cover image */}
         <div className="relative aspect-video max-h-[60vh] overflow-hidden">
           <Image
-            src={post.image}
+            src={urlFor(post.coverImage).width(1600).height(900).url()}
             alt={post.title}
             fill
             priority
@@ -143,13 +200,11 @@ export default function BlogPostPage({ params }: Props) {
           <span className="block w-16 h-px bg-champagne mb-12" />
 
           <div className="prose-bridal space-y-6">
-            {post.content.map((block, i) => (
-              <ContentBlock key={i} block={block} />
-            ))}
+            <PortableText value={post.content} components={portableTextComponents} />
           </div>
 
           {/* Tags */}
-          {post.tags.length > 0 && (
+          {post.tags && post.tags.length > 0 && (
             <div className="mt-16 pt-8 border-t border-ivory-deep">
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
@@ -194,7 +249,7 @@ export default function BlogPostPage({ params }: Props) {
                 <Link key={p.slug} href={`/blog/${p.slug}`} className="group block">
                   <div className="relative aspect-video overflow-hidden bg-ivory-deep mb-4">
                     <Image
-                      src={p.image}
+                      src={urlFor(p.coverImage).width(600).height(400).url()}
                       alt={p.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -212,48 +267,4 @@ export default function BlogPostPage({ params }: Props) {
       )}
     </>
   );
-}
-
-function ContentBlock({ block }: { block: BlogBlock }) {
-  switch (block.type) {
-    case 'h2':
-      return (
-        <h2 className="font-serif text-3xl text-charcoal mt-12 mb-4 leading-tight">
-          {block.text}
-        </h2>
-      );
-    case 'h3':
-      return (
-        <h3 className="font-serif text-2xl text-charcoal mt-8 mb-3 leading-tight">
-          {block.text}
-        </h3>
-      );
-    case 'p':
-      return (
-        <p className="font-sans font-light text-charcoal/70 leading-relaxed text-base">
-          {block.text}
-        </p>
-      );
-    case 'ul':
-      return (
-        <ul className="space-y-3 my-6">
-          {block.items?.map((item) => (
-            <li key={item} className="flex items-start gap-3 text-sm font-light text-charcoal/60">
-              <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      );
-    case 'blockquote':
-      return (
-        <blockquote className="border-l-2 border-champagne pl-6 my-8">
-          <p className="font-serif text-2xl text-charcoal/70 italic leading-relaxed">
-            &ldquo;{block.text}&rdquo;
-          </p>
-        </blockquote>
-      );
-    default:
-      return null;
-  }
 }

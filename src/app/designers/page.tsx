@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { designers } from '@/lib/data';
+import { getAllDesigners } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
 
 export const metadata: Metadata = {
   title: 'Our Designers | REI Bridal',
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
     'Discover the world-class designers stocked at REI Bridal boutique in Kerry, Ireland. From Parisian couturiers to Australian minimalists, our curation is unparalleled.',
 };
 
-export default function DesignersPage() {
+export default async function DesignersPage() {
+  const designers = await getAllDesigners();
   const featured = designers.filter((d) => d.featured);
   const others = designers.filter((d) => !d.featured);
 
@@ -40,13 +42,13 @@ export default function DesignersPage() {
           <div className="space-y-6">
             {featured.map((designer, i) => (
               <Link
-                key={designer.id}
-                href={`/designers/${designer.id}`}
+                key={designer._id}
+                href={`/designers/${designer.slug}`}
                 className="group grid grid-cols-1 md:grid-cols-2 overflow-hidden bg-ivory-deep hover:bg-ivory-warm transition-colors duration-400"
               >
                 <div className={`relative aspect-video md:aspect-auto min-h-72 ${i % 2 === 1 ? 'md:order-2' : ''}`}>
                   <Image
-                    src={designer.coverImage}
+                    src={urlFor(designer.coverImage).width(900).height(600).url()}
                     alt={`${designer.name} — stocked at REI Bridal`}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -80,12 +82,12 @@ export default function DesignersPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {others.map((designer) => (
                 <Link
-                  key={designer.id}
-                  href={`/designers/${designer.id}`}
+                  key={designer._id}
+                  href={`/designers/${designer.slug}`}
                   className="group relative overflow-hidden bg-charcoal aspect-square"
                 >
                   <Image
-                    src={designer.image}
+                    src={urlFor(designer.image).width(600).height(600).url()}
                     alt={designer.name}
                     fill
                     className="object-cover opacity-60 group-hover:opacity-40 transition-all duration-500 group-hover:scale-105"

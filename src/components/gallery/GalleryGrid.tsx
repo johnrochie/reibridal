@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import type { GalleryImage } from '@/lib/data';
+import { urlFor } from '@/sanity/image';
+import type { SanityGalleryImage } from '@/sanity/types';
 
 const categories = [
   { id: 'all', label: 'All' },
@@ -13,7 +14,7 @@ const categories = [
   { id: 'editorial', label: 'Editorial' },
 ];
 
-export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
+export default function GalleryGrid({ images }: { images: SanityGalleryImage[] }) {
   const [active, setActive] = useState('all');
 
   const filtered =
@@ -25,7 +26,6 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
 
   return (
     <>
-      {/* Filter bar */}
       <div className="sticky top-[56px] z-30 bg-ivory/95 backdrop-blur-sm border-b border-ivory-deep">
         <div className="max-w-8xl mx-auto px-6 lg:px-12">
           <div className="flex gap-6 overflow-x-auto scrollbar-hide py-4">
@@ -34,9 +34,7 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
                 key={cat.id}
                 onClick={() => setActive(cat.id)}
                 className={`text-xs tracking-widest uppercase font-light whitespace-nowrap transition-colors duration-300 ${
-                  active === cat.id
-                    ? 'text-champagne'
-                    : 'text-charcoal/40 hover:text-charcoal'
+                  active === cat.id ? 'text-champagne' : 'text-charcoal/40 hover:text-charcoal'
                 }`}
               >
                 {cat.label}
@@ -46,60 +44,59 @@ export default function GalleryGrid({ images }: { images: GalleryImage[] }) {
         </div>
       </div>
 
-      {/* Masonry grid */}
       <section className="py-12 px-4 md:px-6 lg:px-12 bg-ivory">
         <div className="max-w-8xl mx-auto">
           {filtered.length === 0 ? (
             <div className="py-24 text-center">
-              <p className="font-sans font-light text-charcoal/40">
-                No images in this category yet.
-              </p>
+              <p className="font-sans font-light text-charcoal/40">No images in this category yet.</p>
             </div>
           ) : (
             <>
-              {/* Desktop: 3-column masonry */}
               <div className="hidden md:grid md:grid-cols-3 gap-3">
                 {[col1, col2, col3].map((col, colIdx) => (
                   <div key={colIdx} className="flex flex-col gap-3">
-                    {col.map((img) => (
-                      <div
-                        key={img.id}
-                        className="group relative overflow-hidden bg-ivory-deep cursor-pointer"
-                        style={{ aspectRatio: img.width > img.height ? '4/3' : '3/4' }}
-                      >
-                        <Image
-                          src={img.src}
-                          alt={img.alt}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="33vw"
-                        />
-                        <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/30 transition-colors duration-500 flex items-end">
-                          <div className="w-full p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-400 bg-gradient-to-t from-charcoal-deep/80 to-transparent">
-                            {img.caption && (
-                              <p className="text-xs font-light text-ivory/70">{img.caption}</p>
-                            )}
-                            <span className="text-xs tracking-widest text-champagne uppercase font-light capitalize">
-                              {img.category}
-                            </span>
+                    {col.map((img) => {
+                      const imgRef = img.image.asset._ref;
+                      const isLandscape = imgRef.includes('-1200x800') || imgRef.includes('-1600x1067');
+                      return (
+                        <div
+                          key={img._id}
+                          className="group relative overflow-hidden bg-ivory-deep cursor-pointer"
+                          style={{ aspectRatio: isLandscape ? '4/3' : '3/4' }}
+                        >
+                          <Image
+                            src={urlFor(img.image).width(800).url()}
+                            alt={img.alt}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            sizes="33vw"
+                          />
+                          <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/30 transition-colors duration-500 flex items-end">
+                            <div className="w-full p-5 translate-y-full group-hover:translate-y-0 transition-transform duration-400 bg-gradient-to-t from-charcoal-deep/80 to-transparent">
+                              {img.caption && (
+                                <p className="text-xs font-light text-ivory/70">{img.caption}</p>
+                              )}
+                              <span className="text-xs tracking-widest text-champagne uppercase font-light capitalize">
+                                {img.category}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ))}
               </div>
 
-              {/* Mobile: 2-column */}
               <div className="md:hidden grid grid-cols-2 gap-2">
                 {filtered.map((img) => (
                   <div
-                    key={img.id}
+                    key={img._id}
                     className="relative overflow-hidden bg-ivory-deep"
                     style={{ aspectRatio: '3/4' }}
                   >
                     <Image
-                      src={img.src}
+                      src={urlFor(img.image).width(400).height(533).url()}
                       alt={img.alt}
                       fill
                       className="object-cover"

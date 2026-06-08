@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { blogPosts } from '@/lib/blog';
+import { getAllBlogPosts } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
+import type { SanityBlogPost } from '@/sanity/types';
 
 export const metadata: Metadata = {
   title: 'Journal | REI Bridal',
@@ -20,11 +22,9 @@ const categoryLabels: Record<string, string> = {
   appointments: 'Appointments',
 };
 
-export default function BlogPage() {
-  const sorted = [...blogPosts].sort(
-    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-  );
-  const [hero, ...rest] = sorted;
+export default async function BlogPage() {
+  const posts = await getAllBlogPosts();
+  const [hero, ...rest] = posts;
 
   return (
     <>
@@ -50,7 +50,7 @@ export default function BlogPage() {
           <Link href={`/blog/${hero.slug}`} className="group grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] block">
             <div className="relative min-h-[50vh] lg:min-h-full overflow-hidden bg-ivory-deep">
               <Image
-                src={hero.image}
+                src={urlFor(hero.coverImage).width(900).height(600).url()}
                 alt={hero.title}
                 fill
                 priority
@@ -103,12 +103,19 @@ export default function BlogPage() {
   );
 }
 
-function PostCard({ post }: { post: (typeof blogPosts)[number] }) {
+function PostCard({ post }: { post: SanityBlogPost }) {
+  const categoryLabels: Record<string, string> = {
+    advice: 'Bridal Advice',
+    designers: 'Our Designers',
+    inspiration: 'Inspiration',
+    appointments: 'Appointments',
+  };
+
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
       <div className="relative aspect-video overflow-hidden bg-ivory-deep mb-5">
         <Image
-          src={post.image}
+          src={urlFor(post.coverImage).width(600).height(400).url()}
           alt={post.title}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"

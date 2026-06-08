@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { gowns } from '@/lib/data';
+import { getGownBySlug, getAllGownSlugs, getAllGowns } from '@/sanity/queries';
+import { urlFor } from '@/sanity/image';
 import { siteConfig } from '@/lib/config';
 
 interface Props {
@@ -10,24 +11,28 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return gowns.map((g) => ({ id: g.id }));
+  const slugs = await getAllGownSlugs();
+  return slugs.map((slug) => ({ id: slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const gown = gowns.find((g) => g.id === params.id);
+  const gown = await getGownBySlug(params.id);
   if (!gown) return {};
 
   return {
-    title: `${gown.name} by ${gown.designer} | REI Bridal`,
+    title: `${gown.name} by ${gown.designer.name} | REI Bridal`,
     description: `${gown.description} Available exclusively at REI Bridal, Kerry, Ireland.`,
     openGraph: {
-      images: [{ url: gown.image, alt: `${gown.name} — REI Bridal` }],
+      images: [{ url: urlFor(gown.image).width(1200).height(630).url(), alt: `${gown.name} — REI Bridal` }],
     },
   };
 }
 
-export default function GownDetailPage({ params }: Props) {
-  const gown = gowns.find((g) => g.id === params.id);
+export default async function GownDetailPage({ params }: Props) {
+  const [gown, allGowns] = await Promise.all([
+    getGownBySlug(params.id),
+    getAllGowns(),
+  ]);
   if (!gown) notFound();
 
   const breadcrumbSchema = {
@@ -36,17 +41,16 @@ export default function GownDetailPage({ params }: Props) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: siteConfig.url },
       { '@type': 'ListItem', position: 2, name: 'Gowns', item: `${siteConfig.url}/gowns` },
-      { '@type': 'ListItem', position: 3, name: gown.name, item: `${siteConfig.url}/gowns/${gown.id}` },
+      { '@type': 'ListItem', position: 3, name: gown.name, item: `${siteConfig.url}/gowns/${gown.slug}` },
     ],
   };
 
-  const relatedGowns = gowns
-    .filter((g) => g.id !== gown.id && g.designer === gown.designer && g.available)
+  const relatedGowns = allGowns
+    .filter((g) => g.slug !== gown.slug && g.designer.name === gown.designer.name)
     .slice(0, 3);
-  const fallbackRelated = gowns
-    .filter((g) => g.id !== gown.id && g.available)
+  const fallbackRelated = allGowns
+    .filter((g) => g.slug !== gown.slug && !relatedGowns.find((r) => r.slug === g.slug))
     .slice(0, 3 - relatedGowns.length);
-
   const allRelated = [...relatedGowns, ...fallbackRelated].slice(0, 3);
 
   return (
@@ -70,8 +74,8 @@ export default function GownDetailPage({ params }: Props) {
           {/* Image */}
           <div className="relative aspect-bridal lg:aspect-auto lg:min-h-[80vh] overflow-hidden bg-ivory-deep">
             <Image
-              src={gown.image}
-              alt={`${gown.name} by ${gown.designer} — REI Bridal`}
+              src={urlFor(gown.image).width(900).height(1200).url()}
+              alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
               fill
               priority
               className="object-cover object-center"
@@ -86,15 +90,20 @@ export default function GownDetailPage({ params }: Props) {
 
           {/* Details */}
           <div className="flex flex-col justify-center py-8 lg:py-0">
-            <span className="section-label mb-4">{gown.designer}</span>
+            <Link
+              href={`/designers/${gown.designer.slug}`}
+              className="section-label mb-4 hover:text-champagne transition-colors"
+            >
+              {gown.designer.name}
+            </Link>
             <h1 className="font-serif text-6xl md:text-7xl text-charcoal leading-none mb-4">
               {gown.name}
             </h1>
             <span className="block w-12 h-px bg-champagne mb-8" />
 
-            {(gown.price || gown.priceRange) && (
+            {gown.priceRange && (
               <p className="text-sm font-light text-charcoal/50 mb-8 tracking-widest uppercase">
-                {gown.price || gown.priceRange}
+                {gown.priceRange}
               </p>
             )}
 
@@ -103,19 +112,21 @@ export default function GownDetailPage({ params }: Props) {
             </p>
 
             {/* Features */}
-            <div className="mb-10">
-              <h3 className="text-xs tracking-widest uppercase font-light text-champagne mb-4">
-                Details
-              </h3>
-              <ul className="space-y-2">
-                {gown.features.map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-sm font-light text-charcoal/60">
-                    <span className="w-3 h-px bg-champagne flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {gown.features && gown.features.length > 0 && (
+              <div className="mb-10">
+                <h3 className="text-xs tracking-widest uppercase font-light text-champagne mb-4">
+                  Details
+                </h3>
+                <ul className="space-y-2">
+                  {gown.features.map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm font-light text-charcoal/60">
+                      <span className="w-3 h-px bg-champagne flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* CTA */}
             <div className="space-y-4">
@@ -134,10 +145,10 @@ export default function GownDetailPage({ params }: Props) {
                 __html: JSON.stringify({
                   '@context': 'https://schema.org',
                   '@type': 'Product',
-                  name: `${gown.name} by ${gown.designer}`,
+                  name: `${gown.name} by ${gown.designer.name}`,
                   description: gown.description,
-                  image: gown.image,
-                  brand: { '@type': 'Brand', name: gown.designer },
+                  image: urlFor(gown.image).width(1200).url(),
+                  brand: { '@type': 'Brand', name: gown.designer.name },
                   offers: {
                     '@type': 'Offer',
                     availability: 'https://schema.org/InStoreOnly',
@@ -159,10 +170,10 @@ export default function GownDetailPage({ params }: Props) {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {allRelated.map((related) => (
-                <Link key={related.id} href={`/gowns/${related.id}`} className="group block">
+                <Link key={related._id} href={`/gowns/${related.slug}`} className="group block">
                   <div className="relative aspect-bridal overflow-hidden bg-ivory-deep mb-4">
                     <Image
-                      src={related.image}
+                      src={urlFor(related.image).width(600).height(800).url()}
                       alt={`${related.name} — REI Bridal`}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -173,7 +184,7 @@ export default function GownDetailPage({ params }: Props) {
                     {related.name}
                   </h3>
                   <p className="text-xs tracking-widest uppercase font-light text-charcoal/50">
-                    {related.designer}
+                    {related.designer.name}
                   </p>
                 </Link>
               ))}
