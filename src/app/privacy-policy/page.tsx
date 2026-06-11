@@ -19,9 +19,9 @@ export default function PrivacyPolicyPage() {
         </div>
       </section>
 
-      <section className="py-16 px-6 lg:px-12 bg-ivory">
+      <section className="py-16 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-4xl mx-auto prose-legal">
-          <p className="text-sm font-light text-charcoal/50 mb-12">
+          <p className="text-sm font-light text-ivory/50 mb-12">
             Last updated: January 2025
           </p>
 
@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
                 'Technical data such as IP address, browser type, and pages visited (via analytics)',
                 'Cookie preferences',
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm font-light text-charcoal/60">
+                <li key={item} className="flex items-start gap-3 text-sm font-light text-ivory/60">
                   <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
                   {item}
                 </li>
@@ -67,16 +67,16 @@ export default function PrivacyPolicyPage() {
                 'Improve our website and services through analytics',
                 'Comply with legal obligations',
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm font-light text-charcoal/60">
+                <li key={item} className="flex items-start gap-3 text-sm font-light text-ivory/60">
                   <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
                   {item}
                 </li>
               ))}
             </ul>
             <p className="mt-6">
-              Our legal basis for processing is: <strong className="font-normal text-charcoal">contract performance</strong> (to fulfil your appointment),{' '}
-              <strong className="font-normal text-charcoal">legitimate interests</strong> (to improve our services), and{' '}
-              <strong className="font-normal text-charcoal">consent</strong> (for marketing communications and analytics cookies).
+              Our legal basis for processing is: <strong className="font-normal text-ivory">contract performance</strong> (to fulfil your appointment),{' '}
+              <strong className="font-normal text-ivory">legitimate interests</strong> (to improve our services), and{' '}
+              <strong className="font-normal text-ivory">consent</strong> (for marketing communications and analytics cookies).
             </p>
           </LegalSection>
 
@@ -108,7 +108,7 @@ export default function PrivacyPolicyPage() {
                 'Data portability (receive your data in a structured, machine-readable format)',
                 'Withdraw consent at any time where consent is the legal basis',
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm font-light text-charcoal/60">
+                <li key={item} className="flex items-start gap-3 text-sm font-light text-ivory/60">
                   <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
                   {item}
                 </li>
@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
             </p>
           </LegalSection>
 
-          <div className="border-t border-ivory-deep pt-12 mt-12">
+          <div className="border-t border-ivory/10 pt-12 mt-12">
             <Link href="/" className="nav-link text-champagne hover:text-champagne-dark">
               ← Back to Home
             </Link>
@@ -164,8 +164,8 @@ export default function PrivacyPolicyPage() {
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-12">
-      <h2 className="font-serif text-2xl text-charcoal mb-4">{title}</h2>
-      <div className="font-sans font-light text-charcoal/60 leading-relaxed text-sm">
+      <h2 className="font-serif text-2xl text-ivory mb-4">{title}</h2>
+      <div className="font-sans font-light text-ivory/60 leading-relaxed text-sm">
         {children}
       </div>
     </div>

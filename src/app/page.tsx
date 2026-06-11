@@ -80,10 +80,10 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════
           INTRO STRIP
       ══════════════════════════════════════════ */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+      <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
         <div className="max-w-4xl mx-auto text-center">
           <span className="deco-line" />
-          <p className="font-serif text-3xl md:text-4xl text-charcoal font-light leading-relaxed text-balance">
+          <p className="font-serif text-3xl md:text-4xl text-ivory font-light leading-relaxed text-balance">
             &ldquo;We believe finding your wedding dress should feel like falling in love —
             <em> effortless, memorable, and entirely yours.</em>&rdquo;
           </p>
@@ -96,14 +96,14 @@ export default async function HomePage() {
           FEATURED GOWNS
       ══════════════════════════════════════════ */}
       {featuredGowns.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
           <div className="max-w-8xl mx-auto">
             <div className="flex items-end justify-between mb-16">
               <div>
                 <span className="section-label mb-3 block">Current Collection</span>
                 <h2 className="section-title">Featured Gowns</h2>
               </div>
-              <Link href="/gowns" className="hidden md:block nav-link text-charcoal/60 hover:text-champagne">
+              <Link href="/gowns" className="hidden md:block nav-link text-ivory/60 hover:text-champagne">
                 View All →
               </Link>
             </div>
@@ -115,7 +115,7 @@ export default async function HomePage() {
                   href={`/gowns/${gown.slug}`}
                   className="group block"
                 >
-                  <div className="relative aspect-bridal overflow-hidden bg-ivory-deep mb-5">
+                  <div className="relative aspect-bridal overflow-hidden bg-charcoal-light mb-5">
                     <Image
                       src={urlFor(gown.image).width(600).height(800).url()}
                       alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
@@ -136,10 +136,10 @@ export default async function HomePage() {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl text-charcoal mb-1 group-hover:text-champagne-dark transition-colors">
+                    <h3 className="font-serif text-2xl text-ivory mb-1 group-hover:text-champagne-dark transition-colors">
                       {gown.name}
                     </h3>
-                    <p className="text-xs tracking-widest uppercase font-light text-charcoal/50">
+                    <p className="text-xs tracking-widest uppercase font-light text-ivory/50">
                       {gown.designer.name}
                     </p>
                   </div>
@@ -211,7 +211,7 @@ export default async function HomePage() {
           DESIGNERS STRIP
       ══════════════════════════════════════════ */}
       {featuredDesigners.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
             <div className="text-center mb-16">
               <span className="section-label mb-3 block">Our Curation</span>
@@ -293,14 +293,14 @@ export default async function HomePage() {
           GALLERY PREVIEW
       ══════════════════════════════════════════ */}
       {heroGallery.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
           <div className="max-w-8xl mx-auto">
             <div className="flex items-end justify-between mb-12">
               <div>
                 <span className="section-label mb-3 block">Our Gallery</span>
                 <h2 className="section-title">Real Brides, Real Moments</h2>
               </div>
-              <Link href="/gallery" className="hidden md:block nav-link text-charcoal/60 hover:text-champagne">
+              <Link href="/gallery" className="hidden md:block nav-link text-ivory/60 hover:text-champagne">
                 View Gallery →
               </Link>
             </div>
@@ -309,7 +309,7 @@ export default async function HomePage() {
                 <Link
                   key={img._id}
                   href="/gallery"
-                  className={`relative overflow-hidden group bg-ivory-deep ${
+                  className={`relative overflow-hidden group bg-charcoal-light ${
                     i === 0 ? 'row-span-2' : 'aspect-square'
                   }`}
                   style={{ aspectRatio: i === 0 ? '3/4' : '1/1' }}
@@ -341,11 +341,11 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════
           INSTAGRAM STRIP
       ══════════════════════════════════════════ */}
-      <section className="py-16 px-6 lg:px-12 bg-ivory-warm border-t border-ivory-deep">
+      <section className="py-16 px-6 lg:px-12 bg-charcoal-dark border-t border-ivory/10">
         <div className="max-w-8xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <span className="section-label mb-2 block">Follow Our Journey</span>
-            <h3 className="font-serif text-3xl text-charcoal">@reibridal</h3>
+            <h3 className="font-serif text-3xl text-ivory">@reibridal</h3>
           </div>
           <a
             href={siteConfig.social.instagram}

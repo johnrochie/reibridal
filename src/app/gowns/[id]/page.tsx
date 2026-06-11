@@ -59,12 +59,12 @@ export default async function GownDetailPage({ params }: Props) {
 
       {/* Breadcrumb */}
       <nav className="pt-32 pb-6 px-6 lg:px-12 max-w-8xl mx-auto" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-2 text-xs font-light text-charcoal/40">
+        <ol className="flex items-center gap-2 text-xs font-light text-ivory/40">
           <li><Link href="/" className="hover:text-champagne transition-colors">Home</Link></li>
           <li>/</li>
           <li><Link href="/gowns" className="hover:text-champagne transition-colors">Gowns</Link></li>
           <li>/</li>
-          <li className="text-charcoal/70">{gown.name}</li>
+          <li className="text-ivory/70">{gown.name}</li>
         </ol>
       </nav>
 
@@ -72,7 +72,7 @@ export default async function GownDetailPage({ params }: Props) {
       <section className="px-6 lg:px-12 pb-24 max-w-8xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
           {/* Image */}
-          <div className="relative aspect-bridal lg:aspect-auto lg:min-h-[80vh] overflow-hidden bg-ivory-deep">
+          <div className="relative aspect-bridal lg:aspect-auto lg:min-h-[80vh] overflow-hidden bg-charcoal-light">
             <Image
               src={urlFor(gown.image).width(900).height(1200).url()}
               alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
@@ -96,18 +96,18 @@ export default async function GownDetailPage({ params }: Props) {
             >
               {gown.designer.name}
             </Link>
-            <h1 className="font-serif text-6xl md:text-7xl text-charcoal leading-none mb-4">
+            <h1 className="font-serif text-6xl md:text-7xl text-ivory leading-none mb-4">
               {gown.name}
             </h1>
             <span className="block w-12 h-px bg-champagne mb-8" />
 
             {gown.priceRange && (
-              <p className="text-sm font-light text-charcoal/50 mb-8 tracking-widest uppercase">
+              <p className="text-sm font-light text-ivory/50 mb-8 tracking-widest uppercase">
                 {gown.priceRange}
               </p>
             )}
 
-            <p className="font-sans font-light text-charcoal/70 leading-relaxed mb-10 text-base">
+            <p className="font-sans font-light text-ivory/70 leading-relaxed mb-10 text-base">
               {gown.description}
             </p>
 
@@ -119,7 +119,7 @@ export default async function GownDetailPage({ params }: Props) {
                 </h3>
                 <ul className="space-y-2">
                   {gown.features.map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-sm font-light text-charcoal/60">
+                    <li key={f} className="flex items-center gap-3 text-sm font-light text-ivory/60">
                       <span className="w-3 h-px bg-champagne flex-shrink-0" />
                       {f}
                     </li>
@@ -133,7 +133,7 @@ export default async function GownDetailPage({ params }: Props) {
               <Link href={siteConfig.appointmentUrl} className="btn-filled w-full text-center block">
                 Book to Try This Gown
               </Link>
-              <p className="text-xs text-center font-light text-charcoal/40 leading-relaxed">
+              <p className="text-xs text-center font-light text-ivory/40 leading-relaxed">
                 All prices are available on request. Book a private appointment to discuss.
               </p>
             </div>
@@ -163,15 +163,15 @@ export default async function GownDetailPage({ params }: Props) {
 
       {/* Related gowns */}
       {allRelated.length > 0 && (
-        <section className="py-20 px-6 lg:px-12 bg-ivory-warm border-t border-ivory-deep">
+        <section className="py-20 px-6 lg:px-12 bg-charcoal-dark border-t border-ivory/10">
           <div className="max-w-8xl mx-auto">
-            <h2 className="font-serif text-4xl text-charcoal mb-12 text-center">
+            <h2 className="font-serif text-4xl text-ivory mb-12 text-center">
               You May Also Love
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {allRelated.map((related) => (
                 <Link key={related._id} href={`/gowns/${related.slug}`} className="group block">
-                  <div className="relative aspect-bridal overflow-hidden bg-ivory-deep mb-4">
+                  <div className="relative aspect-bridal overflow-hidden bg-charcoal-light mb-4">
                     <Image
                       src={urlFor(related.image).width(600).height(800).url()}
                       alt={`${related.name} — REI Bridal`}
@@ -180,10 +180,10 @@ export default async function GownDetailPage({ params }: Props) {
                       sizes="(max-width: 640px) 100vw, 33vw"
                     />
                   </div>
-                  <h3 className="font-serif text-xl text-charcoal group-hover:text-champagne-dark transition-colors">
+                  <h3 className="font-serif text-xl text-ivory group-hover:text-champagne-dark transition-colors">
                     {related.name}
                   </h3>
-                  <p className="text-xs tracking-widest uppercase font-light text-charcoal/50">
+                  <p className="text-xs tracking-widest uppercase font-light text-ivory/50">
                     {related.designer.name}
                   </p>
                 </Link>

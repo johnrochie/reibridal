@@ -26,7 +26,7 @@ export default function GalleryGrid({ images }: { images: SanityGalleryImage[] }
 
   return (
     <>
-      <div className="sticky top-[56px] z-30 bg-ivory/95 backdrop-blur-sm border-b border-ivory-deep">
+      <div className="sticky top-[56px] z-30 bg-ivory/95 backdrop-blur-sm border-b border-ivory/10">
         <div className="max-w-8xl mx-auto px-6 lg:px-12">
           <div className="flex gap-6 overflow-x-auto scrollbar-hide py-4">
             {categories.map((cat) => (
@@ -34,7 +34,7 @@ export default function GalleryGrid({ images }: { images: SanityGalleryImage[] }
                 key={cat.id}
                 onClick={() => setActive(cat.id)}
                 className={`text-xs tracking-widest uppercase font-light whitespace-nowrap transition-colors duration-300 ${
-                  active === cat.id ? 'text-champagne' : 'text-charcoal/40 hover:text-charcoal'
+                  active === cat.id ? 'text-champagne' : 'text-ivory/40 hover:text-ivory'
                 }`}
               >
                 {cat.label}
@@ -44,11 +44,11 @@ export default function GalleryGrid({ images }: { images: SanityGalleryImage[] }
         </div>
       </div>
 
-      <section className="py-12 px-4 md:px-6 lg:px-12 bg-ivory">
+      <section className="py-12 px-4 md:px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-8xl mx-auto">
           {filtered.length === 0 ? (
             <div className="py-24 text-center">
-              <p className="font-sans font-light text-charcoal/40">No images in this category yet.</p>
+              <p className="font-sans font-light text-ivory/40">No images in this category yet.</p>
             </div>
           ) : (
             <>
@@ -61,7 +61,7 @@ export default function GalleryGrid({ images }: { images: SanityGalleryImage[] }
                       return (
                         <div
                           key={img._id}
-                          className="group relative overflow-hidden bg-ivory-deep cursor-pointer"
+                          className="group relative overflow-hidden bg-charcoal-light cursor-pointer"
                           style={{ aspectRatio: isLandscape ? '4/3' : '3/4' }}
                         >
                           <Image
@@ -92,7 +92,7 @@ export default function GalleryGrid({ images }: { images: SanityGalleryImage[] }
                 {filtered.map((img) => (
                   <div
                     key={img._id}
-                    className="relative overflow-hidden bg-ivory-deep"
+                    className="relative overflow-hidden bg-charcoal-light"
                     style={{ aspectRatio: '3/4' }}
                   >
                     <Image

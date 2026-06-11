@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { siteConfig } from '@/lib/config';
+import AppointmentForm from '@/components/booking/AppointmentForm';
 import { FAQPageSchema } from '@/components/seo/FAQPageSchema';
 
 export const metadata: Metadata = {
@@ -51,12 +52,12 @@ export default function ContactPage() {
       </section>
 
       {/* Contact + Form grid */}
-      <section className="py-20 px-6 lg:px-12 bg-ivory">
+      <section className="py-20 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Info */}
           <div>
-            <h2 className="font-serif text-4xl text-charcoal mb-8">Book Your Appointment</h2>
-            <p className="font-sans font-light text-charcoal/60 leading-relaxed mb-10">
+            <h2 className="font-serif text-4xl text-ivory mb-8">Book Your Appointment</h2>
+            <p className="font-sans font-light text-ivory/60 leading-relaxed mb-10">
               Every journey begins with a conversation. Fill out the form and one of our stylists
               will be in touch within 24 hours to confirm your appointment.
             </p>
@@ -66,7 +67,7 @@ export default function ContactPage() {
                 <h3 className="text-xs tracking-widest uppercase font-light text-champagne mb-3">
                   Location
                 </h3>
-                <address className="not-italic font-sans font-light text-charcoal/60 text-sm leading-relaxed">
+                <address className="not-italic font-sans font-light text-ivory/60 text-sm leading-relaxed">
                   <p>{siteConfig.address.street}</p>
                   <p>{siteConfig.address.city}</p>
                   <p>{siteConfig.address.county}</p>
@@ -79,7 +80,7 @@ export default function ContactPage() {
                 </h3>
                 <div className="space-y-2">
                   {siteConfig.openingHours.map((h) => (
-                    <div key={h.day} className="flex gap-4 text-sm font-light text-charcoal/60">
+                    <div key={h.day} className="flex gap-4 text-sm font-light text-ivory/60">
                       <span className="w-40">{h.day}</span>
                       <span>{h.hours}</span>
                     </div>
@@ -93,13 +94,13 @@ export default function ContactPage() {
                 <div className="space-y-2">
                   <a
                     href={`tel:${siteConfig.phone}`}
-                    className="block text-sm font-light text-charcoal/60 hover:text-champagne transition-colors"
+                    className="block text-sm font-light text-ivory/60 hover:text-champagne transition-colors"
                   >
                     {siteConfig.phone}
                   </a>
                   <a
                     href={`mailto:${siteConfig.email}`}
-                    className="block text-sm font-light text-charcoal/60 hover:text-champagne transition-colors"
+                    className="block text-sm font-light text-ivory/60 hover:text-champagne transition-colors"
                   >
                     {siteConfig.email}
                   </a>
@@ -109,97 +110,10 @@ export default function ContactPage() {
           </div>
 
           {/* Contact form */}
-          <div className="bg-ivory-warm p-8 md:p-12">
-            <h2 className="font-serif text-3xl text-charcoal mb-8">Request an Appointment</h2>
-            {/* 
-              NOTE FOR DEVELOPER:
-              Replace this form with Netlify Forms, Formspree, or your preferred form handler.
-              Add action="/api/contact" and implement the API route, or use a third-party service.
-            */}
-            <form className="space-y-6" action="#" method="POST">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="firstName" className="block text-xs tracking-widest uppercase font-light text-charcoal/50 mb-2">
-                    First Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    name="firstName"
-                    required
-                    className="w-full bg-transparent border-b border-charcoal/20 focus:border-champagne py-3 text-sm font-light text-charcoal placeholder:text-charcoal/30 outline-none transition-colors"
-                    placeholder="Your first name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="lastName" className="block text-xs tracking-widest uppercase font-light text-charcoal/50 mb-2">
-                    Last Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    required
-                    className="w-full bg-transparent border-b border-charcoal/20 focus:border-champagne py-3 text-sm font-light text-charcoal placeholder:text-charcoal/30 outline-none transition-colors"
-                    placeholder="Your last name"
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-xs tracking-widest uppercase font-light text-charcoal/50 mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full bg-transparent border-b border-charcoal/20 focus:border-champagne py-3 text-sm font-light text-charcoal placeholder:text-charcoal/30 outline-none transition-colors"
-                  placeholder="hello@yourname.ie"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-xs tracking-widest uppercase font-light text-charcoal/50 mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  className="w-full bg-transparent border-b border-charcoal/20 focus:border-champagne py-3 text-sm font-light text-charcoal placeholder:text-charcoal/30 outline-none transition-colors"
-                  placeholder="+353 XX XXX XXXX"
-                />
-              </div>
-              <div>
-                <label htmlFor="weddingDate" className="block text-xs tracking-widest uppercase font-light text-charcoal/50 mb-2">
-                  Wedding Date
-                </label>
-                <input
-                  type="date"
-                  id="weddingDate"
-                  name="weddingDate"
-                  className="w-full bg-transparent border-b border-charcoal/20 focus:border-champagne py-3 text-sm font-light text-charcoal outline-none transition-colors"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-xs tracking-widest uppercase font-light text-charcoal/50 mb-2">
-                  Tell Us About You
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  className="w-full bg-transparent border-b border-charcoal/20 focus:border-champagne py-3 text-sm font-light text-charcoal placeholder:text-charcoal/30 outline-none transition-colors resize-none"
-                  placeholder="Your vision, style inspiration, any questions..."
-                />
-              </div>
-              <button type="submit" className="btn-filled w-full">
-                Request Appointment
-              </button>
-              <p className="text-xs text-center font-light text-charcoal/30">
-                We&apos;ll be in touch within 24 hours.
-              </p>
-            </form>
+          <div className="bg-charcoal-dark p-8 md:p-12">
+            <h2 className="font-serif text-3xl text-ivory mb-8">Request an Appointment</h2>
+            
+            <AppointmentForm type="contact" />
           </div>
         </div>
       </section>

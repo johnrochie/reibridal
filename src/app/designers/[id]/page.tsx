@@ -89,14 +89,14 @@ export default async function DesignerDetailPage({ params }: Props) {
       </section>
 
       {/* About the designer */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory">
+      <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <span className="section-label mb-6 block">About the Designer</span>
-            <h2 className="font-serif text-5xl text-charcoal leading-tight mb-8">
+            <h2 className="font-serif text-5xl text-ivory leading-tight mb-8">
               {designer.name}
             </h2>
-            <p className="font-sans font-light text-charcoal/60 leading-relaxed text-base mb-10">
+            <p className="font-sans font-light text-ivory/60 leading-relaxed text-base mb-10">
               {designer.description}
             </p>
             {designer.website && (
@@ -110,7 +110,7 @@ export default async function DesignerDetailPage({ params }: Props) {
               </a>
             )}
           </div>
-          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden bg-ivory-deep">
+          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden bg-charcoal-light">
             <Image
               src={urlFor(designer.image).width(800).height(1000).url()}
               alt={`${designer.name} — bridal collection`}
@@ -124,7 +124,7 @@ export default async function DesignerDetailPage({ params }: Props) {
 
       {/* Gowns from this designer */}
       {designerGowns.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
             <div className="flex items-end justify-between mb-16">
               <div>
@@ -135,7 +135,7 @@ export default async function DesignerDetailPage({ params }: Props) {
               </div>
               <Link
                 href="/gowns"
-                className="hidden md:block nav-link text-charcoal/60 hover:text-champagne"
+                className="hidden md:block nav-link text-ivory/60 hover:text-champagne"
               >
                 All Gowns →
               </Link>
@@ -143,7 +143,7 @@ export default async function DesignerDetailPage({ params }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
               {designerGowns.map((gown) => (
                 <Link key={gown._id} href={`/gowns/${gown.slug}`} className="group block">
-                  <div className="relative aspect-bridal overflow-hidden bg-ivory-deep mb-5">
+                  <div className="relative aspect-bridal overflow-hidden bg-charcoal-light mb-5">
                     <Image
                       src={urlFor(gown.image).width(600).height(800).url()}
                       alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
@@ -165,10 +165,10 @@ export default async function DesignerDetailPage({ params }: Props) {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl text-charcoal mb-1 group-hover:text-champagne-dark transition-colors">
+                    <h3 className="font-serif text-2xl text-ivory mb-1 group-hover:text-champagne-dark transition-colors">
                       {gown.name}
                     </h3>
-                    <p className="text-xs tracking-widest uppercase font-light text-charcoal/50">
+                    <p className="text-xs tracking-widest uppercase font-light text-ivory/50">
                       {gown.priceRange || 'POA'}
                     </p>
                   </div>
@@ -199,9 +199,9 @@ export default async function DesignerDetailPage({ params }: Props) {
 
       {/* Other designers */}
       {otherDesigners.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
-            <h2 className="font-serif text-4xl text-charcoal mb-12 text-center">
+            <h2 className="font-serif text-4xl text-ivory mb-12 text-center">
               Also in Our Boutique
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">

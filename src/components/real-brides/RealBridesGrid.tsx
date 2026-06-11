@@ -23,7 +23,7 @@ export default function RealBridesGrid({ brides }: { brides: SanityRealBride[] }
 
   return (
     <>
-      <div className="flex gap-6 mb-12 border-b border-ivory-deep pb-6 overflow-x-auto scrollbar-hide">
+      <div className="flex gap-6 mb-12 border-b border-ivory/10 pb-6 overflow-x-auto scrollbar-hide">
         {filters.map((f) => (
           <button
             key={f.id}
@@ -31,7 +31,7 @@ export default function RealBridesGrid({ brides }: { brides: SanityRealBride[] }
             className={`text-xs tracking-widest uppercase font-light whitespace-nowrap pb-4 -mb-px transition-colors duration-300 ${
               active === f.id
                 ? 'text-champagne border-b border-champagne'
-                : 'text-charcoal/40 hover:text-charcoal border-b border-transparent'
+                : 'text-ivory/40 hover:text-ivory border-b border-transparent'
             }`}
           >
             {f.label}
@@ -41,13 +41,13 @@ export default function RealBridesGrid({ brides }: { brides: SanityRealBride[] }
 
       {filtered.length === 0 ? (
         <div className="py-24 text-center">
-          <p className="font-sans font-light text-charcoal/40">No brides in this filter yet.</p>
+          <p className="font-sans font-light text-ivory/40">No brides in this filter yet.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map((bride) => (
             <div key={bride._id} className="group">
-              <div className="relative aspect-portrait overflow-hidden bg-ivory-deep mb-5">
+              <div className="relative aspect-portrait overflow-hidden bg-charcoal-light mb-5">
                 <Image
                   src={urlFor(bride.image).width(600).height(800).url()}
                   alt={`${bride.brideName}${bride.partnerName ? ` & ${bride.partnerName}` : ''} — REI Bridal`}
@@ -61,19 +61,19 @@ export default function RealBridesGrid({ brides }: { brides: SanityRealBride[] }
                   </span>
                 )}
               </div>
-              <h3 className="font-serif text-2xl text-charcoal mb-1">
+              <h3 className="font-serif text-2xl text-ivory mb-1">
                 {bride.brideName}{bride.partnerName && ` & ${bride.partnerName}`}
               </h3>
-              <p className="text-xs tracking-widest uppercase font-light text-charcoal/50 mb-3">
+              <p className="text-xs tracking-widest uppercase font-light text-ivory/50 mb-3">
                 {bride.weddingDate} · {bride.location}
               </p>
               {bride.gown && (
-                <p className="text-sm font-light text-charcoal/50">
-                  Wearing <span className="text-charcoal/70">{bride.gown.name}</span>
+                <p className="text-sm font-light text-ivory/50">
+                  Wearing <span className="text-ivory/70">{bride.gown.name}</span>
                 </p>
               )}
               {bride.quote && (
-                <p className="text-sm font-light text-charcoal/50 italic mt-3 line-clamp-2">
+                <p className="text-sm font-light text-ivory/50 italic mt-3 line-clamp-2">
                   &ldquo;{bride.quote}&rdquo;
                 </p>
               )}

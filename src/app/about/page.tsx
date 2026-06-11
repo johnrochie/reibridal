@@ -65,14 +65,14 @@ export default async function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory">
+      <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <span className="section-label mb-6 block">The Beginning</span>
-            <h2 className="font-serif text-5xl text-charcoal leading-tight mb-8">
+            <h2 className="font-serif text-5xl text-ivory leading-tight mb-8">
               A Boutique Born from a Belief
             </h2>
-            <div className="space-y-5 font-sans font-light text-charcoal/60 leading-relaxed">
+            <div className="space-y-5 font-sans font-light text-ivory/60 leading-relaxed">
               <p>
                 REI Bridal was founded on a simple but powerful belief: that finding your wedding
                 dress should feel like one of the greatest joys of your engagement — not a source
@@ -135,7 +135,7 @@ export default async function AboutPage() {
 
       {/* Team */}
       {team.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
             <div className="mb-16">
               <span className="section-label mb-3 block">Behind REI Bridal</span>
@@ -144,7 +144,7 @@ export default async function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {team.map((member) => (
                 <div key={member._id} className="group">
-                  <div className="relative aspect-portrait overflow-hidden bg-ivory-deep mb-6">
+                  <div className="relative aspect-portrait overflow-hidden bg-charcoal-light mb-6">
                     <Image
                       src={urlFor(member.image).width(600).height(800).url()}
                       alt={`${member.name} — ${member.role} at REI Bridal`}
@@ -153,9 +153,9 @@ export default async function AboutPage() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
-                  <h3 className="font-serif text-3xl text-charcoal mb-1">{member.name}</h3>
+                  <h3 className="font-serif text-3xl text-ivory mb-1">{member.name}</h3>
                   <p className="section-label mb-4">{member.role}</p>
-                  <p className="font-sans font-light text-charcoal/60 leading-relaxed">{member.bio}</p>
+                  <p className="font-sans font-light text-ivory/60 leading-relaxed">{member.bio}</p>
                 </div>
               ))}
             </div>
@@ -165,11 +165,11 @@ export default async function AboutPage() {
 
       {/* Testimonials */}
       {testimonials.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory border-t border-ivory-deep">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-deep border-t border-ivory/10">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <span className="section-label mb-3 block">Real Brides</span>
-              <h2 className="font-serif text-5xl text-charcoal">Love Stories</h2>
+              <h2 className="font-serif text-5xl text-ivory">Love Stories</h2>
               <span className="deco-line" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -179,12 +179,12 @@ export default async function AboutPage() {
                   className="border border-champagne/20 p-8 hover:border-champagne/40 transition-colors duration-400"
                 >
                   <div className="text-champagne text-4xl font-serif leading-none mb-4">&ldquo;</div>
-                  <p className="font-sans font-light text-charcoal/60 text-sm leading-relaxed mb-6 italic">
+                  <p className="font-sans font-light text-ivory/60 text-sm leading-relaxed mb-6 italic">
                     {t.text}
                   </p>
                   <footer>
                     <cite className="not-italic">
-                      <span className="block font-serif text-xl text-charcoal">{t.name}</span>
+                      <span className="block font-serif text-xl text-ivory">{t.name}</span>
                       <span className="text-xs tracking-widest uppercase font-light text-champagne/50">
                         {t.date}{t.location && ` · ${t.location}`}
                       </span>
@@ -198,17 +198,17 @@ export default async function AboutPage() {
       )}
 
       {/* Opening hours */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory border-t border-ivory-deep">
+      <section className="py-24 px-6 lg:px-12 bg-charcoal-deep border-t border-ivory/10">
         <div className="max-w-3xl mx-auto text-center">
           <span className="section-label mb-4 block">Visit Us</span>
-          <h2 className="font-serif text-4xl text-charcoal mb-2">{siteConfig.address.city}</h2>
-          <address className="not-italic font-sans font-light text-charcoal/50 text-sm mb-10 space-y-1">
+          <h2 className="font-serif text-4xl text-ivory mb-2">{siteConfig.address.city}</h2>
+          <address className="not-italic font-sans font-light text-ivory/50 text-sm mb-10 space-y-1">
             <p>{siteConfig.address.street}</p>
             <p>{siteConfig.address.city}, {siteConfig.address.county}, Ireland</p>
           </address>
-          <div className="border-t border-b border-ivory-deep py-10 space-y-4 mb-10">
+          <div className="border-t border-b border-ivory/10 py-10 space-y-4 mb-10">
             {siteConfig.openingHours.map((h) => (
-              <div key={h.day} className="flex justify-center gap-6 text-sm font-light text-charcoal/60">
+              <div key={h.day} className="flex justify-center gap-6 text-sm font-light text-ivory/60">
                 <span className="w-44 text-right">{h.day}</span>
                 <span className="text-champagne w-px bg-champagne/30" />
                 <span className="w-44">{h.hours}</span>

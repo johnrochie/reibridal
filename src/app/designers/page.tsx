@@ -37,14 +37,14 @@ export default async function DesignersPage() {
       </section>
 
       {/* Featured designers — large cards */}
-      <section className="py-20 px-6 lg:px-12 bg-ivory">
+      <section className="py-20 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-8xl mx-auto">
           <div className="space-y-6">
             {featured.map((designer, i) => (
               <Link
                 key={designer._id}
                 href={`/designers/${designer.slug}`}
-                className="group grid grid-cols-1 md:grid-cols-2 overflow-hidden bg-ivory-deep hover:bg-ivory-warm transition-colors duration-400"
+                className="group grid grid-cols-1 md:grid-cols-2 overflow-hidden bg-charcoal-light hover:bg-charcoal-dark transition-colors duration-400"
               >
                 <div className={`relative aspect-video md:aspect-auto min-h-72 ${i % 2 === 1 ? 'md:order-2' : ''}`}>
                   <Image
@@ -58,10 +58,10 @@ export default async function DesignersPage() {
                 </div>
                 <div className={`flex flex-col justify-center p-10 lg:p-16 ${i % 2 === 1 ? 'md:order-1' : ''}`}>
                   <span className="section-label mb-4">{designer.country}</span>
-                  <h2 className="font-serif text-5xl text-charcoal mb-4 group-hover:text-champagne-dark transition-colors">
+                  <h2 className="font-serif text-5xl text-ivory mb-4 group-hover:text-champagne-dark transition-colors">
                     {designer.name}
                   </h2>
-                  <p className="font-sans font-light text-charcoal/60 leading-relaxed mb-8 max-w-md">
+                  <p className="font-sans font-light text-ivory/60 leading-relaxed mb-8 max-w-md">
                     {designer.description}
                   </p>
                   <span className="text-xs tracking-widest uppercase font-light text-champagne group-hover:translate-x-2 transition-transform duration-300 inline-block">
@@ -76,9 +76,9 @@ export default async function DesignersPage() {
 
       {/* Other designers — grid */}
       {others.length > 0 && (
-        <section className="py-20 px-6 lg:px-12 bg-ivory-warm">
+        <section className="py-20 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
-            <h2 className="font-serif text-4xl text-charcoal mb-12">Also in Our Boutique</h2>
+            <h2 className="font-serif text-4xl text-ivory mb-12">Also in Our Boutique</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {others.map((designer) => (
                 <Link

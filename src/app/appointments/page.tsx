@@ -1,64 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { siteConfig } from '@/lib/config';
-
-function BookingPlaceholder() {
-  return (
-    <div className="bg-ivory border border-ivory-deep">
-      {/* Two-column layout: contact info + form */}
-      <div className="grid grid-cols-1 md:grid-cols-5">
-        {/* Left panel */}
-        <div className="md:col-span-2 bg-charcoal p-10 flex flex-col justify-between">
-          <div>
-            <span className="section-label mb-6 block">Your Appointment</span>
-            <h3 className="font-serif text-3xl text-ivory mb-6">What to Expect</h3>
-            <ul className="space-y-5">
-              {[
-                ['2 hours', 'Exclusive private time in the boutique'],
-                ['Your guests', 'Bring up to 3 of your favourite people'],
-                ['Champagne', 'Complimentary on arrival'],
-                ['No pressure', 'Browse at your own pace'],
-              ].map(([title, desc]) => (
-                <li key={title} className="flex items-start gap-4">
-                  <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
-                  <div>
-                    <span className="block text-xs tracking-widest uppercase font-light text-champagne mb-0.5">
-                      {title}
-                    </span>
-                    <span className="text-sm font-light text-ivory/50">{desc}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="mt-10 pt-10 border-t border-ivory/10">
-            <p className="text-xs font-light text-ivory/30 leading-relaxed">
-              Prefer to call? Reach us at{' '}
-              <a href={`tel:${siteConfig.phone}`} className="text-champagne/70 hover:text-champagne transition-colors">
-                {siteConfig.phone}
-              </a>
-            </p>
-          </div>
-        </div>
-
-        {/* Right panel — swap this div for your booking widget */}
-        <div className="md:col-span-3 p-10 flex flex-col items-center justify-center min-h-96 text-center">
-          <span className="section-label mb-4 block">Coming Soon</span>
-          <p className="font-serif text-2xl text-charcoal/40 mb-6">
-            Online booking coming soon
-          </p>
-          <p className="font-sans font-light text-charcoal/40 text-sm mb-8 max-w-xs leading-relaxed">
-            In the meantime, request your appointment via our contact form and we&apos;ll
-            confirm within 24 hours.
-          </p>
-          <Link href="/contact" className="btn-dark">
-            Request via Contact Form
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
+import BookingSection from '@/components/booking/BookingSection';
 
 export const metadata: Metadata = {
   title: 'Book an Appointment | REI Bridal',
@@ -105,10 +46,10 @@ export default function AppointmentsPage() {
       </section>
 
       {/* Steps */}
-      <section className="py-20 px-6 lg:px-12 bg-ivory">
+      <section className="py-20 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl text-charcoal">How It Works</h2>
+            <h2 className="font-serif text-4xl text-ivory">How It Works</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step) => (
@@ -116,8 +57,8 @@ export default function AppointmentsPage() {
                 <span className="font-serif text-6xl text-champagne/30 font-light block mb-4">
                   {step.num}
                 </span>
-                <h3 className="font-serif text-2xl text-charcoal mb-3">{step.title}</h3>
-                <p className="font-sans font-light text-charcoal/50 text-sm leading-relaxed">{step.desc}</p>
+                <h3 className="font-serif text-2xl text-ivory mb-3">{step.title}</h3>
+                <p className="font-sans font-light text-ivory/50 text-sm leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -125,18 +66,18 @@ export default function AppointmentsPage() {
       </section>
 
       {/* Booking widget */}
-      <section className="py-20 px-6 lg:px-12 bg-ivory-warm" id="appointments">
+      <section className="py-20 px-6 lg:px-12 bg-charcoal-dark" id="appointments">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="font-serif text-4xl text-charcoal mb-4">Reserve Your Date</h2>
-            <p className="font-sans font-light text-charcoal/50 leading-relaxed max-w-md mx-auto">
+            <h2 className="font-serif text-4xl text-ivory mb-4">Reserve Your Date</h2>
+            <p className="font-sans font-light text-ivory/50 leading-relaxed max-w-md mx-auto">
               Select a date and time that suits you. We offer appointments Tuesday through Saturday.
             </p>
           </div>
 
           {/*
             ── BOOKING WIDGET ──────────────────────────────────────────────
-            Replace the <BookingPlaceholder /> below with your booking embed.
+            Replace the <BookingSection /> below with your booking embed.
 
             Calendly inline widget:
               <div
@@ -157,7 +98,7 @@ export default function AppointmentsPage() {
               Use their booking link button or inline embed from your Square dashboard.
             ────────────────────────────────────────────────────────────────
           */}
-          <BookingPlaceholder />
+          <BookingSection />
         </div>
       </section>
 

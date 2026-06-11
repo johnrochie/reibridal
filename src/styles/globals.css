@@ -16,6 +16,8 @@
   --ivory: #faf7f2;
   --ivory-warm: #f5f0e8;
   --ivory-deep: #ede5d8;
+  --charcoal-deep: #1a1a1c;
+  --charcoal-dark: #2a2a2c;
 }
 
 @layer base {
@@ -30,8 +32,8 @@
   }
 
   body {
-    background-color: var(--ivory);
-    color: var(--charcoal);
+    background-color: var(--charcoal-deep);
+    color: var(--ivory);
     font-family: var(--font-jost), system-ui, sans-serif;
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
@@ -56,7 +58,7 @@
   }
 
   .btn-dark {
-    @apply inline-block px-10 py-4 border border-charcoal text-charcoal tracking-widest text-xs uppercase font-sans font-light transition-all duration-400 hover:bg-charcoal hover:text-ivory;
+    @apply inline-block px-10 py-4 border border-ivory/40 text-ivory tracking-widest text-xs uppercase font-sans font-light transition-all duration-400 hover:bg-ivory hover:text-charcoal-deep;
   }
 
   .btn-filled {
@@ -68,7 +70,7 @@
   }
 
   .section-title {
-    @apply font-serif text-5xl md:text-6xl lg:text-7xl text-charcoal leading-none;
+    @apply font-serif text-5xl md:text-6xl lg:text-7xl text-ivory leading-none;
   }
 
   .nav-link {

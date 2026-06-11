@@ -97,12 +97,12 @@ export default function ServicesPage() {
         <section
           key={service.num}
           className={`grid grid-cols-1 lg:grid-cols-2 min-h-[80vh] ${
-            i % 2 === 0 ? '' : 'bg-ivory-warm'
+            i % 2 === 0 ? '' : 'bg-charcoal-dark'
           }`}
         >
           {/* Image */}
           <div
-            className={`relative min-h-[50vh] lg:min-h-full overflow-hidden bg-ivory-deep ${
+            className={`relative min-h-[50vh] lg:min-h-full overflow-hidden bg-charcoal-light ${
               i % 2 === 1 ? 'lg:order-2' : ''
             }`}
           >
@@ -119,7 +119,7 @@ export default function ServicesPage() {
           {/* Content */}
           <div
             className={`flex items-center px-8 py-20 lg:px-16 xl:px-24 ${
-              i % 2 === 1 ? 'lg:order-1 bg-ivory-warm' : 'bg-ivory'
+              i % 2 === 1 ? 'lg:order-1 bg-charcoal-dark' : 'bg-charcoal-deep'
             }`}
           >
             <div className="max-w-lg w-full">
@@ -127,18 +127,18 @@ export default function ServicesPage() {
                 {service.num}
               </span>
               <span className="section-label mb-4 block">Our Service</span>
-              <h2 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-6">
+              <h2 className="font-serif text-4xl md:text-5xl text-ivory leading-tight mb-6">
                 {service.title}
               </h2>
               <span className="block w-12 h-px bg-champagne mb-8" />
-              <p className="font-sans font-light text-charcoal/60 leading-relaxed mb-8">
+              <p className="font-sans font-light text-ivory/60 leading-relaxed mb-8">
                 {service.description}
               </p>
               <ul className="space-y-3 mb-10">
                 {service.features.map((f) => (
                   <li
                     key={f}
-                    className="flex items-start gap-3 text-sm font-light text-charcoal/60"
+                    className="flex items-start gap-3 text-sm font-light text-ivory/60"
                   >
                     <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
                     {f}
@@ -175,10 +175,10 @@ export default function ServicesPage() {
       </section>
 
       {/* FAQ taster */}
-      <section className="py-20 px-6 lg:px-12 bg-ivory-warm">
+      <section className="py-20 px-6 lg:px-12 bg-charcoal-dark">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-serif text-4xl text-charcoal mb-4">Have Questions?</h2>
-          <p className="font-sans font-light text-charcoal/50 mb-8 max-w-md mx-auto leading-relaxed">
+          <h2 className="font-serif text-4xl text-ivory mb-4">Have Questions?</h2>
+          <p className="font-sans font-light text-ivory/50 mb-8 max-w-md mx-auto leading-relaxed">
             Find answers to the most common questions about appointments, gowns, and timelines.
           </p>
           <Link href="/contact#faq" className="btn-dark">

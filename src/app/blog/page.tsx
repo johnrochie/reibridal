@@ -46,9 +46,9 @@ export default async function BlogPage() {
 
       {/* Featured post */}
       {hero && (
-        <section className="bg-ivory">
+        <section className="bg-charcoal-deep">
           <Link href={`/blog/${hero.slug}`} className="group grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] block">
-            <div className="relative min-h-[50vh] lg:min-h-full overflow-hidden bg-ivory-deep">
+            <div className="relative min-h-[50vh] lg:min-h-full overflow-hidden bg-charcoal-light">
               <Image
                 src={urlFor(hero.coverImage).width(900).height(600).url()}
                 alt={hero.title}
@@ -59,12 +59,12 @@ export default async function BlogPage() {
               />
               <div className="absolute inset-0 bg-charcoal-deep/10 group-hover:bg-charcoal-deep/20 transition-colors duration-500" />
             </div>
-            <div className="flex items-center px-8 py-16 lg:px-16 xl:px-24 bg-ivory">
+            <div className="flex items-center px-8 py-16 lg:px-16 xl:px-24 bg-charcoal-deep">
               <div className="max-w-lg">
                 <div className="flex items-center gap-4 mb-6">
                   <span className="section-label">{categoryLabels[hero.category]}</span>
-                  <span className="text-charcoal/20">·</span>
-                  <time className="text-xs font-light text-charcoal/40 tracking-widest">
+                  <span className="text-ivory/20">·</span>
+                  <time className="text-xs font-light text-ivory/40 tracking-widest">
                     {new Date(hero.publishedAt).toLocaleDateString('en-IE', {
                       day: 'numeric',
                       month: 'long',
@@ -72,10 +72,10 @@ export default async function BlogPage() {
                     })}
                   </time>
                 </div>
-                <h2 className="font-serif text-4xl md:text-5xl text-charcoal leading-tight mb-6 group-hover:text-champagne-dark transition-colors duration-300">
+                <h2 className="font-serif text-4xl md:text-5xl text-ivory leading-tight mb-6 group-hover:text-champagne-dark transition-colors duration-300">
                   {hero.title}
                 </h2>
-                <p className="font-sans font-light text-charcoal/60 leading-relaxed mb-8">
+                <p className="font-sans font-light text-ivory/60 leading-relaxed mb-8">
                   {hero.excerpt}
                 </p>
                 <span className="text-xs tracking-widest uppercase font-light text-champagne group-hover:translate-x-2 transition-transform duration-300 inline-block">
@@ -89,7 +89,7 @@ export default async function BlogPage() {
 
       {/* Post grid */}
       {rest.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {rest.map((post) => (
@@ -113,7 +113,7 @@ function PostCard({ post }: { post: SanityBlogPost }) {
 
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
-      <div className="relative aspect-video overflow-hidden bg-ivory-deep mb-5">
+      <div className="relative aspect-video overflow-hidden bg-charcoal-light mb-5">
         <Image
           src={urlFor(post.coverImage).width(600).height(400).url()}
           alt={post.title}
@@ -124,8 +124,8 @@ function PostCard({ post }: { post: SanityBlogPost }) {
       </div>
       <div className="flex items-center gap-3 mb-3">
         <span className="section-label text-[10px]">{categoryLabels[post.category]}</span>
-        <span className="text-charcoal/20 text-xs">·</span>
-        <time className="text-xs font-light text-charcoal/40">
+        <span className="text-ivory/20 text-xs">·</span>
+        <time className="text-xs font-light text-ivory/40">
           {new Date(post.publishedAt).toLocaleDateString('en-IE', {
             day: 'numeric',
             month: 'long',
@@ -133,10 +133,10 @@ function PostCard({ post }: { post: SanityBlogPost }) {
           })}
         </time>
       </div>
-      <h2 className="font-serif text-2xl text-charcoal leading-tight mb-3 group-hover:text-champagne-dark transition-colors">
+      <h2 className="font-serif text-2xl text-ivory leading-tight mb-3 group-hover:text-champagne-dark transition-colors">
         {post.title}
       </h2>
-      <p className="text-sm font-light text-charcoal/50 leading-relaxed line-clamp-3">
+      <p className="text-sm font-light text-ivory/50 leading-relaxed line-clamp-3">
         {post.excerpt}
       </p>
     </Link>

@@ -44,7 +44,7 @@ export default async function RealBridesPage() {
 
       {/* Featured stories */}
       {featured.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-ivory">
+        <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
           <div className="max-w-8xl mx-auto">
             <div className="text-center mb-16">
               <span className="section-label mb-3 block">Featured Stories</span>
@@ -61,7 +61,7 @@ export default async function RealBridesPage() {
       )}
 
       {/* All brides filterable grid */}
-      <section className="py-24 px-6 lg:px-12 bg-ivory-warm">
+      <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
         <div className="max-w-8xl mx-auto">
           <div className="mb-16">
             <span className="section-label mb-3 block">The Full Gallery</span>
@@ -112,7 +112,7 @@ function FeaturedBrideCard({ bride, reverse }: { bride: SanityRealBride; reverse
   return (
     <div className={`grid grid-cols-1 lg:grid-cols-2 min-h-[70vh] ${reverse ? 'direction-rtl' : ''}`}>
       {/* Image */}
-      <div className={`relative min-h-[50vh] lg:min-h-full overflow-hidden bg-ivory-deep ${reverse ? 'lg:order-2' : ''}`}>
+      <div className={`relative min-h-[50vh] lg:min-h-full overflow-hidden bg-charcoal-light ${reverse ? 'lg:order-2' : ''}`}>
         <Image
           src={urlFor(bride.image).width(900).height(1100).url()}
           alt={`${bride.brideName}${bride.partnerName ? ` & ${bride.partnerName}` : ''} — REI Bridal`}
@@ -122,10 +122,10 @@ function FeaturedBrideCard({ bride, reverse }: { bride: SanityRealBride; reverse
         />
       </div>
       {/* Content */}
-      <div className={`bg-ivory flex items-center px-8 py-20 lg:px-16 xl:px-24 ${reverse ? 'lg:order-1' : ''}`}>
+      <div className={`bg-charcoal-deep flex items-center px-8 py-20 lg:px-16 xl:px-24 ${reverse ? 'lg:order-1' : ''}`}>
         <div className="max-w-lg">
           <span className="section-label mb-6 block">{bride.weddingDate} · {bride.location}</span>
-          <h2 className="font-serif text-5xl md:text-6xl text-charcoal leading-tight mb-6">
+          <h2 className="font-serif text-5xl md:text-6xl text-ivory leading-tight mb-6">
             {bride.brideName}
             {bride.partnerName && (
               <>
@@ -137,17 +137,17 @@ function FeaturedBrideCard({ bride, reverse }: { bride: SanityRealBride; reverse
           {bride.quote && (
             <>
               <span className="deco-line ml-0 mx-0" style={{ marginLeft: 0 }} />
-              <blockquote className="font-serif text-xl text-charcoal/70 italic leading-relaxed mb-8">
+              <blockquote className="font-serif text-xl text-ivory/70 italic leading-relaxed mb-8">
                 &ldquo;{bride.quote}&rdquo;
               </blockquote>
             </>
           )}
           {bride.gown && (
-            <div className="border-t border-ivory-deep pt-6">
-              <p className="text-xs tracking-widest uppercase font-light text-charcoal/40 mb-1">
+            <div className="border-t border-ivory/10 pt-6">
+              <p className="text-xs tracking-widest uppercase font-light text-ivory/40 mb-1">
                 Wearing
               </p>
-              <p className="font-serif text-xl text-charcoal">
+              <p className="font-serif text-xl text-ivory">
                 <Link href={`/gowns/${bride.gown.slug}`} className="hover:text-champagne transition-colors">
                   {bride.gown.name}
                 </Link>

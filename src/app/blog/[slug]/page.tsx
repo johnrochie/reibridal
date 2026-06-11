@@ -44,17 +44,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const portableTextComponents = {
   block: {
     normal: ({ children }: { children?: React.ReactNode }) => (
-      <p className="font-sans font-light text-charcoal/70 leading-relaxed text-base">{children}</p>
+      <p className="font-sans font-light text-ivory/70 leading-relaxed text-base">{children}</p>
     ),
     h2: ({ children }: { children?: React.ReactNode }) => (
-      <h2 className="font-serif text-3xl text-charcoal mt-12 mb-4 leading-tight">{children}</h2>
+      <h2 className="font-serif text-3xl text-ivory mt-12 mb-4 leading-tight">{children}</h2>
     ),
     h3: ({ children }: { children?: React.ReactNode }) => (
-      <h3 className="font-serif text-2xl text-charcoal mt-8 mb-3 leading-tight">{children}</h3>
+      <h3 className="font-serif text-2xl text-ivory mt-8 mb-3 leading-tight">{children}</h3>
     ),
     blockquote: ({ children }: { children?: React.ReactNode }) => (
       <blockquote className="border-l-2 border-champagne pl-6 my-8">
-        <p className="font-serif text-2xl text-charcoal/70 italic leading-relaxed">{children}</p>
+        <p className="font-serif text-2xl text-ivory/70 italic leading-relaxed">{children}</p>
       </blockquote>
     ),
   },
@@ -65,7 +65,7 @@ const portableTextComponents = {
   },
   listItem: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
-      <li className="flex items-start gap-3 text-sm font-light text-charcoal/60">
+      <li className="flex items-start gap-3 text-sm font-light text-ivory/60">
         <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
         {children}
       </li>
@@ -74,7 +74,7 @@ const portableTextComponents = {
   types: {
     image: ({ value }: { value: { asset: { _ref: string }; alt?: string; caption?: string } }) => (
       <figure className="my-10">
-        <div className="relative aspect-video overflow-hidden bg-ivory-deep">
+        <div className="relative aspect-video overflow-hidden bg-charcoal-light">
           <Image
             src={urlFor(value).width(900).height(500).url()}
             alt={value.alt || ''}
@@ -84,7 +84,7 @@ const portableTextComponents = {
           />
         </div>
         {value.caption && (
-          <figcaption className="text-xs text-center font-light text-charcoal/40 mt-3">
+          <figcaption className="text-xs text-center font-light text-ivory/40 mt-3">
             {value.caption}
           </figcaption>
         )}
@@ -192,9 +192,9 @@ export default async function BlogPostPage({ params }: Props) {
       </section>
 
       {/* Article body */}
-      <article className="py-20 px-6 lg:px-12 bg-ivory">
+      <article className="py-20 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-3xl mx-auto">
-          <p className="font-serif text-2xl text-charcoal/70 leading-relaxed mb-12 italic">
+          <p className="font-serif text-2xl text-ivory/70 leading-relaxed mb-12 italic">
             {post.excerpt}
           </p>
           <span className="block w-16 h-px bg-champagne mb-12" />
@@ -205,12 +205,12 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
-            <div className="mt-16 pt-8 border-t border-ivory-deep">
+            <div className="mt-16 pt-8 border-t border-ivory/10">
               <div className="flex flex-wrap gap-2">
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[10px] tracking-widest uppercase font-light text-charcoal/40 border border-ivory-deep px-3 py-1.5"
+                    className="text-[10px] tracking-widest uppercase font-light text-ivory/40 border border-ivory/10 px-3 py-1.5"
                   >
                     {tag}
                   </span>
@@ -241,13 +241,13 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Related posts */}
       {related.length > 0 && (
-        <section className="py-20 px-6 lg:px-12 bg-ivory-warm">
+        <section className="py-20 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
-            <h2 className="font-serif text-3xl text-charcoal mb-10">More from the Journal</h2>
+            <h2 className="font-serif text-3xl text-ivory mb-10">More from the Journal</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {related.map((p) => (
                 <Link key={p.slug} href={`/blog/${p.slug}`} className="group block">
-                  <div className="relative aspect-video overflow-hidden bg-ivory-deep mb-4">
+                  <div className="relative aspect-video overflow-hidden bg-charcoal-light mb-4">
                     <Image
                       src={urlFor(p.coverImage).width(600).height(400).url()}
                       alt={p.title}
@@ -256,7 +256,7 @@ export default async function BlogPostPage({ params }: Props) {
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
-                  <h3 className="font-serif text-xl text-charcoal group-hover:text-champagne-dark transition-colors leading-tight">
+                  <h3 className="font-serif text-xl text-ivory group-hover:text-champagne-dark transition-colors leading-tight">
                     {p.title}
                   </h3>
                 </Link>

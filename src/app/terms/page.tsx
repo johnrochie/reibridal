@@ -19,9 +19,9 @@ export default function TermsPage() {
         </div>
       </section>
 
-      <section className="py-16 px-6 lg:px-12 bg-ivory">
+      <section className="py-16 px-6 lg:px-12 bg-charcoal-deep">
         <div className="max-w-4xl mx-auto">
-          <p className="text-sm font-light text-charcoal/50 mb-12">
+          <p className="text-sm font-light text-ivory/50 mb-12">
             Last updated: January 2025
           </p>
 
@@ -46,7 +46,7 @@ export default function TermsPage() {
                 'We reserve the right to refuse entry to guests who are disruptive to the boutique environment.',
                 'Cancellations should be made with as much notice as possible. Please contact us at ' + siteConfig.email + ' or ' + siteConfig.phone + '.',
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm font-light text-charcoal/60">
+                <li key={item} className="flex items-start gap-3 text-sm font-light text-ivory/60">
                   <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
                   {item}
                 </li>
@@ -66,7 +66,7 @@ export default function TermsPage() {
                 'Prices are confirmed in writing at the time of order. All prices are in Euro (€) and inclusive of VAT where applicable.',
                 'REI Bridal acts as a retailer for the designers we stock. Specific designer terms may also apply.',
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm font-light text-charcoal/60">
+                <li key={item} className="flex items-start gap-3 text-sm font-light text-ivory/60">
                   <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />
                   {item}
                 </li>
@@ -143,7 +143,7 @@ export default function TermsPage() {
             </p>
           </LegalSection>
 
-          <div className="border-t border-ivory-deep pt-12 mt-12">
+          <div className="border-t border-ivory/10 pt-12 mt-12">
             <Link href="/" className="nav-link text-champagne hover:text-champagne-dark">
               ← Back to Home
             </Link>
@@ -157,8 +157,8 @@ export default function TermsPage() {
 function LegalSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mb-12">
-      <h2 className="font-serif text-2xl text-charcoal mb-4">{title}</h2>
-      <div className="font-sans font-light text-charcoal/60 leading-relaxed text-sm">
+      <h2 className="font-serif text-2xl text-ivory mb-4">{title}</h2>
+      <div className="font-sans font-light text-ivory/60 leading-relaxed text-sm">
         {children}
       </div>
     </div>

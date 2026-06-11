@@ -142,7 +142,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-ivory text-charcoal antialiased">
+      <body className="bg-charcoal-deep text-ivory antialiased">
         <Header />
         <main>{children}</main>
         <Footer />

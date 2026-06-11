@@ -31,15 +31,15 @@ export default async function GownsPage() {
       </section>
 
       {/* Filter + Grid */}
-      <section className="py-20 px-6 lg:px-12 bg-ivory min-h-screen">
+      <section className="py-20 px-6 lg:px-12 bg-charcoal-deep min-h-screen">
         <div className="max-w-8xl mx-auto">
           <GownGrid gowns={gowns} />
         </div>
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-20 px-6 bg-ivory-warm border-t border-ivory-deep text-center">
-        <p className="font-sans font-light text-charcoal/60 mb-6 max-w-md mx-auto">
+      <section className="py-20 px-6 bg-charcoal-dark border-t border-ivory/10 text-center">
+        <p className="font-sans font-light text-ivory/60 mb-6 max-w-md mx-auto">
           Can&apos;t find what you&apos;re looking for? Our stylists can source bespoke pieces
           from our extended designer network.
         </p>
