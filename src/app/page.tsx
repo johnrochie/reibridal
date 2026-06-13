@@ -30,8 +30,8 @@ export default async function HomePage() {
         {/* Background image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1594938298603-c8148c4b2399?w=1600&q=85"
-            alt="REI Bridal hero — bride in luxury gown"
+            src="/images/jane-aston/ja-hero.jpg"
+            alt="REI Bridal hero — Jane Aston bride and groom at sunset"
             fill
             priority
             className="object-cover object-center opacity-50"
@@ -163,8 +163,8 @@ export default async function HomePage() {
         {/* Image */}
         <div className="relative min-h-[50vh] lg:min-h-full">
           <Image
-            src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80"
-            alt="The REI Bridal boutique experience"
+            src="/images/jane-aston/ja-dress-detail.jpg"
+            alt="Jane Aston bridal gown detail — lace bodice"
             fill
             className="object-cover object-center"
             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -292,51 +292,62 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════
           GALLERY PREVIEW
       ══════════════════════════════════════════ */}
-      {heroGallery.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
-          <div className="max-w-8xl mx-auto">
-            <div className="flex items-end justify-between mb-12">
-              <div>
-                <span className="section-label mb-3 block">Our Gallery</span>
-                <h2 className="section-title">Real Brides, Real Moments</h2>
-              </div>
-              <Link href="/gallery" className="hidden md:block nav-link text-ivory/60 hover:text-champagne">
-                View Gallery →
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-              {heroGallery.map((img, i) => (
-                <Link
-                  key={img._id}
-                  href="/gallery"
-                  className={`relative overflow-hidden group bg-charcoal-light ${
-                    i === 0 ? 'row-span-2' : 'aspect-square'
-                  }`}
-                  style={{ aspectRatio: i === 0 ? '3/4' : '1/1' }}
-                >
-                  <Image
-                    src={urlFor(img.image).width(400).height(i === 0 ? 600 : 400).url()}
-                    alt={img.alt}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/30 transition-colors duration-500 flex items-center justify-center">
-                    <span className="text-xs tracking-widest uppercase text-ivory opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      View
-                    </span>
-                  </div>
+      {(() => {
+        const staticGallery = [
+          { src: '/images/jane-aston/ja-gallery-1.jpg', alt: 'Jane Aston bride and groom walking at the Eiffel Tower' },
+          { src: '/images/jane-aston/ja-gallery-2.jpg', alt: 'Jane Aston bride with bouquet in Paris' },
+          { src: '/images/jane-aston/ja-gallery-3.jpg', alt: 'Jane Aston couple celebrating in Paris streets' },
+          { src: '/images/jane-aston/ja-gallery-4.jpg', alt: 'Jane Aston bride and groom at Parisian balcony' },
+        ];
+        const gallery = heroGallery.length > 0
+          ? heroGallery.map((img, i) => ({ src: urlFor(img.image).width(400).height(i === 0 ? 600 : 400).url(), alt: img.alt }))
+          : staticGallery;
+        return (
+          <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
+            <div className="max-w-8xl mx-auto">
+              <div className="flex items-end justify-between mb-12">
+                <div>
+                  <span className="section-label mb-3 block">Our Gallery</span>
+                  <h2 className="section-title">Real Brides, Real Moments</h2>
+                </div>
+                <Link href="/gallery" className="hidden md:block nav-link text-ivory/60 hover:text-champagne">
+                  View Gallery →
                 </Link>
-              ))}
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+                {gallery.map((img, i) => (
+                  <Link
+                    key={img.src}
+                    href="/gallery"
+                    className={`relative overflow-hidden group bg-charcoal-light ${
+                      i === 0 ? 'row-span-2' : 'aspect-square'
+                    }`}
+                    style={{ aspectRatio: i === 0 ? '3/4' : '1/1' }}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
+                    <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/30 transition-colors duration-500 flex items-center justify-center">
+                      <span className="text-xs tracking-widest uppercase text-ivory opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        View
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <div className="text-center mt-10 md:hidden">
+                <Link href="/gallery" className="btn-dark">
+                  View Full Gallery
+                </Link>
+              </div>
             </div>
-            <div className="text-center mt-10 md:hidden">
-              <Link href="/gallery" className="btn-dark">
-                View Full Gallery
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
+          </section>
+        );
+      })()}
 
       {/* ══════════════════════════════════════════
           INSTAGRAM STRIP
