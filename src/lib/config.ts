@@ -7,11 +7,11 @@ export const siteConfig = {
   email: 'hello@reibridal.ie',
   phone: '+353 XX XXX XXXX',
   address: {
-    street: '1 Bridal Lane',
-    city: 'Kerry',
+    street: 'Upper Bridge Street',
+    city: 'Killorglin',
     county: 'Co. Kerry',
     country: 'Ireland',
-    postcode: 'V93 XXXX',
+    postcode: '',
   },
   social: {
     instagram: 'https://www.instagram.com/reibridal',
