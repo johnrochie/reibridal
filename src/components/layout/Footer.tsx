@@ -143,7 +143,15 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-champagne/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs font-light text-ivory/30">
-            © {year} REI Bridal. All rights reserved.
+            © {year} REI Bridal. All rights reserved. ·{' '}
+            <a
+              href="https://evomedia.site"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-champagne transition-colors"
+            >
+              Website by EvoMedia
+            </a>
           </p>
           <div className="flex gap-6">
             <Link href="/privacy-policy" className="text-xs font-light text-ivory/30 hover:text-champagne transition-colors">
