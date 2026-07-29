@@ -16,7 +16,7 @@
     "@sanity/vision": "^3.0.0",
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.0",
-    "next": "14.2.0",
+    "next": "14.2.35",
     "next-sanity": "^9.12.3",
     "next-sitemap": "^4.2.3",
     "react": "^18",
