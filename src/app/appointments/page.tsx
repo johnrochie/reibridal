@@ -76,27 +76,12 @@ export default function AppointmentsPage() {
           </div>
 
           {/*
-            ── BOOKING WIDGET ──────────────────────────────────────────────
-            Replace the <BookingSection /> below with your booking embed.
-
-            Calendly inline widget:
-              <div
-                className="calendly-inline-widget min-h-[700px]"
-                data-url="https://calendly.com/YOUR_LINK"
-              />
-              Add to layout.tsx <head>:
-              <script src="https://assets.calendly.com/assets/external/widget.js" async />
-
-            Acuity Scheduling:
-              <iframe
-                src="https://app.acuityscheduling.com/schedule.php?owner=YOUR_ID"
-                className="w-full min-h-[800px] border-0"
-                title="Book an appointment"
-              />
-
-            Square Appointments:
-              Use their booking link button or inline embed from your Square dashboard.
-            ────────────────────────────────────────────────────────────────
+            Instant Booking reads live availability from Evolution Media's
+            booking platform (evomedia-cms) and reserves the slot directly —
+            no redirect, no third-party embed. The Enquiry Form tab keeps
+            the original request-based flow alongside it. To swap in an
+            external embed instead (Calendly, Acuity, Square), set
+            NEXT_PUBLIC_BOOKING_EMBED_URL and BookingSection will iframe it.
           */}
           <BookingSection />
         </div>
