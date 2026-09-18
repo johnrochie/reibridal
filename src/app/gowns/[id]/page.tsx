@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : `${gown.name} by ${gown.designer.name} at REI Bridal, Kerry, Ireland.`;
 
   return {
-    title: `${gown.name} by ${gown.designer.name} | REI Bridal`,
+    title: `${gown.name} by ${gown.designer.name}`,
     description,
     openGraph: hero
       ? {
@@ -185,13 +185,15 @@ export default async function GownDetailPage({ params }: Props) {
               <p className="font-sans font-light text-ivory/70 leading-relaxed mb-10 text-base">{gown.description}</p>
             )}
 
-            <ul className="space-y-4 mb-10">
-              <Fact label="Sizes" value={gown.sizes} />
-              <Fact label="Silhouette" value={gown.silhouette} />
-              <Fact label="Fabric" value={gown.fabric} />
-              <Fact label="Style" value={gown.style} />
-              <Fact label="Availability" value={gown.availability} />
-            </ul>
+            {(gown.sizes || gown.silhouette || gown.fabric || gown.style || gown.availability) && (
+              <ul className="space-y-4 mb-10">
+                <Fact label="Sizes" value={gown.sizes} />
+                <Fact label="Silhouette" value={gown.silhouette} />
+                <Fact label="Fabric" value={gown.fabric} />
+                <Fact label="Style" value={gown.style} />
+                <Fact label="Availability" value={gown.availability} />
+              </ul>
+            )}
 
             <div className="space-y-4">
               <Link href={siteConfig.appointmentUrl} className="btn-filled w-full text-center block">

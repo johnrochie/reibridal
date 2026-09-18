@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cover = designer.cover || designer.portrait;
 
   return {
-    title: `${designer.name} | REI Bridal`,
+    title: designer.name,
     description,
     openGraph: cover
       ? {
