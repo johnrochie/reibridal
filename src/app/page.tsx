@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { getFeaturedGowns, getFeaturedDesigners, getFeaturedTestimonials, getAllGalleryImages } from '@/sanity/queries';
-import { urlFor } from '@/sanity/image';
+import { getFeaturedTestimonials, getAllGalleryImages } from '@/sanity/queries';
+import { getFeaturedPublicGowns, getPublicDesigners } from '@/lib/catalogue';
+import { siteAssets } from '@/lib/media';
 import { siteConfig } from '@/lib/config';
+import CatalogueImage from '@/components/media/CatalogueImage';
+import GownCard from '@/components/gowns/GownCard';
 
 export const metadata: Metadata = {
   title: 'REI Bridal | Luxury Bridal Boutique Kerry, Ireland',
@@ -12,12 +14,13 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [featuredGowns, featuredDesigners, testimonials, galleryImages] = await Promise.all([
-    getFeaturedGowns(),
-    getFeaturedDesigners(),
+  const [featuredGowns, designers, testimonials, galleryImages] = await Promise.all([
+    getFeaturedPublicGowns(),
+    getPublicDesigners(),
     getFeaturedTestimonials(),
     getAllGalleryImages(),
   ]);
+  const featuredDesigners = designers.filter((designer) => designer.featured);
 
   const heroGallery = galleryImages.slice(0, 4);
 
@@ -29,12 +32,14 @@ export default async function HomePage() {
       <section className="relative min-h-screen flex items-end overflow-hidden bg-charcoal-deep">
         {/* Background image */}
         <div className="absolute inset-0">
-          <Image
-            src="/images/jane-aston/ja-hero.jpg"
-            alt="REI Bridal hero — Jane Aston bride and groom at sunset"
+          <CatalogueImage
+            media={siteAssets.hero}
+            alt={siteAssets.hero.alt || 'REI Bridal hero'}
             fill
             priority
-            className="object-cover object-center opacity-50"
+            width={1920}
+            intent="editorial"
+            className="opacity-50"
             sizes="100vw"
           />
           {/* Gradient overlay */}
@@ -110,40 +115,7 @@ export default async function HomePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
               {featuredGowns.map((gown) => (
-                <Link
-                  key={gown._id}
-                  href={`/gowns/${gown.slug}`}
-                  className="group block"
-                >
-                  <div className="relative aspect-bridal overflow-hidden bg-charcoal-light mb-5">
-                    <Image
-                      src={urlFor(gown.image).width(600).height(800).url()}
-                      alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
-                      fill
-                      className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    {gown.isNew && (
-                      <span className="absolute top-4 left-4 bg-champagne text-charcoal-dark text-[10px] tracking-widest uppercase px-3 py-1.5 font-sans font-light">
-                        New
-                      </span>
-                    )}
-                    <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/20 transition-colors duration-500" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-400 bg-gradient-to-t from-charcoal-deep/90 to-transparent">
-                      <span className="text-xs tracking-widest text-champagne uppercase font-light">
-                        View Gown →
-                      </span>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-serif text-2xl text-ivory mb-1 group-hover:text-champagne-dark transition-colors">
-                      {gown.name}
-                    </h3>
-                    <p className="text-xs tracking-widest uppercase font-light text-ivory/50">
-                      {gown.designer.name}
-                    </p>
-                  </div>
-                </Link>
+                <GownCard key={gown.id} gown={gown} sizes="(max-width: 768px) 100vw, 33vw" />
               ))}
             </div>
 
@@ -162,11 +134,12 @@ export default async function HomePage() {
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
         {/* Image */}
         <div className="relative min-h-[50vh] lg:min-h-full">
-          <Image
-            src="/images/jane-aston/ja-dress-detail.jpg"
-            alt="Jane Aston bridal gown detail — lace bodice"
+          <CatalogueImage
+            media={siteAssets.experienceDetail}
+            alt={siteAssets.experienceDetail.alt || 'Bridal gown detail'}
             fill
-            className="object-cover object-center"
+            width={1600}
+            intent="editorial"
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
         </div>
@@ -221,22 +194,27 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {featuredDesigners.map((designer) => (
                 <Link
-                  key={designer._id}
+                  key={designer.id}
                   href={`/designers/${designer.slug}`}
                   className="group relative overflow-hidden bg-charcoal aspect-square"
                 >
-                  <Image
-                    src={urlFor(designer.image).width(600).height(600).url()}
+                  <CatalogueImage
+                    media={designer.portrait}
                     alt={`${designer.name} — Designer at REI Bridal`}
                     fill
-                    className="object-cover opacity-60 group-hover:opacity-40 transition-all duration-600 group-hover:scale-105"
+                    width={600}
+                    height={600}
+                    intent="product"
+                    className="opacity-60 group-hover:opacity-40 transition-all duration-600 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <div className="absolute inset-0 flex flex-col justify-end p-8">
                     <h3 className="font-serif text-3xl text-ivory mb-2">{designer.name}</h3>
-                    <p className="text-xs tracking-widest uppercase font-light text-champagne mb-4">
-                      {designer.country}
-                    </p>
+                    {designer.country && (
+                      <p className="text-xs tracking-widest uppercase font-light text-champagne mb-4">
+                        {designer.country}
+                      </p>
+                    )}
                     <span className="text-xs tracking-widest uppercase font-light text-ivory/40 group-hover:text-champagne transition-colors">
                       Discover →
                     </span>
@@ -293,15 +271,18 @@ export default async function HomePage() {
           GALLERY PREVIEW
       ══════════════════════════════════════════ */}
       {(() => {
-        const staticGallery = [
-          { src: '/images/jane-aston/ja-gallery-1.jpg', alt: 'Jane Aston bride and groom walking at the Eiffel Tower' },
-          { src: '/images/jane-aston/ja-gallery-2.jpg', alt: 'Jane Aston bride with bouquet in Paris' },
-          { src: '/images/jane-aston/ja-gallery-3.jpg', alt: 'Jane Aston couple celebrating in Paris streets' },
-          { src: '/images/jane-aston/ja-gallery-4.jpg', alt: 'Jane Aston bride and groom at Parisian balcony' },
-        ];
-        const gallery = heroGallery.length > 0
-          ? heroGallery.map((img, i) => ({ src: urlFor(img.image).width(400).height(i === 0 ? 600 : 400).url(), alt: img.alt }))
-          : staticGallery;
+        const gallery =
+          heroGallery.length > 0
+            ? heroGallery.map((img) => ({
+                media: {
+                  provider: 'sanity' as const,
+                  key: img.image.asset._ref,
+                  alt: img.alt,
+                  sanitySource: img.image,
+                },
+                alt: img.alt,
+              }))
+            : siteAssets.gallery.map((media) => ({ media, alt: media.alt || 'REI Bridal gallery' }));
         return (
           <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
             <div className="max-w-8xl mx-auto">
@@ -317,18 +298,21 @@ export default async function HomePage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
                 {gallery.map((img, i) => (
                   <Link
-                    key={img.src}
+                    key={`${img.media.provider}-${img.media.key}`}
                     href="/gallery"
                     className={`relative overflow-hidden group bg-charcoal-light ${
                       i === 0 ? 'row-span-2' : 'aspect-square'
                     }`}
                     style={{ aspectRatio: i === 0 ? '3/4' : '1/1' }}
                   >
-                    <Image
-                      src={img.src}
+                    <CatalogueImage
+                      media={img.media}
                       alt={img.alt}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      width={800}
+                      height={i === 0 ? 1200 : 800}
+                      intent="editorial"
+                      className="transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 768px) 50vw, 25vw"
                     />
                     <div className="absolute inset-0 bg-charcoal-deep/0 group-hover:bg-charcoal-deep/30 transition-colors duration-500 flex items-center justify-center">

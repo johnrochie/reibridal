@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
-import { getAllGownSlugs, getAllDesignerSlugs, getAllBlogSlugs } from '@/sanity/queries';
+import { getAllBlogSlugs } from '@/sanity/queries';
+import { getPublicDesignerSlugs, getPublicGownSlugs } from '@/lib/catalogue';
 import { siteConfig } from '@/lib/config';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -19,8 +20,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const [gownSlugs, designerSlugs, blogSlugs] = await Promise.all([
-    getAllGownSlugs(),
-    getAllDesignerSlugs(),
+    getPublicGownSlugs(),
+    getPublicDesignerSlugs(),
     getAllBlogSlugs(),
   ]);
 

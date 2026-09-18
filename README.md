@@ -74,45 +74,25 @@ src/
 
 ## ✏️ How to Edit Content
 
-### Adding a New Gown
+Gown and designer catalogue records live in **Sanity Studio** (`/studio`). Do not put image paths or gown facts in React components.
 
-Open `src/lib/data.ts` and add to the `gowns` array:
+Each gown is one document with many classified image references. Factual fields (sizes, price, silhouette, fabric, availability, description) have a content status. Only **confirmed** values appear as public facts. Incomplete records are allowed — prefer empty over invented data.
 
-```typescript
-{
-  id: 'unique-url-slug',           // Used in URL: /gowns/unique-url-slug
-  name: 'Gown Name',
-  designer: 'Designer Name',
-  category: 'wedding',             // 'wedding' | 'bridesmaid' | 'occasion'
-  priceRange: 'POA',
-  description: 'Description here',
-  features: ['Feature 1', 'Feature 2'],
-  image: 'https://your-image-url.com/image.jpg',
-  isNew: true,                     // Shows "New" badge
-  isFeatured: true,                // Shows on homepage
-  available: true,                 // Set false to hide
-},
+Phase 1 can run without Sanity by using the local sample in `src/lib/catalogue/local-seed.ts` (existing Jane Aston photography already in the repo). That sample does not invent fabric, price, or silhouette.
+
+### Photography ingest
+
+The 1GB source library stays outside Git. Scan it locally:
+
+```bash
+npm run photos:ingest -- --source /path/to/photo-library --out ./media/ingest --contact-sheet
 ```
 
-### Adding a New Designer
+This lists files, records dimensions, flags obvious duplicates, suggests designer/gown matches (high/medium/low), and writes optimised WebP/JPEG copies. Originals are never modified. Ingest output is gitignored.
 
-```typescript
-{
-  id: 'designer-slug',
-  name: 'Designer Name',
-  country: 'France',
-  shortBio: 'One line description',
-  description: 'Full paragraph description',
-  image: 'https://portrait-image.com/photo.jpg',
-  coverImage: 'https://wide-image.com/photo.jpg',
-  featured: true,                  // Shows prominently on designers page
-},
-```
+### Production image storage
 
-### Updating Gallery
-
-Replace `src` URLs in the `galleryImages` array in `data.ts`. Supported categories:
-`'bride' | 'detail' | 'ceremony' | 'portrait' | 'editorial'`
+Images are referenced as `{ provider, key }`. Providers: Sanity, local sample, Cloudinary, Vercel Blob, Supabase, S3. Switch storage by changing the reference, not the React tree.
 
 ### Updating Site Info
 
@@ -168,14 +148,12 @@ Replace `YOUR_GOOGLE_VERIFICATION_CODE` in `src/app/layout.tsx`
 
 ---
 
-## 📷 Replacing Stock Images
+## 📷 Photography
 
-Stock images from Unsplash are used as placeholders. Replace with real photography by:
-1. Uploading photos to Cloudinary, Vercel Blob, or your CDN
-2. Updating URLs in `src/lib/data.ts`
-3. Adding your domain to `next.config.js` `remotePatterns`
+Do not import the source photo library into Git or `/public`. Production images belong in Sanity or an image CDN (Cloudinary, Vercel Blob, Supabase, S3). Local `/public/images` holds only a small already-committed sample.
 
-For local images, place in `public/images/` and use paths like `/images/photo.jpg`
+The website should never download a 5–10MB original when a smaller luxury-quality derivative will do. Ingest writes those derivatives; `next/image` plus the media layer request high-quality, non-stretched variants.
+
 
 ---
 
@@ -224,7 +202,7 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 - **Fonts:** Cormorant Garamond (serif) + Jost (sans)
-- **Images:** next/image with Unsplash placeholders
+- **Images:** media abstraction (Sanity / Cloudinary / Vercel Blob / Supabase / S3 / local sample) with luxury-quality next/image
 - **Animations:** CSS transitions (Framer Motion ready to add)
 - **SEO:** Next.js Metadata API + JSON-LD
 
