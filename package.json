@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "photos:ingest": "tsx scripts/ingest-photos.ts",
+    "catalogue:check": "tsx scripts/catalogue-check.ts"
   },
   "dependencies": {
     "@next/font": "^14.0.0",
@@ -21,6 +23,7 @@
     "next-sitemap": "^4.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "sanity": "^3.68.3",
     "sharp": "^0.35.3"
   },
   "devDependencies": {
@@ -32,6 +35,7 @@
     "eslint-config-next": "14.2.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.0",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

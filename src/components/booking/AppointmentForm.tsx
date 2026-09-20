@@ -4,17 +4,17 @@ import { useState } from 'react';
 import { siteConfig } from '@/lib/config';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
+type FormType = 'appointment' | 'contact';
 
 const inputClass =
   'w-full bg-transparent border-b border-ivory/20 focus:border-champagne py-3 text-sm font-light text-ivory placeholder:text-ivory/30 outline-none transition-colors';
 
-const labelClass =
-  'block text-xs tracking-widest uppercase font-light text-ivory/50 mb-2';
+const labelClass = 'block text-xs tracking-widest uppercase font-light text-ivory/50 mb-2';
 
 export default function AppointmentForm({
   type = 'appointment',
 }: {
-  type?: 'appointment' | 'contact';
+  type?: FormType;
 }) {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
@@ -48,8 +48,9 @@ export default function AppointmentForm({
       <div className="py-16 text-center" role="status">
         <span className="font-serif text-4xl text-champagne block mb-4">Thank you</span>
         <p className="font-sans font-light text-ivory/60 max-w-sm mx-auto leading-relaxed">
-          Your request has been received. One of our stylists will be in touch within 24 hours
-          to confirm your appointment.
+          {type === 'appointment'
+            ? 'Your booking request has been received. We will be in touch to confirm.'
+            : 'Your message has been received. We will reply by email.'}
         </p>
       </div>
     );
@@ -57,95 +58,66 @@ export default function AppointmentForm({
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="company"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="hidden"
-      />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor={`${type}-name`} className={labelClass}>
-            Full Name *
-          </label>
-          <input
-            type="text"
-            id={`${type}-name`}
-            name="name"
-            required
-            className={inputClass}
-            placeholder="Your name"
-          />
-        </div>
-        <div>
-          <label htmlFor={`${type}-email`} className={labelClass}>
-            Email Address *
-          </label>
-          <input
-            type="email"
-            id={`${type}-email`}
-            name="email"
-            required
-            className={inputClass}
-            placeholder="you@example.com"
-          />
-        </div>
+      <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
+      <div>
+        <label htmlFor={`${type}-name`} className={labelClass}>
+          Name *
+        </label>
+        <input type="text" id={`${type}-name`} name="name" required className={inputClass} placeholder="Your name" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor={`${type}-phone`} className={labelClass}>
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            id={`${type}-phone`}
-            name="phone"
-            className={inputClass}
-            placeholder="+353 ..."
-          />
-        </div>
-        <div>
-          <label htmlFor={`${type}-weddingDate`} className={labelClass}>
-            Wedding Date
-          </label>
-          <input
-            type="date"
-            id={`${type}-weddingDate`}
-            name="weddingDate"
-            className={inputClass}
-          />
-        </div>
+      <div>
+        <label htmlFor={`${type}-email`} className={labelClass}>
+          Email *
+        </label>
+        <input
+          type="email"
+          id={`${type}-email`}
+          name="email"
+          required
+          className={inputClass}
+          placeholder="you@example.com"
+        />
       </div>
       {type === 'appointment' && (
-        <div>
-          <label htmlFor="appointment-partySize" className={labelClass}>
-            Guests Joining You
-          </label>
-          <select
-            id="appointment-partySize"
-            name="partySize"
-            className={`${inputClass} appearance-none cursor-pointer [&>option]:bg-charcoal-dark`}
-            defaultValue=""
-          >
-            <option value="">Just me</option>
-            <option value="1">1 guest</option>
-            <option value="2">2 guests</option>
-            <option value="3">3 guests</option>
-          </select>
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="appointment-preferredDate" className={labelClass}>
+                Preferred date
+              </label>
+              <input type="date" id="appointment-preferredDate" name="preferredDate" className={inputClass} />
+            </div>
+            <div>
+              <label htmlFor="appointment-partySize" className={labelClass}>
+                Party size
+              </label>
+              <select
+                id="appointment-partySize"
+                name="partySize"
+                className={`${inputClass} appearance-none cursor-pointer [&>option]:bg-charcoal-dark`}
+                defaultValue=""
+              >
+                <option value="">Just me</option>
+                <option value="1">1 guest</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4+">4 or more</option>
+              </select>
+            </div>
+          </div>
+        </>
       )}
       <div>
         <label htmlFor={`${type}-message`} className={labelClass}>
-          Tell Us About You
+          Message{type === 'contact' ? ' *' : ''}
         </label>
         <textarea
           id={`${type}-message`}
           name="message"
           rows={4}
+          required={type === 'contact'}
           className={`${inputClass} resize-none`}
-          placeholder="Your vision, style inspiration, any questions..."
+          placeholder={type === 'contact' ? 'How can we help?' : 'Anything we should know before your visit'}
         />
       </div>
       <button type="submit" className="btn-filled w-full disabled:opacity-50" disabled={status === 'sending'}>
@@ -153,16 +125,13 @@ export default function AppointmentForm({
       </button>
       {status === 'error' && (
         <p className="text-xs text-center font-light text-red-300" role="alert">
-          {error} You can also email us directly at{' '}
+          {error} You can also email us at{' '}
           <a href={`mailto:${siteConfig.email}`} className="text-champagne underline">
             {siteConfig.email}
           </a>
           .
         </p>
       )}
-      <p className="text-xs text-center font-light text-ivory/30">
-        We&apos;ll be in touch within 24 hours.
-      </p>
     </form>
   );
 }

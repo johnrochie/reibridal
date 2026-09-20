@@ -32,3 +32,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# source photography library and ingest output — never commit raw batches
+/photo-library
+/media/ingest
+/media/optimized

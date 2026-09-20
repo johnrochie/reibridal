@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: 'REI Bridal',
-  tagline: 'Where Every Love Story Begins',
+  tagline: 'Luxury Bridal Boutique, Killorglin, Co. Kerry',
   description:
-    'REI Bridal is a luxury bridal boutique offering an exquisite collection of wedding gowns, bridesmaid dresses, and bridal accessories. Book your private appointment today.',
+    'REI Bridal is a luxury bridal boutique in Killorglin, Co. Kerry. Book a private appointment to view the collection.',
   url: 'https://www.reibridal.ie',
   email: 'hello@reibridal.ie',
   phone: '+353 XX XXX XXXX',
@@ -23,8 +23,31 @@ export const siteConfig = {
     { day: 'Saturday', hours: '09:00 – 17:00' },
     { day: 'Sunday & Monday', hours: 'By Appointment' },
   ],
-  appointmentUrl: '/appointments', // Replace with Calendly or booking URL
+  appointmentUrl: '/booking',
+  /**
+   * Working title for the experience page. Change here — Header and Footer read this.
+   * Do not hardcode the label in components.
+   */
+  experienceNavLabel: 'Experience',
 };
+
+export const TBD_COPY = {
+  brandStory: 'Brand story to be confirmed.',
+  section: 'Content to be confirmed.',
+  pageIntro: 'This page is being prepared. Details will appear once they are confirmed.',
+};
+
+export function getMainNav() {
+  return [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: siteConfig.experienceNavLabel, href: '/experience' },
+    { label: 'Designers', href: '/designers' },
+    { label: 'FAQ', href: '/faq' },
+    { label: 'Contact Us', href: '/contact' },
+    { label: 'Booking Form', href: '/booking' },
+  ];
+}
 
 export const defaultMeta = {
   title: `${siteConfig.name} | ${siteConfig.tagline}`,

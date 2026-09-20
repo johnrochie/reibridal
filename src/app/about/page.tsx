@@ -1,225 +1,42 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import { getTeamMembers, getFeaturedTestimonials } from '@/sanity/queries';
-import { urlFor } from '@/sanity/image';
-import { siteConfig } from '@/lib/config';
+import { TBD_COPY } from '@/lib/config';
+import ComingSoonEnquiry from '@/components/ui/ComingSoonEnquiry';
 
 export const metadata: Metadata = {
-  title: 'About Us | REI Bridal',
-  description:
-    'Learn the story behind REI Bridal, Kerry Ireland\'s most intimate luxury bridal boutique. Our passion for extraordinary gowns and unforgettable experiences.',
+  title: 'About',
+  description: 'About REI Bridal, Killorglin, Co. Kerry. History and story to be confirmed.',
 };
 
-export default async function AboutPage() {
-  const [team, testimonials] = await Promise.all([
-    getTeamMembers(),
-    getFeaturedTestimonials(),
-  ]);
+const sections = [
+  { heading: 'History', body: TBD_COPY.section },
+  { heading: 'Experience', body: TBD_COPY.section },
+  { heading: 'Story', body: TBD_COPY.section },
+];
 
-  const values = [
-    {
-      title: 'Intimacy',
-      description:
-        'Every appointment is private. No other brides. No distractions. Just you and your most important people.',
-    },
-    {
-      title: 'Curation',
-      description:
-        'We travel the world to source designers whose work we truly believe in — quality over quantity, always.',
-    },
-    {
-      title: 'Expertise',
-      description:
-        'Our stylists have years of bridal experience. We listen before we suggest, and guide rather than persuade.',
-    },
-    {
-      title: 'Legacy',
-      description:
-        'We want to be part of your story forever. The gown is just the beginning of that conversation.',
-    },
-  ];
-
+export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative min-h-[70vh] flex items-end bg-charcoal overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1600&q=80"
-            alt="REI Bridal boutique interior"
-            fill
-            priority
-            className="object-cover opacity-40"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-deep via-charcoal/50 to-transparent" />
-        </div>
-        <div className="relative z-10 max-w-8xl mx-auto px-6 lg:px-12 pb-20">
-          <span className="section-label mb-4 block">Our Story</span>
-          <h1 className="font-serif text-6xl md:text-8xl text-ivory leading-none max-w-2xl">
-            Rooted in Love,<br />
-            <em className="text-champagne">Built for Brides</em>
-          </h1>
-        </div>
-      </section>
-
-      {/* Story */}
-      <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
-        <div className="max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <span className="section-label mb-6 block">The Beginning</span>
-            <h2 className="font-serif text-5xl text-ivory leading-tight mb-8">
-              A Boutique Born from a Belief
-            </h2>
-            <div className="space-y-5 font-sans font-light text-ivory/60 leading-relaxed">
-              <p>
-                REI Bridal was founded on a simple but powerful belief: that finding your wedding
-                dress should feel like one of the greatest joys of your engagement — not a source
-                of overwhelm, pressure, or compromise.
-              </p>
-              <p>
-                We created REI Bridal as an antidote to the mass-market bridal experience. Nestled
-                in the heart of Kerry, our boutique offers something increasingly rare: time, space,
-                and genuine expertise, all in service of helping you find a gown that feels
-                unmistakably, completely you.
-              </p>
-              <p>
-                Every gown we carry has been personally selected. Every designer we stock shares
-                our commitment to exceptional craft. And every appointment we offer is designed
-                to feel less like shopping and more like celebration.
-              </p>
-            </div>
-            <Link href={siteConfig.appointmentUrl} className="btn-dark mt-10 inline-block">
-              Begin Your Journey
-            </Link>
-          </div>
-          <div className="relative aspect-square lg:aspect-auto lg:h-[600px] overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=900&q=80"
-              alt="REI Bridal — intimate boutique experience"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-24 px-6 lg:px-12 bg-charcoal">
+      <section className="pt-40 pb-20 px-6 lg:px-12 bg-charcoal">
         <div className="max-w-8xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="section-label mb-3 block">What We Stand For</span>
-            <h2 className="font-serif text-5xl text-ivory">Our Values</h2>
-            <span className="deco-line" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((v, i) => (
-              <div
-                key={v.title}
-                className="border border-champagne/20 p-8 hover:border-champagne/40 transition-colors duration-400"
-              >
-                <span className="font-serif text-champagne text-6xl font-light leading-none block mb-6">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <h3 className="font-serif text-2xl text-ivory mb-4">{v.title}</h3>
-                <p className="font-sans font-light text-ivory/50 text-sm leading-relaxed">
-                  {v.description}
-                </p>
-              </div>
-            ))}
-          </div>
+          <span className="section-label mb-4 block">REI Bridal</span>
+          <h1 className="section-title text-ivory">About</h1>
+          <span className="block w-16 h-px bg-champagne mt-6 mb-8" />
+          <p className="font-sans font-light text-ivory/50 max-w-xl leading-relaxed">{TBD_COPY.pageIntro}</p>
         </div>
       </section>
 
-      {/* Team */}
-      {team.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
-          <div className="max-w-8xl mx-auto">
-            <div className="mb-16">
-              <span className="section-label mb-3 block">Behind REI Bridal</span>
-              <h2 className="section-title">Meet the Team</h2>
+      <section className="py-20 px-6 lg:px-12 bg-charcoal-deep">
+        <div className="max-w-4xl mx-auto space-y-16">
+          {sections.map((section) => (
+            <div key={section.heading}>
+              <h2 className="font-serif text-4xl text-ivory mb-4">{section.heading}</h2>
+              <p className="font-sans font-light text-ivory/50 leading-relaxed">{section.body}</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {team.map((member) => (
-                <div key={member._id} className="group">
-                  <div className="relative aspect-portrait overflow-hidden bg-charcoal-light mb-6">
-                    <Image
-                      src={urlFor(member.image).width(600).height(800).url()}
-                      alt={`${member.name} — ${member.role} at REI Bridal`}
-                      fill
-                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                  </div>
-                  <h3 className="font-serif text-3xl text-ivory mb-1">{member.name}</h3>
-                  <p className="section-label mb-4">{member.role}</p>
-                  <p className="font-sans font-light text-ivory/60 leading-relaxed">{member.bio}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Testimonials */}
-      {testimonials.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-charcoal-deep border-t border-ivory/10">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="section-label mb-3 block">Real Brides</span>
-              <h2 className="font-serif text-5xl text-ivory">Love Stories</h2>
-              <span className="deco-line" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {testimonials.map((t) => (
-                <blockquote
-                  key={t._id}
-                  className="border border-champagne/20 p-8 hover:border-champagne/40 transition-colors duration-400"
-                >
-                  <div className="text-champagne text-4xl font-serif leading-none mb-4">&ldquo;</div>
-                  <p className="font-sans font-light text-ivory/60 text-sm leading-relaxed mb-6 italic">
-                    {t.text}
-                  </p>
-                  <footer>
-                    <cite className="not-italic">
-                      <span className="block font-serif text-xl text-ivory">{t.name}</span>
-                      <span className="text-xs tracking-widest uppercase font-light text-champagne/50">
-                        {t.date}{t.location && ` · ${t.location}`}
-                      </span>
-                    </cite>
-                  </footer>
-                </blockquote>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Opening hours */}
-      <section className="py-24 px-6 lg:px-12 bg-charcoal-deep border-t border-ivory/10">
-        <div className="max-w-3xl mx-auto text-center">
-          <span className="section-label mb-4 block">Visit Us</span>
-          <h2 className="font-serif text-4xl text-ivory mb-2">{siteConfig.address.city}</h2>
-          <address className="not-italic font-sans font-light text-ivory/50 text-sm mb-10 space-y-1">
-            <p>{siteConfig.address.street}</p>
-            <p>{siteConfig.address.city}, {siteConfig.address.county}, Ireland</p>
-          </address>
-          <div className="border-t border-b border-ivory/10 py-10 space-y-4 mb-10">
-            {siteConfig.openingHours.map((h) => (
-              <div key={h.day} className="flex justify-center gap-6 text-sm font-light text-ivory/60">
-                <span className="w-44 text-right">{h.day}</span>
-                <span className="text-champagne w-px bg-champagne/30" />
-                <span className="w-44">{h.hours}</span>
-              </div>
-            ))}
-          </div>
-          <Link href={siteConfig.appointmentUrl} className="btn-dark">
-            Book Your Appointment
-          </Link>
+          ))}
         </div>
       </section>
+
+      <ComingSoonEnquiry />
     </>
   );
 }
