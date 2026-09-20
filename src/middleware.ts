@@ -7,7 +7,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host');
+  const host = [request.headers.get('host'), request.headers.get('x-forwarded-host')]
+    .filter(Boolean)
+    .join(',');
   if (!isComingSoonHold({ host })) {
     return NextResponse.next();
   }

@@ -8,8 +8,8 @@ const FLAG_OFF = new Set(['0', 'false', 'no', 'off']);
  *
  * - COMING_SOON=true (or 1/on/yes) forces the hold in every environment.
  * - COMING_SOON=false (or 0/off/no) forces the full site, including production.
- * - Unset: hold only on the production/final domain so preview and localhost
- *   keep the working site.
+ * - Unset: hold on the production/final domain and on Vercel Production
+ *   deployments. Preview and localhost keep the working site.
  */
 export function parseComingSoonFlag(value: string | undefined | null): boolean | null {
   if (value == null || value.trim() === '') return null;
@@ -35,19 +35,26 @@ export function productionHosts(siteUrl: string = siteConfig.url): string[] {
 }
 
 export function isProductionHost(host: string | null | undefined, siteUrl?: string): boolean {
-  const hostname = hostnameFromHostHeader(host);
-  return productionHosts(siteUrl).includes(hostname);
+  const hosts = (host ?? '')
+    .split(',')
+    .map((value) => hostnameFromHostHeader(value))
+    .filter(Boolean);
+  const allowed = productionHosts(siteUrl);
+  return hosts.some((hostname) => allowed.includes(hostname));
 }
 
 export function isComingSoonHold({
   flag = process.env.COMING_SOON,
   host,
+  vercelEnv = process.env.VERCEL_ENV,
 }: {
   flag?: string | null;
   host: string | null | undefined;
+  vercelEnv?: string | null;
 }): boolean {
   const parsed = parseComingSoonFlag(flag);
   if (parsed === false) return false;
   if (parsed === true) return true;
+  if (vercelEnv === 'production') return true;
   return isProductionHost(host);
 }
