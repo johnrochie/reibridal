@@ -1,4 +1,3 @@
-import { siteConfig } from '@/lib/config';
 import ComingSoonEnquiry from './ComingSoonEnquiry';
 
 export default function ComingSoonHold() {
@@ -16,7 +15,9 @@ export default function ComingSoonHold() {
           </span>
         </div>
         <h1 className="font-serif text-2xl md:text-4xl text-ivory text-center leading-snug max-w-xl mb-6">
-          {siteConfig.tagline}
+          Luxury Bridal Boutique,
+          <br />
+          <span className="text-champagne">Killorglin, Co. Kerry</span>
         </h1>
         <span className="block w-12 h-px bg-champagne mb-8" />
         <p className="text-xs tracking-widest uppercase font-light text-champagne mb-4">Coming soon</p>
