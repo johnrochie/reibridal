@@ -68,7 +68,7 @@ export async function POST(request: Request) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: process.env.ENQUIRY_FROM_EMAIL || 'enquiries@reibridal.ie',
+          from: process.env.ENQUIRY_FROM_EMAIL || siteConfig.email,
           to: [process.env.ENQUIRY_TO_EMAIL || siteConfig.email],
           reply_to: email,
           subject,
