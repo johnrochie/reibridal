@@ -22,11 +22,20 @@ export default async function HomePage() {
   ]);
   const featuredDesigners = designers.filter((designer) => designer.featured);
   const heroGallery = galleryImages.slice(0, 4);
+  const slides =
+    heroSlides.length > 0
+      ? heroSlides
+      : [
+          {
+            media: siteAssets.experienceDetail,
+            alt: siteAssets.experienceDetail.alt || 'Bridal gown detail',
+          },
+        ];
 
   return (
     <>
       <section className="relative min-h-screen flex items-end overflow-hidden bg-charcoal-deep">
-        <HeroCarousel slides={heroSlides} />
+        <HeroCarousel slides={slides} />
 
         <div className="relative z-10 w-full max-w-8xl mx-auto px-6 lg:px-12 pb-20 md:pb-32">
           <div className="max-w-3xl">

@@ -1,10 +1,9 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import type { MediaRef } from '@/lib/media/types';
 import { pickHeroImage } from './images';
 import { getPublicGowns } from './repository';
 import { siteAssets } from '@/lib/media';
 import type { PublicGown } from './types';
+import heroManifest from './hero-manifest.json';
 
 export interface HeroSlide {
   media: MediaRef;
@@ -12,7 +11,6 @@ export interface HeroSlide {
 }
 
 const HERO_FOLDER = 'hero';
-const HERO_DIR = path.join(process.cwd(), 'public', 'images', HERO_FOLDER);
 const HERO_IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
 
 function titleFromHeroFilename(filename: string): string {
@@ -21,31 +19,38 @@ function titleFromHeroFilename(filename: string): string {
   return cleaned ? `${cleaned} — REI Bridal` : 'REI Bridal';
 }
 
-/**
- * Owner-curated hero photos. Any image files dropped into
- * public/images/hero are used for the homepage carousel, in filename
- * order — prefix filenames (01-, 02-, ...) to control the sequence.
- * Empty or missing folder falls back to the catalogue-derived rotation.
- */
-async function getUploadedHeroSlides(): Promise<HeroSlide[]> {
-  let entries: string[];
-  try {
-    entries = await fs.readdir(HERO_DIR);
-  } catch {
-    return [];
-  }
+function extensionOf(filename: string): string {
+  const index = filename.lastIndexOf('.');
+  return index >= 0 ? filename.slice(index).toLowerCase() : '';
+}
 
-  return entries
-    .filter((name) => HERO_IMAGE_EXTENSIONS.has(path.extname(name).toLowerCase()))
-    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
-    .map((filename) => ({
-      media: {
-        provider: 'local' as const,
-        key: `${HERO_FOLDER}/${filename}`,
-        alt: titleFromHeroFilename(filename),
-      },
+function isSafeHeroFilename(name: string): boolean {
+  if (!name || name !== name.trim()) return false;
+  if (name.includes('/') || name.includes('\\') || name.includes('..')) return false;
+  return HERO_IMAGE_EXTENSIONS.has(extensionOf(name));
+}
+
+function listedHeroFiles(): string[] {
+  const listed = (heroManifest as { files?: unknown }).files;
+  if (!Array.isArray(listed)) return [];
+  return listed.filter((name): name is string => typeof name === 'string' && isSafeHeroFilename(name));
+}
+
+/**
+ * Owner-curated hero photos. Drop web-ready files into public/images/hero
+ * and list those filenames in hero-manifest.json (array order is playback
+ * order). Empty or missing list falls back to the catalogue-derived rotation.
+ * The homepage never scans the filesystem — the list is bundled at build time.
+ */
+function getUploadedHeroSlides(): HeroSlide[] {
+  return listedHeroFiles().map((filename) => ({
+    media: {
+      provider: 'local' as const,
+      key: `${HERO_FOLDER}/${filename}`,
       alt: titleFromHeroFilename(filename),
-    }));
+    },
+    alt: titleFromHeroFilename(filename),
+  }));
 }
 
 /**
@@ -71,16 +76,7 @@ function interleaveByDesigner(gowns: PublicGown[]): PublicGown[] {
   return interleaved;
 }
 
-/** Dress photography for the homepage carousel — catalogue records, not scattered paths. */
-export async function getHeroDressSlides(): Promise<HeroSlide[]> {
-  const uploaded = await getUploadedHeroSlides();
-  if (uploaded.length > 0) return uploaded;
-
-  const gowns = await getPublicGowns();
-
-  // Featured gowns lead the carousel; everything else follows. Within each
-  // group, slides rotate designer-to-designer instead of running through
-  // one designer's whole collection before moving to the next.
+function catalogueHeroSlides(gowns: PublicGown[]): HeroSlide[] {
   const featured = interleaveByDesigner(gowns.filter((gown) => gown.featured));
   const rest = interleaveByDesigner(gowns.filter((gown) => !gown.featured));
   const ordered = [...featured, ...rest];
@@ -94,13 +90,24 @@ export async function getHeroDressSlides(): Promise<HeroSlide[]> {
       alt: hero.media.alt || `${gown.name} — REI Bridal`,
     });
   }
+  return fromCatalogue;
+}
 
+const SITE_ASSET_FALLBACK: HeroSlide[] = [
+  {
+    media: siteAssets.experienceDetail,
+    alt: siteAssets.experienceDetail.alt || 'Bridal gown detail',
+  },
+];
+
+/** Dress photography for the homepage carousel — catalogue records, not scattered paths. */
+export async function getHeroDressSlides(): Promise<HeroSlide[]> {
+  const uploaded = getUploadedHeroSlides();
+  if (uploaded.length > 0) return uploaded;
+
+  const gowns = await getPublicGowns();
+  const fromCatalogue = catalogueHeroSlides(gowns);
   if (fromCatalogue.length > 0) return fromCatalogue;
 
-  return [
-    {
-      media: siteAssets.experienceDetail,
-      alt: siteAssets.experienceDetail.alt || 'Bridal gown detail',
-    },
-  ];
+  return SITE_ASSET_FALLBACK;
 }
