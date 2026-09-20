@@ -10,8 +10,8 @@ import {
 } from '@/lib/catalogue';
 import { resolveMediaUrl } from '@/lib/media';
 import { siteConfig } from '@/lib/config';
-import CatalogueImage from '@/components/media/CatalogueImage';
 import GownCard from '@/components/gowns/GownCard';
+import GownGallery from '@/components/gowns/GownGallery';
 
 interface Props {
   params: { id: string };
@@ -67,7 +67,6 @@ export default async function GownDetailPage({ params }: Props) {
 
   const frames = galleryImages(gown);
   const hero = frames[0] ?? null;
-  const extra = frames.slice(1);
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -126,46 +125,12 @@ export default async function GownDetailPage({ params }: Props) {
 
       <section className="px-6 lg:px-12 pb-24 max-w-8xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
-          <div className="space-y-4">
-            <div className="relative aspect-bridal overflow-hidden bg-charcoal-light">
-              <CatalogueImage
-                media={hero?.media}
-                alt={`${gown.name} by ${gown.designer.name} — REI Bridal`}
-                fill
-                width={1200}
-                intent="editorial"
-                priority
-                objectFit="cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              {gown.isNew && (
-                <span className="absolute top-6 left-6 bg-champagne text-charcoal-dark text-[10px] tracking-widest uppercase px-3 py-1.5">
-                  New Arrival
-                </span>
-              )}
-            </div>
-            {extra.length > 0 && (
-              <div className="grid grid-cols-2 gap-4">
-                {extra.map((image) => (
-                  <div key={image.id} className="relative aspect-[3/4] overflow-hidden bg-charcoal-light">
-                    <CatalogueImage
-                      media={image.media}
-                      alt={
-                        image.type
-                          ? `${gown.name} ${image.type} — REI Bridal`
-                          : `${gown.name} by ${gown.designer.name} — REI Bridal`
-                      }
-                      fill
-                      width={800}
-                      intent={image.type === 'editorial' || image.type === 'lifestyle' ? 'editorial' : 'product'}
-                      objectFit="cover"
-                      sizes="(max-width: 1024px) 50vw, 25vw"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <GownGallery
+            frames={frames}
+            gownName={gown.name}
+            designerName={gown.designer.name}
+            isNew={gown.isNew}
+          />
 
           <div className="flex flex-col justify-center py-8 lg:py-0">
             <Link
