@@ -8,10 +8,9 @@ interface GownGalleryProps {
   frames: GownImage[];
   gownName: string;
   designerName: string;
-  isNew?: boolean;
 }
 
-export default function GownGallery({ frames, gownName, designerName, isNew }: GownGalleryProps) {
+export default function GownGallery({ frames, gownName, designerName }: GownGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = frames[activeIndex] ?? null;
   const hasMultiple = frames.length > 1;
@@ -45,11 +44,6 @@ export default function GownGallery({ frames, gownName, designerName, isNew }: G
           objectFit="cover"
           sizes="(max-width: 1024px) 100vw, 50vw"
         />
-        {isNew && (
-          <span className="absolute top-6 left-6 bg-champagne text-charcoal-dark text-[10px] tracking-widest uppercase px-3 py-1.5">
-            New Arrival
-          </span>
-        )}
         {hasMultiple && (
           <>
             <button

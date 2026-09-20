@@ -122,7 +122,7 @@ export default async function DesignerDetailPage({ params }: Props) {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
               {designerGowns.map((gown) => (
-                <GownCard key={gown.id} gown={gown} variant="name-only" />
+                <GownCard key={gown.id} gown={gown} />
               ))}
             </div>
           )}

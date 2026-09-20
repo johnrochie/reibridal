@@ -38,12 +38,7 @@ export default function GownGrid({ gowns }: { gowns: PublicGown[] }) {
     if (query.trim()) {
       const q = query.trim().toLowerCase();
       result = result.filter(
-        (g) =>
-          g.name.toLowerCase().includes(q) ||
-          g.designer?.name.toLowerCase().includes(q) ||
-          (g.description || '').toLowerCase().includes(q) ||
-          (g.fabric || '').toLowerCase().includes(q) ||
-          (g.silhouette || '').toLowerCase().includes(q)
+        (g) => g.name.toLowerCase().includes(q) || g.designer?.name.toLowerCase().includes(q)
       );
     }
     const sorted = [...result];

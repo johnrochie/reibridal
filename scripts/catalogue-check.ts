@@ -52,6 +52,14 @@ async function main() {
   assert.equal(incomplete.price, null);
   assert.equal(incomplete.description, null);
 
+  const { isComingSoonHold } = await import('../src/lib/coming-soon');
+  assert.equal(isComingSoonHold({ flag: 'true', host: 'localhost:3000' }), true);
+  assert.equal(isComingSoonHold({ flag: 'false', host: 'www.reibridal.ie' }), false);
+  assert.equal(isComingSoonHold({ flag: undefined, host: 'localhost:3000' }), false);
+  assert.equal(isComingSoonHold({ flag: undefined, host: 'rei-bridal.vercel.app' }), false);
+  assert.equal(isComingSoonHold({ flag: undefined, host: 'www.reibridal.ie' }), true);
+  assert.equal(isComingSoonHold({ flag: undefined, host: 'reibridal.ie' }), true);
+
   const gowns = catalogueFromRecords(localGowns);
   const high = matchImageToCatalogue('Truvelle/Cindy/front.jpg', [
     { id: 'g1', slug: 'truvelle-cindy', name: 'Cindy', designerName: 'Truvelle', designerSlug: 'truvelle' },

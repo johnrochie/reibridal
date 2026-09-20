@@ -27,13 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!gown) return {};
 
   const hero = pickHeroImage(gown.images);
-  const description = gown.description
-    ? gown.description
-    : `${gown.name} by ${gown.designer.name} at REI Bridal, Kerry, Ireland.`;
 
   return {
-    title: `${gown.name} by ${gown.designer.name}`,
-    description,
+    title: gown.name,
+    description: `${gown.name} at REI Bridal, Killorglin, Co. Kerry.`,
     openGraph: hero
       ? {
           images: [
@@ -45,20 +42,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         }
       : undefined,
   };
-}
-
-function Fact({ label, value }: { label: string; value: string | string[] | null }) {
-  if (!value || (Array.isArray(value) && value.length === 0)) return null;
-  const text = Array.isArray(value) ? value.join(' · ') : value;
-  return (
-    <li className="flex items-start gap-3 text-sm font-light text-ivory/60">
-      <span className="w-3 h-px bg-champagne flex-shrink-0 mt-2" />
-      <span>
-        <span className="block text-[10px] tracking-widest uppercase text-champagne mb-1">{label}</span>
-        {text}
-      </span>
-    </li>
-  );
 }
 
 export default async function GownDetailPage({ params }: Props) {
@@ -89,8 +72,7 @@ export default async function GownDetailPage({ params }: Props) {
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `${gown.name} by ${gown.designer.name}`,
-    ...(gown.description ? { description: gown.description } : {}),
+    name: gown.name,
     ...(hero ? { image: resolveMediaUrl(hero.media, { width: 1200, intent: 'editorial' }) } : {}),
     brand: { '@type': 'Brand', name: gown.designer.name },
     offers: {
@@ -125,12 +107,7 @@ export default async function GownDetailPage({ params }: Props) {
 
       <section className="px-6 lg:px-12 pb-24 max-w-8xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
-          <GownGallery
-            frames={frames}
-            gownName={gown.name}
-            designerName={gown.designer.name}
-            isNew={gown.isNew}
-          />
+          <GownGallery frames={frames} gownName={gown.name} designerName={gown.designer.name} />
 
           <div className="flex flex-col justify-center py-8 lg:py-0">
             <Link
@@ -142,30 +119,12 @@ export default async function GownDetailPage({ params }: Props) {
             <h1 className="font-serif text-6xl md:text-7xl text-ivory leading-none mb-4">{gown.name}</h1>
             <span className="block w-12 h-px bg-champagne mb-8" />
 
-            {gown.price && (
-              <p className="text-sm font-light text-ivory/50 mb-8 tracking-widest uppercase">{gown.price}</p>
-            )}
-
-            {gown.description && (
-              <p className="font-sans font-light text-ivory/70 leading-relaxed mb-10 text-base">{gown.description}</p>
-            )}
-
-            {(gown.sizes || gown.silhouette || gown.fabric || gown.style || gown.availability) && (
-              <ul className="space-y-4 mb-10">
-                <Fact label="Sizes" value={gown.sizes} />
-                <Fact label="Silhouette" value={gown.silhouette} />
-                <Fact label="Fabric" value={gown.fabric} />
-                <Fact label="Style" value={gown.style} />
-                <Fact label="Availability" value={gown.availability} />
-              </ul>
-            )}
-
             <div className="space-y-4">
               <Link href={siteConfig.appointmentUrl} className="btn-filled w-full text-center block">
                 Book to Try This Gown
               </Link>
               <p className="text-xs text-center font-light text-ivory/40 leading-relaxed">
-                Details are published only once confirmed. Book a private appointment to view the gown in person.
+                Book a private appointment to view the gown in person.
               </p>
             </div>
           </div>
