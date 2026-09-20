@@ -12,6 +12,8 @@ export type {
 export { CONTENT_STATUSES, GOWN_CATEGORIES } from './types';
 export { identityLabel, isPublicFact, missing, publicValue, toPublicGown, verified } from './status';
 export { galleryImages, pickHeroImage } from './images';
+export { getHeroDressSlides } from './hero';
+export type { HeroSlide } from './hero';
 export {
   getFeaturedPublicGowns,
   getPublicDesignerBySlug,

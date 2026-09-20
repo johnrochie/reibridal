@@ -7,9 +7,10 @@ interface EnquiryPayload {
   email: string;
   phone?: string;
   weddingDate?: string;
+  preferredDate?: string;
   partySize?: string;
   message?: string;
-  company?: string; // honeypot
+  company?: string;
 }
 
 function isValidEmail(email: string) {
@@ -47,6 +48,7 @@ export async function POST(request: Request) {
     `Name: ${name}`,
     `Email: ${email}`,
     body.phone ? `Phone: ${body.phone.slice(0, 50)}` : null,
+    body.preferredDate ? `Preferred date: ${body.preferredDate.slice(0, 50)}` : null,
     body.weddingDate ? `Wedding date: ${body.weddingDate.slice(0, 50)}` : null,
     body.partySize ? `Party size: ${body.partySize.slice(0, 20)}` : null,
     '',

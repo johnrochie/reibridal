@@ -17,6 +17,9 @@ const nextConfig = {
       ...extraHosts.map((hostname) => ({ protocol: 'https', hostname })),
     ],
   },
+  async redirects() {
+    return [{ source: '/appointments', destination: '/booking', permanent: false }];
+  },
   async headers() {
     return [
       {

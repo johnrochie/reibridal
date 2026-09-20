@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { siteConfig } from '@/lib/config';
+import { getMainNav, siteConfig } from '@/lib/config';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -72,16 +72,7 @@ export default function Footer() {
               Explore
             </h3>
             <ul className="space-y-3">
-              {[
-                { label: 'Our Gowns', href: '/gowns' },
-                { label: 'Designers', href: '/designers' },
-                { label: 'Real Brides', href: '/real-brides' },
-                { label: 'Our Services', href: '/services' },
-                { label: 'Gallery', href: '/gallery' },
-                { label: 'The Journal', href: '/blog' },
-                { label: 'About Us', href: '/about' },
-                { label: 'Book an Appointment', href: siteConfig.appointmentUrl },
-              ].map((link) => (
+              {getMainNav().map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

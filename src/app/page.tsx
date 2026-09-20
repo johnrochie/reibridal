@@ -1,90 +1,44 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getHeroDressSlides, getPublicDesigners } from '@/lib/catalogue';
 import { getFeaturedTestimonials, getAllGalleryImages } from '@/sanity/queries';
-import { getFeaturedPublicGowns, getPublicDesigners } from '@/lib/catalogue';
 import { siteAssets } from '@/lib/media';
 import { siteConfig } from '@/lib/config';
 import CatalogueImage from '@/components/media/CatalogueImage';
-import GownCard from '@/components/gowns/GownCard';
+import HeroCarousel from '@/components/hero/HeroCarousel';
 
 export const metadata: Metadata = {
   title: 'REI Bridal | Luxury Bridal Boutique Kerry, Ireland',
   description:
-    'REI Bridal — a luxury bridal boutique in Kerry, Ireland. Discover our curated collection of designer wedding gowns. Book your private appointment today.',
+    'REI Bridal — a luxury bridal boutique in Killorglin, Co. Kerry. View designers and book a private appointment.',
 };
 
 export default async function HomePage() {
-  const [featuredGowns, designers, testimonials, galleryImages] = await Promise.all([
-    getFeaturedPublicGowns(),
+  const [heroSlides, designers, testimonials, galleryImages] = await Promise.all([
+    getHeroDressSlides(),
     getPublicDesigners(),
     getFeaturedTestimonials(),
     getAllGalleryImages(),
   ]);
   const featuredDesigners = designers.filter((designer) => designer.featured);
-
   const heroGallery = galleryImages.slice(0, 4);
 
   return (
     <>
-      {/* ══════════════════════════════════════════
-          HERO
-      ══════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-end overflow-hidden bg-charcoal-deep">
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <CatalogueImage
-            media={siteAssets.hero}
-            alt={siteAssets.hero.alt || 'REI Bridal hero'}
-            fill
-            priority
-            width={1920}
-            intent="editorial"
-            className="opacity-50"
-            sizes="100vw"
-          />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-deep via-charcoal/40 to-transparent" />
-        </div>
+        <HeroCarousel slides={heroSlides} />
 
-        {/* Hero content */}
         <div className="relative z-10 w-full max-w-8xl mx-auto px-6 lg:px-12 pb-20 md:pb-32">
           <div className="max-w-3xl">
-            <span className="section-label mb-8 block animate-fade-in">
-              Kerry, Ireland
-            </span>
-            <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl text-ivory leading-none mb-8"
-              style={{ animationDelay: '200ms' }}>
-              Where Every<br />
-              <em className="not-italic text-champagne">Love Story</em><br />
-              Begins
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-ivory leading-tight">
+              Luxury Bridal Boutique,
+              <br />
+              <span className="text-champagne">Killorglin, Co. Kerry</span>
             </h1>
-            <p className="font-sans font-light text-ivory/60 text-lg max-w-md mb-10 leading-relaxed">
-              An intimate bridal boutique carrying the world&apos;s most extraordinary wedding gowns.
-              By appointment.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href={siteConfig.appointmentUrl} className="btn-primary">
-                Book an Appointment
-              </Link>
-              <Link href="/gowns" className="btn-primary border-ivory/30 text-ivory/70 hover:bg-ivory/10 hover:text-ivory">
-                Explore Gowns
-              </Link>
-            </div>
           </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 right-8 md:right-12 hidden md:flex flex-col items-center gap-3">
-          <span className="text-[10px] tracking-[0.4em] uppercase font-light text-champagne/50 rotate-90 origin-center">
-            Scroll
-          </span>
-          <div className="w-px h-16 bg-gradient-to-b from-champagne/50 to-transparent" />
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          INTRO STRIP
-      ══════════════════════════════════════════ */}
       <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
         <div className="max-w-4xl mx-auto text-center">
           <span className="deco-line" />
@@ -97,42 +51,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          FEATURED GOWNS
-      ══════════════════════════════════════════ */}
-      {featuredGowns.length > 0 && (
-        <section className="py-24 px-6 lg:px-12 bg-charcoal-deep">
-          <div className="max-w-8xl mx-auto">
-            <div className="flex items-end justify-between mb-16">
-              <div>
-                <span className="section-label mb-3 block">Current Collection</span>
-                <h2 className="section-title">Featured Gowns</h2>
-              </div>
-              <Link href="/gowns" className="hidden md:block nav-link text-ivory/60 hover:text-champagne">
-                View All →
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-              {featuredGowns.map((gown) => (
-                <GownCard key={gown.id} gown={gown} sizes="(max-width: 768px) 100vw, 33vw" />
-              ))}
-            </div>
-
-            <div className="text-center mt-12 md:hidden">
-              <Link href="/gowns" className="btn-dark">
-                View All Gowns
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ══════════════════════════════════════════
-          EXPERIENCE SPLIT SECTION
-      ══════════════════════════════════════════ */}
       <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
-        {/* Image */}
         <div className="relative min-h-[50vh] lg:min-h-full">
           <CatalogueImage
             media={siteAssets.experienceDetail}
@@ -143,46 +62,24 @@ export default async function HomePage() {
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
         </div>
-        {/* Content */}
         <div className="bg-charcoal flex items-center px-8 py-20 lg:px-16 xl:px-24">
           <div className="max-w-lg">
-            <span className="section-label mb-6 block">The Experience</span>
+            <span className="section-label mb-6 block">{siteConfig.experienceNavLabel}</span>
             <h2 className="font-serif text-5xl md:text-6xl text-ivory leading-tight mb-8">
               Your Appointment,<br />
               <em className="text-champagne">Your Moment</em>
             </h2>
-            <p className="font-sans font-light text-ivory/60 leading-relaxed mb-6">
-              Every bride deserves to feel celebrated. Our private appointments give you the full
-              boutique to yourself — no crowds, no rush, no distractions. Just you, your loved ones,
-              and a carefully curated edit of the world&apos;s most extraordinary gowns.
-            </p>
             <p className="font-sans font-light text-ivory/60 leading-relaxed mb-10">
-              Our experienced stylists will listen, guide, and help you find the gown that makes
-              you feel completely, undeniably yourself.
+              Private appointments in our Killorglin boutique. Details of the visit will appear here
+              once they are confirmed.
             </p>
-            <ul className="space-y-4 mb-10">
-              {[
-                'Private 2-hour exclusive appointments',
-                'Complimentary champagne on arrival',
-                'Personalised styling guidance',
-                'Alterations & fittings in-house',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm font-light text-ivory/50">
-                  <span className="w-4 h-px bg-champagne mt-2.5 flex-shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <Link href={siteConfig.appointmentUrl} className="btn-primary">
-              Book Your Experience
+            <Link href="/experience" className="btn-primary">
+              {siteConfig.experienceNavLabel}
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          DESIGNERS STRIP
-      ══════════════════════════════════════════ */}
       {featuredDesigners.length > 0 && (
         <section className="py-24 px-6 lg:px-12 bg-charcoal-dark">
           <div className="max-w-8xl mx-auto">
@@ -231,9 +128,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ══════════════════════════════════════════
-          TESTIMONIALS
-      ══════════════════════════════════════════ */}
       {testimonials.length > 0 && (
         <section className="py-24 px-6 lg:px-12 bg-charcoal">
           <div className="max-w-6xl mx-auto">
@@ -256,7 +150,8 @@ export default async function HomePage() {
                     <cite className="not-italic">
                       <span className="block font-serif text-xl text-ivory">{t.name}</span>
                       <span className="text-xs tracking-widest uppercase font-light text-champagne/50">
-                        {t.date}{t.location && ` · ${t.location}`}
+                        {t.date}
+                        {t.location && ` · ${t.location}`}
                       </span>
                     </cite>
                   </footer>
@@ -267,9 +162,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ══════════════════════════════════════════
-          GALLERY PREVIEW
-      ══════════════════════════════════════════ */}
       {(() => {
         const gallery =
           heroGallery.length > 0
@@ -333,9 +225,6 @@ export default async function HomePage() {
         );
       })()}
 
-      {/* ══════════════════════════════════════════
-          INSTAGRAM STRIP
-      ══════════════════════════════════════════ */}
       <section className="py-16 px-6 lg:px-12 bg-charcoal-dark border-t border-ivory/10">
         <div className="max-w-8xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
