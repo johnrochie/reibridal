@@ -67,7 +67,7 @@ export async function getPublicGownsByDesigner(designerSlug: string): Promise<Pu
 
 export async function getPublicDesigners(): Promise<PublicDesigner[]> {
   const designers = await loadDesignerRecords();
-  return designers.map(toPublicDesigner).sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+  return designers.map(toPublicDesigner).sort((a, b) => a.name.localeCompare(b.name, 'en'));
 }
 
 export async function getPublicDesignerBySlug(slug: string): Promise<PublicDesigner | null> {

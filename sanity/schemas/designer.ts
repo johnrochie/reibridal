@@ -67,7 +67,7 @@ export default defineType({
     defineField({
       name: 'order',
       title: 'Display Order',
-      description: 'Lower numbers appear first.',
+      description: 'Studio list order. The public Designers listing is alphabetical by name.',
       type: 'number',
       initialValue: 99,
     }),

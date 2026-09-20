@@ -61,7 +61,18 @@ async function main() {
     assert.equal(toPublicDesigner(designer).description, story);
     assert.equal(toPublicDesigner(designer).shortBio, null);
   }
-  assert.equal(toPublicDesigner(localDesigners[0]).name, 'Jane Aston');
+  assert.deepEqual(
+    localDesigners.map((designer) => toPublicDesigner(designer).name),
+    ['Anna Kara', 'Caroline Takvorian', 'Jane Aston', 'Truvelle']
+  );
+  assert.deepEqual(
+    [...localDesigners]
+      .reverse()
+      .map(toPublicDesigner)
+      .sort((a, b) => a.name.localeCompare(b.name, 'en'))
+      .map((designer) => designer.name),
+    ['Anna Kara', 'Caroline Takvorian', 'Jane Aston', 'Truvelle']
+  );
 
   const { isComingSoonHold } = await import('../src/lib/coming-soon');
   assert.equal(isComingSoonHold({ flag: 'true', host: 'localhost:3000' }), true);

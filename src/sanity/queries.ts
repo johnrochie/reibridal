@@ -73,7 +73,7 @@ export async function fetchCatalogueGownBySlug(slug: string): Promise<SanityCata
 export async function fetchCatalogueDesigners(): Promise<SanityCatalogueDesigner[]> {
   return (
     (await fetchQuery<SanityCatalogueDesigner[]>(
-      `*[_type == "designer"] | order(order asc, name asc) {
+      `*[_type == "designer"] | order(name asc) {
         _id,
         name,
         "slug": slug.current,
@@ -145,7 +145,7 @@ const DESIGNER_FIELDS = `
 export async function getAllDesigners(): Promise<SanityDesigner[]> {
   return (
     (await fetchQuery<SanityDesigner[]>(
-      `*[_type == "designer"] | order(order asc, name asc) { ${DESIGNER_FIELDS} }`,
+      `*[_type == "designer"] | order(name asc) { ${DESIGNER_FIELDS} }`,
       {},
       ['designer']
     )) ?? []
@@ -155,7 +155,7 @@ export async function getAllDesigners(): Promise<SanityDesigner[]> {
 export async function getFeaturedDesigners(): Promise<SanityDesigner[]> {
   return (
     (await fetchQuery<SanityDesigner[]>(
-      `*[_type == "designer" && featured == true] | order(order asc) { ${DESIGNER_FIELDS} }`,
+      `*[_type == "designer" && featured == true] | order(name asc) { ${DESIGNER_FIELDS} }`,
       {},
       ['designer']
     )) ?? []
