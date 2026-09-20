@@ -8,6 +8,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navItems = getMainNav();
+  const menuItems = navItems.filter((item) => item.label !== 'Booking Form');
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -39,24 +40,16 @@ export default function Header() {
             </span>
           </Link>
 
-          <nav
-            className="hidden lg:flex items-center gap-4 xl:gap-6 ml-auto"
-            aria-label="Main navigation"
+          <Link
+            href={siteConfig.appointmentUrl}
+            className="hidden lg:inline-block ml-8 xl:ml-10 text-[10px] xl:text-xs tracking-widest uppercase font-light text-champagne border border-champagne/50 px-4 py-2 hover:bg-champagne hover:text-charcoal-dark transition-colors whitespace-nowrap"
           >
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="nav-link text-[10px] xl:text-xs text-ivory/70 hover:text-champagne whitespace-nowrap"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+            Book Appointment
+          </Link>
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden ml-auto flex flex-col gap-1.5 p-2 group"
+            className="ml-auto flex flex-col gap-1.5 p-2 group"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
           >
@@ -80,7 +73,7 @@ export default function Header() {
         />
 
         <nav className="relative flex flex-col items-center gap-8" aria-label="Mobile navigation">
-          {navItems.map((item, i) => (
+          {menuItems.map((item, i) => (
             <Link
               key={item.href}
               href={item.href}
