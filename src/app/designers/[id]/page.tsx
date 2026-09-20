@@ -55,7 +55,7 @@ export default async function DesignerDetailPage({ params }: Props) {
     designer.portrait ||
     pickHeroImage(designerGowns[0]?.images ?? [])?.media ||
     null;
-  const blurb = designer.shortBio || designer.description || TBD_COPY.brandStory;
+  const blurb = designer.description || designer.shortBio || TBD_COPY.brandStory;
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
@@ -109,7 +109,7 @@ export default async function DesignerDetailPage({ params }: Props) {
             </ol>
           </nav>
           <h1 className="font-serif text-6xl md:text-8xl text-ivory leading-none mb-6">{designer.name}</h1>
-          <p className="font-sans font-light text-ivory/60 max-w-lg leading-relaxed">{blurb}</p>
+          <p className="font-sans font-light text-ivory/60 max-w-3xl leading-relaxed">{blurb}</p>
         </div>
       </section>
 

@@ -22,10 +22,7 @@ export default async function DesignersPage() {
         <div className="relative max-w-8xl mx-auto">
           <span className="section-label mb-4 block">The Boutique</span>
           <h1 className="section-title text-ivory max-w-xl">Designers</h1>
-          <span className="block w-16 h-px bg-champagne mt-6 mb-8" />
-          <p className="font-sans font-light text-ivory/50 max-w-xl leading-relaxed text-base">
-            {TBD_COPY.pageIntro}
-          </p>
+          <span className="block w-16 h-px bg-champagne mt-6" />
         </div>
       </section>
 
@@ -36,20 +33,20 @@ export default async function DesignersPage() {
               Designer profiles will appear as they are confirmed.
             </p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            <div className="space-y-10 lg:space-y-14">
               {designers.map((designer) => {
                 const preview = gowns.find((gown) => gown.designer.slug === designer.slug);
                 const previewImage =
                   designer.portrait || designer.cover || pickHeroImage(preview?.images ?? [])?.media || null;
-                const blurb = designer.shortBio || designer.description || TBD_COPY.brandStory;
+                const blurb = designer.description || designer.shortBio || TBD_COPY.brandStory;
 
                 return (
                   <Link
                     key={designer.id}
                     href={`/designers/${designer.slug}`}
-                    className="group grid grid-cols-1 sm:grid-cols-2 overflow-hidden bg-charcoal-light hover:bg-charcoal-dark transition-colors duration-400"
+                    className="group grid grid-cols-1 lg:grid-cols-[minmax(16rem,22rem)_minmax(0,1fr)] overflow-hidden bg-charcoal-light hover:bg-charcoal-dark transition-colors duration-400"
                   >
-                    <div className="relative aspect-[3/4] sm:aspect-auto min-h-72">
+                    <div className="relative aspect-[3/4] lg:aspect-auto lg:min-h-[22rem]">
                       <CatalogueImage
                         media={previewImage}
                         alt={`${designer.name} at REI Bridal`}
@@ -58,7 +55,7 @@ export default async function DesignersPage() {
                         height={1200}
                         intent="product"
                         className="transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, 50vw"
+                        sizes="(max-width: 1024px) 100vw, 22rem"
                       />
                     </div>
                     <div className="flex flex-col justify-center p-8 lg:p-12">

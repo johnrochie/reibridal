@@ -34,10 +34,10 @@ export default defineType({
     }),
     defineField({
       name: 'description',
-      title: 'Full Description',
-      description: 'Shown on the designer detail page when confirmed. Optional.',
-      type: 'text',
-      rows: 5,
+      title: 'Brand story',
+      description:
+        'Confirmed copy appears on the Designers listing. Leave empty rather than inventing a story.',
+      type: 'verifiedText',
     }),
     defineField({
       name: 'image',

@@ -4,8 +4,9 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import sharp from 'sharp';
-import { isPublicFact, missing, toPublicGown, verified } from '../src/lib/catalogue/status';
-import { localGowns } from '../src/lib/catalogue/local-seed';
+import { isPublicFact, missing, toPublicDesigner, toPublicGown, verified } from '../src/lib/catalogue/status';
+import { CONFIRMED_DESIGNER_STORIES } from '../src/lib/catalogue/designer-stories';
+import { localDesigners, localGowns } from '../src/lib/catalogue/local-seed';
 import { differenceHash, hammingDistance, sha256File } from './lib/hash';
 import { catalogueFromRecords, matchImageToCatalogue } from './lib/match';
 import { optimizeCopy } from './lib/optimize';
@@ -51,6 +52,16 @@ async function main() {
   assert.equal(incomplete.fabric, null);
   assert.equal(incomplete.price, null);
   assert.equal(incomplete.description, null);
+
+  for (const designer of localDesigners) {
+    const story = CONFIRMED_DESIGNER_STORIES[designer.slug as keyof typeof CONFIRMED_DESIGNER_STORIES];
+    assert.ok(story, `missing confirmed story for ${designer.slug}`);
+    assert.equal(designer.description.status, 'confirmed');
+    assert.equal(designer.description.value, story);
+    assert.equal(toPublicDesigner(designer).description, story);
+    assert.equal(toPublicDesigner(designer).shortBio, null);
+  }
+  assert.equal(toPublicDesigner(localDesigners[0]).name, 'Jane Aston');
 
   const { isComingSoonHold } = await import('../src/lib/coming-soon');
   assert.equal(isComingSoonHold({ flag: 'true', host: 'localhost:3000' }), true);

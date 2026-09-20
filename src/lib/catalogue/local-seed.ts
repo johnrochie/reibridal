@@ -1,4 +1,5 @@
 import type { DesignerRecord, GownRecord } from './types';
+import { CONFIRMED_DESIGNER_STORIES } from './designer-stories';
 import { missing, verified } from './status';
 import type { MediaRef } from '@/lib/media/types';
 
@@ -21,7 +22,7 @@ export const localDesigners: DesignerRecord[] = [
     name: verified('Jane Aston', 'confirmed'),
     country: missing(),
     shortBio: missing(),
-    description: missing(),
+    description: verified(CONFIRMED_DESIGNER_STORIES['jane-aston'], 'confirmed'),
     portrait: null,
     cover: null,
     website: null,
@@ -34,7 +35,7 @@ export const localDesigners: DesignerRecord[] = [
     name: verified('Anna Kara', 'confirmed'),
     country: missing(),
     shortBio: missing(),
-    description: missing(),
+    description: verified(CONFIRMED_DESIGNER_STORIES['anna-kara'], 'confirmed'),
     portrait: null,
     cover: null,
     website: null,
@@ -47,7 +48,7 @@ export const localDesigners: DesignerRecord[] = [
     name: verified('Truvelle', 'confirmed'),
     country: missing(),
     shortBio: missing(),
-    description: missing(),
+    description: verified(CONFIRMED_DESIGNER_STORIES.truvelle, 'confirmed'),
     portrait: null,
     cover: null,
     website: null,
@@ -60,7 +61,7 @@ export const localDesigners: DesignerRecord[] = [
     name: verified('Caroline Takvorian', 'confirmed'),
     country: missing(),
     shortBio: missing(),
-    description: missing(),
+    description: verified(CONFIRMED_DESIGNER_STORIES['caroline-takvorian'], 'confirmed'),
     portrait: null,
     cover: null,
     website: null,
