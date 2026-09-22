@@ -76,14 +76,15 @@ async function main() {
 
   const { isComingSoonHold } = await import('../src/lib/coming-soon');
   assert.equal(isComingSoonHold({ flag: 'true', host: 'localhost:3000' }), true);
+  assert.equal(isComingSoonHold({ flag: 'true', host: 'www.reibridal.ie', vercelEnv: 'production' }), true);
   assert.equal(isComingSoonHold({ flag: 'false', host: 'www.reibridal.ie' }), false);
   assert.equal(isComingSoonHold({ flag: 'false', host: 'www.reibridal.ie', vercelEnv: 'production' }), false);
   assert.equal(isComingSoonHold({ flag: undefined, host: 'localhost:3000', vercelEnv: null }), false);
   assert.equal(isComingSoonHold({ flag: undefined, host: 'rei-bridal.vercel.app', vercelEnv: null }), false);
   assert.equal(isComingSoonHold({ flag: undefined, host: 'rei-bridal.vercel.app', vercelEnv: 'preview' }), false);
-  assert.equal(isComingSoonHold({ flag: undefined, host: 'rei-bridal.vercel.app', vercelEnv: 'production' }), true);
-  assert.equal(isComingSoonHold({ flag: undefined, host: 'www.reibridal.ie' }), true);
-  assert.equal(isComingSoonHold({ flag: undefined, host: 'reibridal.ie' }), true);
+  assert.equal(isComingSoonHold({ flag: undefined, host: 'rei-bridal.vercel.app', vercelEnv: 'production' }), false);
+  assert.equal(isComingSoonHold({ flag: undefined, host: 'www.reibridal.ie' }), false);
+  assert.equal(isComingSoonHold({ flag: undefined, host: 'reibridal.ie', vercelEnv: 'production' }), false);
 
   const gowns = catalogueFromRecords(localGowns);
   const high = matchImageToCatalogue('Truvelle/Cindy/front.jpg', [

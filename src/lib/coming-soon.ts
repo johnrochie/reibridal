@@ -6,10 +6,9 @@ const FLAG_OFF = new Set(['0', 'false', 'no', 'off']);
 /**
  * Site-wide coming-soon hold.
  *
- * - COMING_SOON=true (or 1/on/yes) forces the hold in every environment.
- * - COMING_SOON=false (or 0/off/no) forces the full site, including production.
- * - Unset: hold on the production/final domain and on Vercel Production
- *   deployments. Preview and localhost keep the working site.
+ * - COMING_SOON=true (or 1/on/yes) shows the placeholder in every environment.
+ * - COMING_SOON=false (or 0/off/no) or unset shows the full site, including
+ *   production. Set the flag to true if the hold needs to come back.
  */
 export function parseComingSoonFlag(value: string | undefined | null): boolean | null {
   if (value == null || value.trim() === '') return null;
@@ -45,16 +44,10 @@ export function isProductionHost(host: string | null | undefined, siteUrl?: stri
 
 export function isComingSoonHold({
   flag = process.env.COMING_SOON,
-  host,
-  vercelEnv = process.env.VERCEL_ENV,
 }: {
   flag?: string | null;
-  host: string | null | undefined;
+  host?: string | null;
   vercelEnv?: string | null;
 }): boolean {
-  const parsed = parseComingSoonFlag(flag);
-  if (parsed === false) return false;
-  if (parsed === true) return true;
-  if (vercelEnv === 'production') return true;
-  return isProductionHost(host);
+  return parseComingSoonFlag(flag) === true;
 }
