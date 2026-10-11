@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { siteConfig } from '@/lib/config';
 import AppointmentForm from '@/components/booking/AppointmentForm';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Contact Us',
-  description: 'Contact REI Bridal in Killorglin, Co. Kerry.',
-};
+  description:
+    'Contact REI Bridal, Upper Bridge Street, Killorglin, Co. Kerry. Opening hours, email and directions to the boutique.',
+  path: '/contact',
+});
 
 export default function ContactPage() {
   return (

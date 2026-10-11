@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { getPublicGowns } from '@/lib/catalogue';
 import { siteConfig } from '@/lib/config';
 import GownGrid from '@/components/gowns/GownGrid';
 
-export const metadata: Metadata = {
-  title: 'Wedding Gowns | REI Bridal',
+export const metadata: Metadata = pageMetadata({
+  title: 'Wedding Dresses',
   description:
-    'Browse our curated collection of luxury wedding gowns, bridesmaid dresses and occasion wear at REI Bridal, Kerry, Ireland. Private appointments available.',
-};
+    'Browse wedding dresses available to try on at REI Bridal, a luxury bridal boutique in Killorglin, Co. Kerry. Private appointments.',
+  path: '/gowns',
+});
 
 export default async function GownsPage() {
   const gowns = await getPublicGowns();

@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { siteConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy | REI Bridal',
-  description: 'Cookie Policy for REI Bridal — what cookies we use and how to manage them.',
+  ...pageMetadata({
+    title: 'Cookie Policy',
+    description:
+      'Cookie Policy for REI Bridal: what cookies we use and how to manage them.',
+    path: '/cookie-policy',
+  }),
   robots: { index: false, follow: false },
 };
 

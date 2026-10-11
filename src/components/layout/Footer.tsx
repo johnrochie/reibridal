@@ -115,12 +115,14 @@ export default function Footer() {
               <p>{siteConfig.address.country}</p>
             </address>
             <div className="mt-4 space-y-2">
-              <a
-                href={`tel:${siteConfig.phone}`}
-                className="block text-sm font-light text-ivory/50 hover:text-champagne transition-colors"
-              >
-                {siteConfig.phone}
-              </a>
+              {siteConfig.phone && (
+                <a
+                  href={`tel:${siteConfig.phone.replace(/\s/g, '')}`}
+                  className="block text-sm font-light text-ivory/50 hover:text-champagne transition-colors"
+                >
+                  {siteConfig.phone}
+                </a>
+              )}
               <a
                 href={`mailto:${siteConfig.email}`}
                 className="block text-sm font-light text-ivory/50 hover:text-champagne transition-colors"

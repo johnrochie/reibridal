@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { siteConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
-  title: 'Our Services | REI Bridal',
-  description:
-    'Discover the full REI Bridal experience — private appointments, expert alterations, in-house fittings, and personalised styling in our Kerry, Ireland boutique.',
+  ...pageMetadata({
+    title: 'Our Services',
+    description:
+      'Services at REI Bridal, Killorglin, Co. Kerry.',
+    path: '/services',
+  }),
+  robots: { index: false, follow: true },
 };
 
 const services = [

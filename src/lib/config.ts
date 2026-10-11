@@ -5,14 +5,18 @@ export const siteConfig = {
     'REI Bridal is a luxury bridal boutique in Killorglin, Co. Kerry. Book a private appointment to view the collection.',
   url: 'https://www.reibridal.ie',
   email: 'info@reibridal.ie',
-  phone: '+353 XX XXX XXXX',
+  /** Leave blank until confirmed — empty values are hidden on the site and in structured data. */
+  phone: '',
   address: {
     street: 'Upper Bridge Street',
     city: 'Killorglin',
     county: 'Co. Kerry',
     country: 'Ireland',
+    /** Eircode — leave blank until confirmed. */
     postcode: '',
   },
+  /** Map coordinates for structured data — set once the exact shopfront location is confirmed. */
+  geo: null as { lat: number; lng: number } | null,
   social: {
     instagram: 'https://www.instagram.com/reibridal',
     facebook: 'https://www.facebook.com/reibridal',
@@ -57,14 +61,6 @@ export const defaultMeta = {
     locale: 'en_IE',
     url: siteConfig.url,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: `${siteConfig.url}/og-image.jpg`,
-        width: 1200,
-        height: 630,
-        alt: 'REI Bridal — Luxury Bridal Boutique Kerry, Ireland',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',

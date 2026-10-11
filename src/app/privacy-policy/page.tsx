@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { siteConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | REI Bridal',
-  description: 'Privacy Policy for REI Bridal — how we collect, use, and protect your personal data in accordance with GDPR.',
+  ...pageMetadata({
+    title: 'Privacy Policy',
+    description:
+      'Privacy Policy for REI Bridal: how we collect, use and protect your personal data in accordance with GDPR.',
+    path: '/privacy-policy',
+  }),
   robots: { index: false, follow: false },
 };
 

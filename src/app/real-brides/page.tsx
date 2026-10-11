@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllRealBrides, getFeaturedRealBrides } from '@/sanity/queries';
@@ -8,13 +9,13 @@ import RealBridesGrid from '@/components/real-brides/RealBridesGrid';
 import type { SanityRealBride } from '@/sanity/types';
 
 export const metadata: Metadata = {
-  title: 'Real Brides | REI Bridal',
-  description:
-    'Meet the REI Bridal brides — real weddings, real moments, real love stories. Be inspired by our Kerry brides and their extraordinary gowns.',
-  openGraph: {
-    title: 'Real Brides | REI Bridal',
-    description: 'Real weddings and love stories from REI Bridal, Kerry, Ireland.',
-  },
+  ...pageMetadata({
+    title: 'Real Brides',
+    description:
+      'Real brides of REI Bridal, Killorglin, Co. Kerry.',
+    path: '/real-brides',
+  }),
+  robots: { index: false, follow: true },
 };
 
 export default async function RealBridesPage() {
