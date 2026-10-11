@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { getHeroDressSlides, getPublicDesigners } from '@/lib/catalogue';
 import { getFeaturedTestimonials, getAllGalleryImages } from '@/sanity/queries';
@@ -7,11 +8,13 @@ import { siteConfig } from '@/lib/config';
 import CatalogueImage from '@/components/media/CatalogueImage';
 import HeroCarousel from '@/components/hero/HeroCarousel';
 
-export const metadata: Metadata = {
-  title: 'REI Bridal | Luxury Bridal Boutique Kerry, Ireland',
+export const metadata: Metadata = pageMetadata({
+  title: 'REI Bridal | Luxury Bridal Boutique in Killorglin, Co. Kerry',
   description:
-    'REI Bridal — a luxury bridal boutique in Killorglin, Co. Kerry. View designers and book a private appointment.',
-};
+    'REI Bridal is a luxury bridal boutique in Killorglin, Co. Kerry, Ireland. Discover wedding dresses by our designers and book a private bridal appointment.',
+  path: '/',
+  absoluteTitle: true,
+});
 
 export default async function HomePage() {
   const [heroSlides, designers, testimonials, galleryImages] = await Promise.all([

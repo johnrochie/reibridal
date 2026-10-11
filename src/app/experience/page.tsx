@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { siteConfig, TBD_COPY } from '@/lib/config';
 import ComingSoonEnquiry from '@/components/ui/ComingSoonEnquiry';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: siteConfig.experienceNavLabel,
-  description: `${siteConfig.experienceNavLabel} at REI Bridal, Killorglin, Co. Kerry. Details to be confirmed.`,
-};
+  description: 'The bridal appointment experience at REI Bridal, a luxury bridal boutique in Killorglin, Co. Kerry.',
+  path: '/experience',
+});
 
 const sections = [
   { heading: 'The visit', body: TBD_COPY.section },

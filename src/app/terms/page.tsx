@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { siteConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | REI Bridal',
-  description: 'Terms and Conditions for REI Bridal boutique, Kerry, Ireland.',
+  ...pageMetadata({
+    title: 'Terms & Conditions',
+    description:
+      'Terms and Conditions for REI Bridal, Killorglin, Co. Kerry.',
+    path: '/terms',
+  }),
   robots: { index: false, follow: false },
 };
 
@@ -44,7 +49,7 @@ export default function TermsPage() {
                 'We ask that you arrive promptly. Late arrivals may result in a shortened appointment out of respect for other clients.',
                 'We recommend bringing no more than 2–3 guests to ensure the most relaxed experience.',
                 'We reserve the right to refuse entry to guests who are disruptive to the boutique environment.',
-                'Cancellations should be made with as much notice as possible. Please contact us at ' + siteConfig.email + ' or ' + siteConfig.phone + '.',
+                'Cancellations should be made with as much notice as possible. Please contact us at ' + siteConfig.email + (siteConfig.phone ? ' or ' + siteConfig.phone : '') + '.',
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm font-light text-ivory/60">
                   <span className="w-3 h-px bg-champagne mt-2.5 flex-shrink-0 block" />

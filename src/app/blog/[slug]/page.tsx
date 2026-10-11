@@ -21,10 +21,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
 
   return {
-    title: `${post.title} | REI Bridal Journal`,
+    title: { absolute: `${post.title} | REI Bridal Journal` },
     description: post.excerpt,
     authors: [{ name: post.author }],
+    alternates: { canonical: `${siteConfig.url}/blog/${post.slug}` },
     openGraph: {
+      url: `${siteConfig.url}/blog/${post.slug}`,
+      siteName: siteConfig.name,
+      locale: 'en_IE',
       title: post.title,
       description: post.excerpt,
       type: 'article',
@@ -116,7 +120,7 @@ export default async function BlogPostPage({ params }: Props) {
       '@type': 'Organization',
       name: siteConfig.name,
       url: siteConfig.url,
-      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/og-image.jpg` },
+      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/icon.png` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteConfig.url}/blog/${post.slug}` },
     keywords: post.tags?.join(', ') ?? '',

@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { TBD_COPY } from '@/lib/config';
 import ComingSoonEnquiry from '@/components/ui/ComingSoonEnquiry';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'About',
-  description: 'About REI Bridal, Killorglin, Co. Kerry. History and story to be confirmed.',
-};
+  description:
+    'About REI Bridal, a luxury bridal boutique on Upper Bridge Street, Killorglin, Co. Kerry.',
+  path: '/about',
+});
 
 const sections = [
   { heading: 'History', body: TBD_COPY.section },

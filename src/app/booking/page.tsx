@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import BookingSection from '@/components/booking/BookingSection';
 
-export const metadata: Metadata = {
-  title: 'Booking Form',
-  description: 'Request a private appointment at REI Bridal in Killorglin, Co. Kerry.',
-};
+export const metadata: Metadata = pageMetadata({
+  title: 'Book a Bridal Appointment',
+  description:
+    'Request a private bridal appointment at REI Bridal, a luxury wedding dress boutique in Killorglin, Co. Kerry.',
+  path: '/booking',
+});
 
 export default function BookingPage() {
   return (

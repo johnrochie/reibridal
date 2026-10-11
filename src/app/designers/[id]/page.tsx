@@ -9,6 +9,7 @@ import {
 } from '@/lib/catalogue';
 import { resolveMediaUrl } from '@/lib/media';
 import { siteConfig, TBD_COPY } from '@/lib/config';
+import { metaDescription, pageMetadata } from '@/lib/seo';
 import CatalogueImage from '@/components/media/CatalogueImage';
 import GownCard from '@/components/gowns/GownCard';
 
@@ -29,20 +30,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cover =
     designer.cover || designer.portrait || pickHeroImage(gowns[0]?.images ?? [])?.media || null;
 
-  return {
-    title: designer.name,
-    description: `${designer.name} at REI Bridal, Killorglin, Co. Kerry.`,
-    openGraph: cover
-      ? {
-          images: [
-            {
-              url: resolveMediaUrl(cover, { width: 1200, height: 630, intent: 'og' }),
-              alt: `${designer.name} — REI Bridal`,
-            },
-          ],
-        }
+  const intro = `Discover ${designer.name} wedding dresses at REI Bridal, a luxury bridal boutique in Killorglin, Co. Kerry.`;
+
+  return pageMetadata({
+    title: `${designer.name} Wedding Dresses in Kerry`,
+    description: metaDescription(designer.shortBio ? `${intro} ${designer.shortBio}` : `${intro} Book a private appointment.`),
+    path: `/designers/${designer.slug}`,
+    images: cover
+      ? [
+          {
+            url: resolveMediaUrl(cover, { width: 1200, height: 630, intent: 'og' }),
+            alt: `${designer.name} wedding dresses at REI Bridal`,
+          },
+        ]
       : undefined,
-  };
+  });
 }
 
 export default async function DesignerDetailPage({ params }: Props) {

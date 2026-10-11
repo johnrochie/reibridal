@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import { TBD_COPY } from '@/lib/config';
 import ComingSoonEnquiry from '@/components/ui/ComingSoonEnquiry';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'FAQ',
-  description: 'Questions about visiting REI Bridal. Answers will appear once they are confirmed.',
-};
+  description:
+    'Frequently asked questions about visiting REI Bridal in Killorglin, Co. Kerry: appointments, visiting the boutique, orders and fittings.',
+  path: '/faq',
+});
 
 const topics = [
   { heading: 'Appointments', body: TBD_COPY.section },

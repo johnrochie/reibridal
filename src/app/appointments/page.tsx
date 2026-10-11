@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import BookingSection from '@/components/booking/BookingSection';
 
-export const metadata: Metadata = {
-  title: 'Book an Appointment | REI Bridal',
+export const metadata: Metadata = pageMetadata({
+  title: 'Book an Appointment',
   description:
-    'Book your private bridal appointment at REI Bridal in Kerry, Ireland. Exclusive 2-hour appointments for an intimate, personal wedding dress experience.',
-};
+    'Book a private bridal appointment at REI Bridal in Killorglin, Co. Kerry.',
+  path: '/booking',
+});
 
 export default function AppointmentsPage() {
   const steps = [
