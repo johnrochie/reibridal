@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { getAllGalleryImages } from '@/sanity/queries';
 import { siteConfig } from '@/lib/config';
 import GalleryGrid from '@/components/gallery/GalleryGrid';
 
-export const metadata: Metadata = {
-  title: 'Gallery | REI Bridal',
+export const metadata: Metadata = pageMetadata({
+  title: 'Gallery',
   description:
-    'Browse our gallery of real REI Bridal weddings and editorial imagery. Discover wedding inspiration from our Kerry, Ireland bridal boutique.',
-};
+    'Wedding dress imagery from REI Bridal, a luxury bridal boutique in Killorglin, Co. Kerry.',
+  path: '/gallery',
+});
 
 export default async function GalleryPage() {
   const images = await getAllGalleryImages();

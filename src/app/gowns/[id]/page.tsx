@@ -10,6 +10,7 @@ import {
 } from '@/lib/catalogue';
 import { resolveMediaUrl } from '@/lib/media';
 import { siteConfig } from '@/lib/config';
+import { metaDescription, pageMetadata } from '@/lib/seo';
 import GownCard from '@/components/gowns/GownCard';
 import GownGallery from '@/components/gowns/GownGallery';
 
@@ -27,21 +28,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!gown) return {};
 
   const hero = pickHeroImage(gown.images);
+  // Gown pages show name, designer and photography only, so describe just that.
+  const description = `Try on the ${gown.name} wedding dress by ${gown.designer.name} at REI Bridal, a luxury bridal boutique in Killorglin, Co. Kerry. Book a private appointment.`;
 
-  return {
-    title: gown.name,
-    description: `${gown.name} at REI Bridal, Killorglin, Co. Kerry.`,
-    openGraph: hero
-      ? {
-          images: [
-            {
-              url: resolveMediaUrl(hero.media, { width: 1200, height: 630, intent: 'og' }),
-              alt: `${gown.name} — REI Bridal`,
-            },
-          ],
-        }
+  return pageMetadata({
+    title: `${gown.name} by ${gown.designer.name} | Wedding Dress`,
+    description: metaDescription(description),
+    path: `/gowns/${gown.slug}`,
+    images: hero
+      ? [
+          {
+            url: resolveMediaUrl(hero.media, { width: 1200, height: 630, intent: 'og' }),
+            alt: `${gown.name} wedding dress by ${gown.designer.name}`,
+          },
+        ]
       : undefined,
-  };
+  });
 }
 
 export default async function GownDetailPage({ params }: Props) {

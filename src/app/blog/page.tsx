@@ -1,19 +1,17 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllBlogPosts } from '@/sanity/queries';
 import { urlFor } from '@/sanity/image';
 import type { SanityBlogPost } from '@/sanity/types';
 
-export const metadata: Metadata = {
-  title: 'Journal | REI Bridal',
+export const metadata: Metadata = pageMetadata({
+  title: 'Journal',
   description:
-    'The REI Bridal Journal — expert bridal advice, designer spotlights, and inspiration for brides planning their wedding in Kerry, Ireland and beyond.',
-  openGraph: {
-    title: 'The REI Bridal Journal',
-    description: 'Expert bridal advice and inspiration from our Kerry boutique.',
-  },
-};
+    'The REI Bridal Journal: bridal advice, designer spotlights and inspiration from our boutique in Killorglin, Co. Kerry.',
+  path: '/blog',
+});
 
 const categoryLabels: Record<string, string> = {
   advice: 'Bridal Advice',

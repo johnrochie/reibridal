@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import CatalogueImage from '@/components/media/CatalogueImage';
-import { pickHeroImage } from '@/lib/catalogue';
+// Import directly, not via the barrel: the barrel pulls in server-only hero.ts (node:fs).
+import { pickHeroImage } from '@/lib/catalogue/images';
 import type { PublicGown } from '@/lib/catalogue';
 
 interface GownCardProps {

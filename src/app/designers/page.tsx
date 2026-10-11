@@ -1,13 +1,23 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { getPublicDesigners, getPublicGowns, pickHeroImage } from '@/lib/catalogue';
 import { TBD_COPY } from '@/lib/config';
 import CatalogueImage from '@/components/media/CatalogueImage';
 
-export const metadata: Metadata = {
-  title: 'Designers',
-  description: 'Designers currently shown at REI Bridal, Killorglin, Co. Kerry.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const designers = await getPublicDesigners();
+  const names = designers.filter((d) => d.nameConfirmed).map((d) => d.name);
+  const list = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
+
+  return pageMetadata({
+    title: 'Bridal Designers',
+    description: list
+      ? `Wedding dresses by ${list} at REI Bridal, a luxury bridal boutique in Killorglin, Co. Kerry.`
+      : 'Bridal designers at REI Bridal, a luxury bridal boutique in Killorglin, Co. Kerry.',
+    path: '/designers',
+  });
+}
 
 export default async function DesignersPage() {
   const [designers, gowns] = await Promise.all([getPublicDesigners(), getPublicGowns()]);
